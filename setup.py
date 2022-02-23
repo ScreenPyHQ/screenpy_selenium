@@ -3,8 +3,8 @@ from os import path
 from setuptools import find_packages, setup
 
 requires = [
-    "screenpy>=4.0.0b1,<4.1",
-    "screenpy_pyotp>=4.0.0b1,<4.1",
+    "screenpy>=4.0.0",
+    "screenpy_pyotp>=4.0.0,<4.1",
     "typing-extensions>=4.1.1,<4.2",
     "selenium>=4.1.0,<4.2",
 ]
