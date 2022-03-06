@@ -20,3 +20,4 @@ through Selenium.
    extended_api/actions
    extended_api/questions
    extended_api/resolutions
+   extended_api/target

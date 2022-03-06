@@ -17,6 +17,8 @@ class Chain:
     A Chain Action is expected to be instantiated with a list of Actions to
     perform in a series.
 
+    *Note*: Several Actions cannot be Chained, and will raise an exception.
+
     Abilities Required:
         :class:`~screenpy_selenium.abilities.BrowseTheWeb`
 
@@ -25,8 +27,6 @@ class Chain:
         the_actor.attempts_to(
             Chain(Hover.on_the(MENU_ICON), Click.on_the(SUBMENU_LINK))
         )
-
-    *Note*: Several Actions cannot be Chained, and will raise an exception.
     """
 
     def describe(self) -> str:

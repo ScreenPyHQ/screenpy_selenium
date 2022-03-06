@@ -14,6 +14,7 @@ import os
 import sys
 
 
+sys.path.insert(0, os.path.abspath("./ext"))
 sys.path.insert(0, os.path.abspath("../"))
 
 from screenpy_selenium.__version__ import __version__  # noqa: need the path first
@@ -39,11 +40,14 @@ release = __version__
 extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosectionlabel",
+    "autodoc_skip_protocols",
 ]
 
 intersphinx_mapping = {
     "screenpy": ("https://screenpy-docs.readthedocs.io/en/latest/", None),
     "selenium": ("https://selenium-python.readthedocs.io/", None),
+    "screenpy_pyotp": ("https://screenpy-pyotp-docs.readthedocs.io/en/latest/", None),
 }
 
 autodoc_member_order = "bysource"
@@ -71,9 +75,13 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'default'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Other HTML settings
+autodoc_member_order = "bysource"
+add_module_names = False

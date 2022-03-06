@@ -17,8 +17,8 @@ from ..speech_tools import KEY_NAMES
 class Release:
     """Release the specified key or left mouse button.
 
-    This Action can only be used with :class:`screenpy_selenium.actions.Chain`,
-    and it expects that a corresponding :class:`screenpy_selenium.actions.HoldDown`
+    This Action can only be used with :class:`~screenpy_selenium.actions.Chain`,
+    and it expects that a corresponding :class:`~screenpy_selenium.actions.HoldDown`
     Action was called earlier in the Chain.
 
     Abilities Required:

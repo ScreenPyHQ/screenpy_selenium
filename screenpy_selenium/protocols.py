@@ -1,5 +1,5 @@
 """
-Additional protocols for ScreenPy+Selenium.
+Additional protocols for ScreenPy Selenium.
 """
 
 from screenpy import Actor

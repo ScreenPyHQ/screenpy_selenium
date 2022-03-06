@@ -2,7 +2,7 @@
    sphinx-quickstart on Mon Feb 21 22:31:40 2022.
 
 =======================================
-ScreenPy+Selenium: A ScreenPy Extension
+ScreenPy Selenium: A ScreenPy Extension
 =======================================
 
 Not sure what ScreenPy is?
@@ -26,4 +26,5 @@ to :class:`~screenpy_selenium.abilities.BrowseTheWeb`!
    :caption: Topics:
 
    extended_api
+   targets
    cookbook

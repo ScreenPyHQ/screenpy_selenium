@@ -2,9 +2,9 @@
 Additional Actions
 ==================
 
-Screenpy+Selenium adds many additional Actions.
+Screenpy Selenium adds many additional Actions.
 For the base Action list,
-see Screenpy's :external+screenpy:ref:`Actions` reference.
+see Screenpy's :external+screenpy:ref:`actions api` reference.
 
 .. module:: screenpy_selenium.actions
 
@@ -12,56 +12,63 @@ AcceptAlert
 -----------
 
 .. autoclass:: AcceptAlert
+    :members:
 
 Chain
 -----
 
 .. autoclass:: Chain
+    :members:
 
 Click
 -----
 
 .. autoclass:: Click
-    :members: on, on_the, on_the_first_of_the
+    :members:
 
 Clear
 -----
 
 .. autoclass:: Clear
-    :members: the_text_from, the_text_from_the, the_text_from_the_first_of_the
+    :members:
 
 DismissAlert
 ------------
 
 .. autoclass:: DismissAlert
+    :members:
 
 DoubleClick
 -----------
 
 .. autoclass:: DoubleClick
-    :members: on, on_the, on_the_first_of_the
+    :members:
 
 Enter
 -----
 
+**Aliases:** ``Press``
+
 .. autoclass:: Enter
-    :members: the_text, the_secret, the_password, into, into_the, into_the_first_of_the, then_hit, the_keys
+    :members:
 
 Enter2FAToken
 -------------
 
 .. autoclass:: Enter2FAToken
-    :members: into, into_the
+    :members:
 
 GoBack
 ------
 
 .. autoclass:: GoBack
+    :members:
 
 GoForward
 ---------
 
 .. autoclass:: GoForward
+    :members:
 
 HoldDown
 --------
@@ -72,11 +79,15 @@ HoldDown
 MoveMouse
 ---------
 
+**Aliases:** ``Hover``
+
 .. autoclass:: MoveMouse
     :members:
 
 Open
 ----
+
+**Aliases:** ``Visit``
 
 .. autoclass:: Open
     :members:
@@ -90,6 +101,10 @@ Pause
 RefreshPage
 -----------
 
+**Aliases:** ``Refresh``,
+``Reload``,
+``ReloadPage``
+
 .. autoclass:: RefreshPage
     :members:
 
@@ -102,11 +117,15 @@ Release
 RespondToThePrompt
 ------------------
 
+**Aliases:** ``RespondToPrompt``
+
 .. autoclass:: RespondToThePrompt
     :members:
 
 RightClick
 ----------
+
+**Aliases:** ``ContextClick``
 
 .. autoclass:: RightClick
     :members:
@@ -119,6 +138,8 @@ SaveConsoleLog
 
 SaveScreenshot
 --------------
+
+**Aliases:** ``TakeScreenshot``
 
 .. autoclass:: SaveScreenshot
     :members:
@@ -143,6 +164,8 @@ SwitchTo
 
 SwitchToTab
 -----------
+
+**Aliases:** ``SwitchToWindow``
 
 .. autoclass:: SwitchToTab
     :members:

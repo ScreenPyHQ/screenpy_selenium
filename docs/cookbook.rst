@@ -1,13 +1,13 @@
 .. _cookbook:
 
 =========================
-ScreenPy+Selenium Recipes
+ScreenPy Selenium Recipes
 =========================
 
 This collection contains
-examples of common ScreenPy+Selenium use-cases.
+examples of common ScreenPy Selenium use-cases.
 For other recipes of interest,
-see ScreenPy's :external+screenpy:ref:`cookbook`.
+see ScreenPy's :external+screenpy:ref:`screenpy recipes`.
 
 
 .. _actor_setup:
@@ -55,7 +55,7 @@ to meet the condition::
 
         def __call__(self, driver):
             element = driver.find_element(*self.locator)
-            return element.value_of_css_property(filter) == "grayscale(100%)"
+            return element.value_of_css_property("filter") == "grayscale(100%)"
 
     Perry.attempts_to(Wait.for_the(PROFILE_ICON).to(appear_in_greyscale))
 
@@ -63,7 +63,7 @@ to meet the condition::
 Using a custom condition
 which does not use a Target::
 
-    def url_to_contain_text_and_be_at_least_this_long(text, length):
+    def url_minimum_length_with_text(length, text):
         def _predicate(driver):
             return text in driver.url and len(driver.url) >= length
 
@@ -71,20 +71,46 @@ which does not use a Target::
 
     Perry.attempts_to(
         #   ⇩ note the parentheses here
-        Wait().using(
-            url_to_contain_text_and_be_at_least_this_long
-        ).with_("hello", 20)
+        Wait().using(url_minimum_length_with_text).with_(20, "hello")
     )
 
 
-The Eventually Class
---------------------
+Using Eventually
+----------------
 
 The :external+screenpy:class:`~screenpy.actions.Eventually` Action
 deserves a special mention in this section.
-See the entry in ScreenPy's :external+screenpy:ref:`cookbook`
-for more information on using this class,
-but here's a quick example::
+
+:external+screenpy:class:`~screenpy.actions.Eventually` can take the place
+of :class:`~screenpy_selenium.actions.Wait`,
+if you're only waiting
+for an element to appear
+or to be clickable.
+This can reduce the length of your tests
+while still being quite readable
+and robust.
+
+Here's a quick before/after example::
+
+    # ⇩ before
+
+    when(Brody).attempts_to(
+        Wait.for_the(REGISTER_LINK).to_be_clickable(),
+        Click.on_the(REGISTER_LINK),
+        Wait.for_the(NICKNAME_FIELD).to_appear(),
+        Enter.the_text("Brody").into_the(NICKNAME_FIELD)),
+        Enter.the_text("Brodiferous").into_the(FULL_NAME_FIELD),
+        Click.on_the(SUBMIT_BUTTON),
+        Wait.for_the(WELCOME_BANNER).to_appear(),
+    )
+
+    then(Brody).should(
+        See.the(Text.of_the(WELCOME_BANNER), ContainsTheText("Brody")),
+    )
+
+.. code-block:: python
+
+    # ⇩ after
 
     when(Brody).attempts_to(
         Eventually(Click.on_the(REGISTER_LINK)),
@@ -94,5 +120,11 @@ but here's a quick example::
     )
 
     then(Brody).should(
-        Eventually(See.the(Text.of_the(WELCOME_BANNER), ContainsTheText("Brody"))),
+        Eventually(
+            See.the(Text.of_the(WELCOME_BANNER), ContainsTheText("Brody"))
+        ),
     )
+
+See the entry in the
+:external+screenpy:ref:`ScreenPy Cookbook <the eventually class>`
+for more information on using this class.
