@@ -89,3 +89,19 @@ def test_all_found_by_raises(Tester):
         Target.the(test_name).located_by("*").all_found_by(Tester)
 
     assert test_name in str(excinfo.value)
+
+
+def test_iterator():
+    locator = (By.ID, "eggs")
+    target = Target.the("test").located(locator)
+    it1 = target.__iter__()
+    assert next(it1) == locator[0]
+    assert next(it1) == locator[1]
+    with pytest.raises(StopIteration):
+        next(it1)
+
+
+def test_empty_target_iterator():
+    nulltarget = Target("bogus")
+    with pytest.raises(TargetingError):
+        iter(nulltarget)

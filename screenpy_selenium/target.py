@@ -4,7 +4,7 @@ human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
 """
 
-from typing import List, Tuple, Union
+from typing import Iterator, List, Tuple, Union
 
 from screenpy.actor import Actor
 from selenium.common.exceptions import WebDriverException
@@ -91,6 +91,9 @@ class Target:
         return self.target_name
 
     __str__ = __repr__
+
+    def __iter__(self) -> Iterator[str]:
+        return self.get_locator().__iter__()
 
     def __getitem__(self, index: int) -> str:
         return self.get_locator()[index]
