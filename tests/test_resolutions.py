@@ -9,8 +9,8 @@ class TestIsClickable:
 
         assert isinstance(ic, IsClickable)
 
-    def test_matches_a_clickable_element(self):
-        element = mock.Mock()
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_matches_a_clickable_element(self, element):
         element.is_enabled.return_value = True
         element.is_displayed.return_value = True
         ic = IsClickable()
@@ -38,15 +38,15 @@ class TestIsVisible:
 
         assert isinstance(iv, IsVisible)
 
-    def test_matches_a_visible_element(self):
-        element = mock.Mock()
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_matches_a_visible_element(self, element):
         element.is_displayed.return_value = True
         iv = IsVisible()
 
         assert iv._matches(element)
 
-    def test_does_not_match_invisible_element(self):
-        invisible_element = mock.Mock()
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_does_not_match_invisible_element(self, invisible_element):
         invisible_element.is_displayed.return_value = False
         iv = IsVisible()
 
