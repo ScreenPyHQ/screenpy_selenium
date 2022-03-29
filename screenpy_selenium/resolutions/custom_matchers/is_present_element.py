@@ -1,0 +1,39 @@
+"""
+A matcher that matches an element. For example:
+
+    assert_that(driver.find_element_by_id("search"), is_visible_element())
+"""
+from typing import Optional
+
+from hamcrest.core.base_matcher import BaseMatcher
+from hamcrest.core.description import Description
+from selenium.webdriver.remote.webelement import WebElement
+
+
+class IsPresentElement(BaseMatcher[Optional[WebElement]]):
+    """
+    Matches an element to be a WebElement.
+    """
+
+    def _matches(self, item: Optional[WebElement]) -> bool:
+        if item is None:
+            return False
+        return isinstance(item, WebElement)
+
+    def describe_to(self, description: Description) -> None:
+        """Describe the passing case."""
+        description.append_text("the element is present.")
+
+    def describe_mismatch(
+        self, item: WebElement, mismatch_description: Description
+    ) -> None:
+        """Describe the failing case."""
+        if item is None:
+            mismatch_description.append_text("was not even present.")
+            return
+        mismatch_description.append_text("was not present.")
+
+
+def is_present_element() -> IsPresentElement:
+    """This matcher matches any element that is enabled."""
+    return IsPresentElement()
