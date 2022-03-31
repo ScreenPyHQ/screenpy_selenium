@@ -54,7 +54,7 @@ class TestIsVisible:
         assert not iv._matches(invisible_element)
 
 
-class TestIsInVisible:
+class TestIsInvisible:
     def test_can_be_instantiated(self):
         ii = IsInvisible()
 
