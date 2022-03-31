@@ -12,7 +12,7 @@ from hamcrest.core.description import Description
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class IsVisibleElement(BaseMatcher[Optional[object]]):
+class IsVisibleElement(BaseMatcher[Optional[WebElement]]):
     """
     Matches an element whose ``is_displayed`` method returns True.
     """

@@ -10,7 +10,7 @@ from hamcrest.core.description import Description
 from selenium.webdriver.remote.webelement import WebElement
 
 
-class IsClickableElement(BaseMatcher[Optional[object]]):
+class IsClickableElement(BaseMatcher[Optional[WebElement]]):
     """Matches an element which both ``is_enabled`` and ``is_displayed``."""
 
     def _matches(self, item: Optional[WebElement]) -> bool:
@@ -28,7 +28,7 @@ class IsClickableElement(BaseMatcher[Optional[object]]):
         match_description.append_text("it was enabled/clickable")
 
     def describe_mismatch(
-        self, item: WebElement, mismatch_description: Description
+        self, item: Optional[WebElement], mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
         if item is None or not item.is_displayed():
