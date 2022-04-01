@@ -118,6 +118,14 @@ class TestIsInvisible:
         assert ii._matches(element)
 
     @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_does_not_match_invisible_element(self, visible_element):
+        visible_element.is_displayed.return_value = True
+        ii = IsInvisible()
+
+        assert not ii._matches(None)  # element was not found by Element()
+        assert not ii._matches(visible_element)
+
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
     def test_descriptions(self, element):
         expected = ExpectedDescriptions(
             describe_to="the element is invisible",
@@ -126,15 +134,6 @@ class TestIsInvisible:
             describe_none="was not even present"
         )
         _assert_descriptions(IsInvisible(), element, expected)
-
-    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
-    def test_does_not_match_invisible_element(self, visible_element):
-        visible_element.is_displayed.return_value = True
-        ii = IsInvisible()
-
-        assert not ii._matches(None)  # element was not found by Element()
-        assert not ii._matches(visible_element)
-
 
 class TestIsPresent:
     def test_can_be_instantiated(self):
