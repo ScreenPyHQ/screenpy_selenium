@@ -22,18 +22,23 @@ class IsPresentElement(BaseMatcher[Optional[WebElement]]):
 
     def describe_to(self, description: Description) -> None:
         """Describe the passing case."""
-        description.append_text("the element is present.")
+        description.append_text("the element is present")
+
+    def describe_match(
+        self, item: Optional[WebElement], match_description: Description
+    ) -> None:
+        match_description.append_text("it was present")
 
     def describe_mismatch(
-        self, item: WebElement, mismatch_description: Description
+        self, item: Optional[WebElement], mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
         if item is None:
-            mismatch_description.append_text("was not even present.")
+            mismatch_description.append_text("was not even present")
             return
-        mismatch_description.append_text("was not present.")
+        mismatch_description.append_text("was not present")
 
 
 def is_present_element() -> IsPresentElement:
-    """This matcher matches any element that is enabled."""
+    """This matcher matches any element that is present"""
     return IsPresentElement()

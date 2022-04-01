@@ -1,7 +1,37 @@
 from unittest import mock
 
 from screenpy_selenium.resolutions import IsClickable, IsVisible, IsInvisible, IsPresent
+from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
+from hamcrest.core.string_description import StringDescription
+from dataclasses import dataclass
+
+
+@dataclass
+class ExpectedDescriptions:
+    describe_to: str
+    describe_match: str
+    describe_mismatch: str
+    describe_none: str
+
+
+def _assert_descriptions(obj: BaseResolution, element: WebElement,
+                         expected: ExpectedDescriptions):
+    describe_to = StringDescription()
+    describe_match = StringDescription()
+    describe_mismatch = StringDescription()
+    describe_none = StringDescription()
+
+    obj.describe_to(describe_to)
+    obj.describe_match(element, describe_match)
+    obj.describe_mismatch(element, describe_mismatch)
+    obj.describe_mismatch(None, describe_none)
+
+    assert describe_to.out == expected.describe_to
+    assert describe_match.out == expected.describe_match
+    assert describe_mismatch.out == expected.describe_mismatch
+    assert describe_none.out == expected.describe_none
+
 
 class TestIsClickable:
     def test_can_be_instantiated(self):
@@ -31,6 +61,16 @@ class TestIsClickable:
         assert not ic._matches(invisible_element)
         assert not ic._matches(inactive_element)
 
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_descriptions(self, element):
+        expected = ExpectedDescriptions(
+            describe_to="the element is enabled/clickable",
+            describe_match="it was enabled/clickable",
+            describe_mismatch="was not enabled/clickable",
+            describe_none="was not even present"
+        )
+        _assert_descriptions(IsClickable(), element, expected)
+
 
 class TestIsVisible:
     def test_can_be_instantiated(self):
@@ -53,6 +93,16 @@ class TestIsVisible:
         assert not iv._matches(None)  # element was not found by Element()
         assert not iv._matches(invisible_element)
 
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_descriptions(self, element):
+        expected = ExpectedDescriptions(
+            describe_to="the element is visible",
+            describe_match="it was visible",
+            describe_mismatch="was not visible",
+            describe_none="was not even present"
+        )
+        _assert_descriptions(IsVisible(), element, expected)
+
 
 class TestIsInvisible:
     def test_can_be_instantiated(self):
@@ -66,6 +116,16 @@ class TestIsInvisible:
         ii = IsInvisible()
 
         assert ii._matches(element)
+
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_descriptions(self, element):
+        expected = ExpectedDescriptions(
+            describe_to="the element is invisible",
+            describe_match="it was invisible",
+            describe_mismatch="was not invisible",
+            describe_none="was not even present"
+        )
+        _assert_descriptions(IsInvisible(), element, expected)
 
     @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
     def test_does_not_match_invisible_element(self, visible_element):
@@ -105,3 +165,13 @@ class TestIsPresent:
     def test_does_not_match_missing_element(self):
         ic = IsPresent()
         assert not ic._matches(None)
+
+    @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
+    def test_descriptions(self, element):
+        expected = ExpectedDescriptions(
+            describe_to="the element is present",
+            describe_match="it was present",
+            describe_mismatch="was not present",
+            describe_none="was not even present"
+        )
+        _assert_descriptions(IsPresent(), element, expected)
