@@ -4,7 +4,6 @@ A matcher that matches an invisible element. For example:
     assert_that(driver.find_element_by_id("search"), is_invisible_element())
 """
 
-
 from typing import Optional
 
 from hamcrest.core.base_matcher import BaseMatcher

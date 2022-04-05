@@ -3,6 +3,7 @@ A matcher that matches a clickable element. For example:
 
     assert_that(driver.find_element_by_id("search"), is_clickable_element())
 """
+
 from typing import Optional
 
 from hamcrest.core.base_matcher import BaseMatcher
