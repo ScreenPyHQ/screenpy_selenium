@@ -11,12 +11,13 @@ from .is_visible import IsVisible
 IsEnabled = Enabled = Clickable = IsClickable
 IsDisplayed = Displayed = Visible = IsVisible
 IsNotDisplayed = NotDisplayed = Invisible = IsInvisible
-Present = IsPresent
+Exists = Present = IsPresent
 
 __all__ = [
     "Clickable",
     "Displayed",
     "Enabled",
+    "Exists",
     "Invisible",
     "IsClickable",
     "IsDisplayed",

@@ -13,6 +13,7 @@ class IsPresent(BaseResolution):
     Examples::
 
         the_actor.should(See.the(Element(HIDDEN_BUTTON), IsPresent()))
+        the_actor.should(See.the(Element(DISABLED_BUTTON), Exists()))
     """
 
     line = "present"

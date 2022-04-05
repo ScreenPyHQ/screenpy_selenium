@@ -38,6 +38,7 @@ IsInvisible
 IsPresent
 ---------
 
-**Aliases:** ``Present``
+**Aliases:** ``Present``,
+``Exists``
 
 .. autoclass:: IsPresent
