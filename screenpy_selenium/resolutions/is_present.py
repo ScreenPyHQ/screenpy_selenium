@@ -8,7 +8,7 @@ from .custom_matchers import is_present_element
 
 
 class IsPresent(BaseResolution):
-    """Match on a clickable element.
+    """Match on a present element.
 
     Examples::
 
