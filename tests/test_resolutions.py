@@ -171,6 +171,6 @@ class TestIsPresent:
             describe_to="the element is present",
             describe_match="it was present",
             describe_mismatch="was not present",
-            describe_none="was not even present"
+            describe_none="was not present"
         )
         _assert_descriptions(IsPresent(), element, expected)
