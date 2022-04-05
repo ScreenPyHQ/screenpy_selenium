@@ -34,9 +34,6 @@ class IsPresentElement(BaseMatcher[Optional[WebElement]]):
         self, item: Optional[WebElement], mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
-        if item is None:
-            mismatch_description.append_text("was not even present")
-            return
         mismatch_description.append_text("was not present")
 
 
