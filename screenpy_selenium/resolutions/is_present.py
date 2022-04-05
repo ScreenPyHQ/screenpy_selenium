@@ -14,6 +14,7 @@ class IsPresent(BaseResolution):
 
         the_actor.should(See.the(Element(HIDDEN_BUTTON), IsPresent()))
         the_actor.should(See.the(Element(DISABLED_BUTTON), Exists()))
+        the_actor.should(See.the(Element(BUTTON), DoesNot(Exist())))
     """
 
     line = "present"

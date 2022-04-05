@@ -39,6 +39,7 @@ IsPresent
 ---------
 
 **Aliases:** ``Present``,
-``Exists``
+``Exists``,
+``Exist``
 
 .. autoclass:: IsPresent
