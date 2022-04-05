@@ -1,7 +1,7 @@
 """
 A matcher that matches a present element. For example:
 
-    assert_that(driver.find_element_by_id("search"), is_visible_element())
+    assert_that(driver.find_element_by_id("search"), is_present_element())
 """
 
 from typing import Optional
@@ -13,7 +13,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 class IsPresentElement(BaseMatcher[Optional[WebElement]]):
     """
-    Matches an element to be a WebElement.
+    Matches an element to be a present WebElement.
     """
 
     def _matches(self, item: Optional[WebElement]) -> bool:
