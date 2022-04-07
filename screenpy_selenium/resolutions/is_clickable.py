@@ -23,3 +23,6 @@ class IsClickable(BaseResolution):
     matcher: "IsClickableElement"
     line = "clickable"
     matcher_function = is_clickable_element
+
+    def __init__(self) -> None:
+        super().__init__()

@@ -23,3 +23,6 @@ class IsInvisible(BaseResolution):
     matcher: "IsInvisibleElement"
     line = "invisible"
     matcher_function = is_invisible_element
+
+    def __init__(self) -> None:
+        super().__init__()
