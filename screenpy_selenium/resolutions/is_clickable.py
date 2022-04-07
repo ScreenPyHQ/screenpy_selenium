@@ -24,5 +24,5 @@ class IsClickable(BaseResolution):
     line = "clickable"
     matcher_function = is_clickable_element
 
-    def __init__(self) -> None:
+    def __init__(self) -> None:  # pylint: disable=useless-super-delegation
         super().__init__()

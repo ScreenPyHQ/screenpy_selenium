@@ -24,5 +24,5 @@ class IsInvisible(BaseResolution):
     line = "invisible"
     matcher_function = is_invisible_element
 
-    def __init__(self) -> None:
+    def __init__(self) -> None:  # pylint: disable=useless-super-delegation
         super().__init__()

@@ -26,5 +26,5 @@ class IsPresent(BaseResolution):
     line = "present"
     matcher_function = is_present_element
 
-    def __init__(self) -> None:
+    def __init__(self) -> None:  # pylint: disable=useless-super-delegation
         super().__init__()
