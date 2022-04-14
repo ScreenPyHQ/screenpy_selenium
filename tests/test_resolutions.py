@@ -33,6 +33,10 @@ def _assert_descriptions(obj: BaseResolution, element: WebElement,
     assert describe_none.out == expected.describe_none
 
 
+def assert_matcher_annotation(obj: BaseResolution):
+    assert type(obj.matcher) is obj.__annotations__['matcher']
+
+
 class TestIsClickable:
     def test_can_be_instantiated(self):
         ic = IsClickable()
@@ -71,6 +75,9 @@ class TestIsClickable:
         )
         _assert_descriptions(IsClickable(), element, expected)
 
+    def test_type_hint(self):
+        assert_matcher_annotation(IsClickable())
+
 
 class TestIsVisible:
     def test_can_be_instantiated(self):
@@ -103,6 +110,9 @@ class TestIsVisible:
         )
         _assert_descriptions(IsVisible(), element, expected)
 
+    def test_type_hint(self):
+        assert_matcher_annotation(IsVisible())
+
 
 class TestIsInvisible:
     def test_can_be_instantiated(self):
@@ -134,6 +144,9 @@ class TestIsInvisible:
             describe_none="was not even present"
         )
         _assert_descriptions(IsInvisible(), element, expected)
+
+    def test_type_hint(self):
+        assert_matcher_annotation(IsInvisible())
 
 class TestIsPresent:
     def test_can_be_instantiated(self):
@@ -174,3 +187,6 @@ class TestIsPresent:
             describe_none="was not present"
         )
         _assert_descriptions(IsPresent(), element, expected)
+
+    def test_type_hint(self):
+        assert_matcher_annotation(IsPresent())
