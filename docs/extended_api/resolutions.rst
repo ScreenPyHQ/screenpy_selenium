@@ -25,3 +25,21 @@ IsVisible
 ``Visible``
 
 .. autoclass:: IsVisible
+
+IsInvisible
+---------
+
+**Aliases:** ``IsNotDisplayed``,
+``NotDisplayed``,
+``Invisible``
+
+.. autoclass:: IsInvisible
+
+IsPresent
+---------
+
+**Aliases:** ``Present``,
+``Exists``,
+``Exist``
+
+.. autoclass:: IsPresent
