@@ -12,13 +12,15 @@ the :ref:`target` combines a locator
 with a human-readable string.
 The human-readable part
 is what gets read out
-by the :external+screenpy:ref:`narrator`,
-and what the :external+screenpy:ref:`exceptions` will use
+during :external+screenpy:ref:`Narration`,
+and what any :external+screenpy:ref:`exceptions` will use
 in their messages.
 
 For example,
 we might have some Targets
 describing a login page::
+
+    # example_test/ui/login_page.py
 
     from screenpy_selenium import Target
 
@@ -30,9 +32,12 @@ These three Targets
 can then be used in our tests
 by passing them to Actions::
 
+    # example_test/features/test_login.py
+
     from screenpy import AnActor
+    from screenpy.actions import Eventually
     from screenpy_selenium.abilities import BrowseTheWeb
-    from screenpy_selenium.actions import Click, Enter, Eventually
+    from screenpy_selenium.actions import Click, Enter
 
     from example_test.ui.login_page import (
         PASSWORD_FIELD,
