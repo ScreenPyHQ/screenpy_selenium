@@ -4,7 +4,7 @@ Additional Resolutions
 
 ScreenPy Selenium adds the following Resolutions.
 For the base Resolution list,
-see Screenpy's :external+screenpy:ref:`resolutions api` reference.
+see ScreenPy's :external+screenpy:ref:`resolutions api` reference.
 
 .. module:: screenpy_selenium.resolutions
 
