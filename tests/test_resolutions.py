@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from unittest import mock
 
-from screenpy_selenium.resolutions import IsClickable, IsVisible, IsInvisible, IsPresent
+from hamcrest.core.string_description import StringDescription
 from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
-from hamcrest.core.string_description import StringDescription
-from dataclasses import dataclass
+
+from screenpy_selenium.resolutions import IsClickable, IsInvisible, IsPresent, IsVisible
 
 
 @dataclass
@@ -15,8 +16,9 @@ class ExpectedDescriptions:
     describe_none: str
 
 
-def _assert_descriptions(obj: BaseResolution, element: WebElement,
-                         expected: ExpectedDescriptions):
+def _assert_descriptions(
+    obj: BaseResolution, element: WebElement, expected: ExpectedDescriptions
+):
     describe_to = StringDescription()
     describe_match = StringDescription()
     describe_mismatch = StringDescription()
@@ -51,10 +53,11 @@ class TestIsClickable:
 
         assert ic._matches(element)
 
-
     @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
     @mock.patch("selenium.webdriver.remote.webelement.WebElement", spec=WebElement)
-    def test_does_not_match_unclickable_element(self, invisible_element, inactive_element):
+    def test_does_not_match_unclickable_element(
+        self, invisible_element, inactive_element
+    ):
         invisible_element.is_displayed.return_value = False
         invisible_element.is_enabled.return_value = True
         inactive_element.is_displayed.return_value = True
@@ -71,7 +74,7 @@ class TestIsClickable:
             describe_to="the element is enabled/clickable",
             describe_match="it was enabled/clickable",
             describe_mismatch="was not enabled/clickable",
-            describe_none="was not even present"
+            describe_none="was not even present",
         )
         _assert_descriptions(IsClickable(), element, expected)
 
@@ -106,7 +109,7 @@ class TestIsVisible:
             describe_to="the element is visible",
             describe_match="it was visible",
             describe_mismatch="was not visible",
-            describe_none="was not even present"
+            describe_none="was not even present",
         )
         _assert_descriptions(IsVisible(), element, expected)
 
@@ -141,12 +144,13 @@ class TestIsInvisible:
             describe_to="the element is invisible",
             describe_match="it was invisible",
             describe_mismatch="was not invisible",
-            describe_none="was not even present"
+            describe_none="was not even present",
         )
         _assert_descriptions(IsInvisible(), element, expected)
 
     def test_type_hint(self):
         assert_matcher_annotation(IsInvisible())
+
 
 class TestIsPresent:
     def test_can_be_instantiated(self):
@@ -184,7 +188,7 @@ class TestIsPresent:
             describe_to="the element is present",
             describe_match="it was present",
             describe_mismatch="was not present",
-            describe_none="was not present"
+            describe_none="was not present",
         )
         _assert_descriptions(IsPresent(), element, expected)
 

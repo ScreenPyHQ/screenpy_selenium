@@ -1,9 +1,9 @@
 from unittest import mock
 
 import pytest
-
 from screenpy import AnActor
 from screenpy_pyotp.abilities import AuthenticateWith2FA
+
 from screenpy_selenium.abilities import BrowseTheWeb
 
 

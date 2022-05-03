@@ -57,7 +57,7 @@ class SaveConsoleLog:
         """Indicate the console log file should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters
-        attached to the :external+screenpy:ref:`Narrator`'s microphone.
+        attached for :external+screenpy:ref:`Narration`.
         """
         self.attach_kwargs = kwargs
         return self

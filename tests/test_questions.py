@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-
 from screenpy.exceptions import UnableToAnswer
 from selenium.common.exceptions import WebDriverException
 

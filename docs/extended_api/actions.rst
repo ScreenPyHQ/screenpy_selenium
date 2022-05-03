@@ -2,9 +2,9 @@
 Additional Actions
 ==================
 
-Screenpy Selenium adds many additional Actions.
+ScreenPy Selenium adds many additional Actions.
 For the base Action list,
-see Screenpy's :external+screenpy:ref:`actions api` reference.
+see ScreenPy's :external+screenpy:ref:`actions api` reference.
 
 .. module:: screenpy_selenium.actions
 

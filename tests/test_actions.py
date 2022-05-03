@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-
 from screenpy import settings
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.test_utils import mock_settings
@@ -14,8 +13,8 @@ from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy_selenium.actions import (
     AcceptAlert,
     Chain,
-    Click,
     Clear,
+    Click,
     DismissAlert,
     DoubleClick,
     Enter,
@@ -26,8 +25,8 @@ from screenpy_selenium.actions import (
     MoveMouse,
     Open,
     Pause,
-    Release,
     RefreshPage,
+    Release,
     RespondToThePrompt,
     RightClick,
     SaveConsoleLog,
