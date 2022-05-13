@@ -7,7 +7,7 @@
 __title__ = "screenpy_selenium"
 __description__ = "ScreenPy extension to enable interacting with Selenium."
 __url__ = "https://github.com/ScreenPyHQ/screenpy_selenium"
-__version__ = "4.0.1"
+__version__ = "4.0.2"
 __author__ = "Perry Goy"
 __author_email__ = "perry.goy@gmail.com"
 __license__ = "MIT"
