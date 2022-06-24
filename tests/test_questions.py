@@ -6,6 +6,7 @@ from selenium.common.exceptions import WebDriverException
 
 from screenpy_selenium import Target
 from screenpy_selenium.abilities import BrowseTheWeb
+from screenpy_selenium.exceptions import TargetingError
 from screenpy_selenium.questions import (
     Attribute,
     BrowserTitle,
@@ -107,6 +108,17 @@ class TestElement:
         mocked_browser.find_element.side_effect = WebDriverException
 
         assert Element(test_target).answered_by(Tester) is None
+
+    def test_question_captures_exception(self, Tester):
+        test_target = Target.the("foo").located_by("//bar")
+        mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+        mocked_browser.find_element.side_effect = WebDriverException('Specific Msg')
+
+        elem = Element(test_target)
+        elem.answered_by(Tester)
+
+        assert isinstance(elem.caught_exception, TargetingError)
+        assert elem.caught_exception.args[0] == "Message: Specific Msg\n raised while trying to find foo."
 
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")

@@ -2,7 +2,7 @@
 Investigate an element on the browser page.
 """
 
-from typing import Optional
+from typing import Any, Optional
 
 from screenpy import Actor
 from screenpy.pacing import beat
@@ -32,8 +32,10 @@ class Element:
         """Direct the Actor to find the element."""
         try:
             return self.target.found_by(the_actor)
-        except TargetingError:
+        except TargetingError as exc:
+            self.caught_exception: Optional[Any] = exc
             return None
 
     def __init__(self, target: Target) -> None:
         self.target = target
+        self.caught_exception = None
