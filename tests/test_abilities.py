@@ -3,6 +3,7 @@ from unittest import mock
 
 import pytest
 
+from screenpy.protocols import Forgettable
 from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy_selenium.exceptions import BrowsingError
 
@@ -12,6 +13,10 @@ class TestBrowseTheWeb:
         b = BrowseTheWeb.using(None)
 
         assert isinstance(b, BrowseTheWeb)
+
+    def test_implements_protocol(self):
+        b = BrowseTheWeb(None)
+        assert isinstance(b, Forgettable)
 
     @mock.patch("screenpy_selenium.abilities.browse_the_web.Firefox")
     def test_using_firefox(self, mocked_firefox):

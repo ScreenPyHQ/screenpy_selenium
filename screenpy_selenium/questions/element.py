@@ -2,7 +2,7 @@
 Investigate an element on the browser page.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 from screenpy import Actor
 from screenpy.pacing import beat
@@ -23,6 +23,8 @@ class Element:
         the_actor.should(See.the(Element(WELCOME_BANNER), IsVisible()))
     """
 
+    caught_exception: Optional[TargetingError]
+
     def describe(self) -> str:
         """Describe the Question."""
         return f"The {self.target}."
@@ -33,7 +35,7 @@ class Element:
         try:
             return self.target.found_by(the_actor)
         except TargetingError as exc:
-            self.caught_exception: Optional[Any] = exc
+            self.caught_exception = exc
             return None
 
     def __init__(self, target: Target) -> None:

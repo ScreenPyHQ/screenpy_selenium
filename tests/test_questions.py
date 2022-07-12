@@ -1,7 +1,10 @@
 from unittest import mock
+from typing import Optional
 
 import pytest
+
 from screenpy.exceptions import UnableToAnswer
+from screenpy.protocols import Answerable, ErrorWise, Describable
 from selenium.common.exceptions import WebDriverException
 
 from screenpy_selenium import Target
@@ -28,6 +31,11 @@ class TestAttribute:
 
         assert isinstance(a1, Attribute)
         assert isinstance(a2, Attribute)
+
+    def test_implements_protocol(self):
+        a = Attribute("")
+        assert isinstance(a, Answerable)
+        assert isinstance(a, Describable)
 
     def test_raises_error_if_no_target(self, Tester):
         with pytest.raises(UnableToAnswer):
@@ -56,6 +64,11 @@ class TestBrowserTitle:
 
         assert isinstance(b, BrowserTitle)
 
+    def test_implements_protocol(self):
+        b = BrowserTitle()
+        assert isinstance(b, Answerable)
+        assert isinstance(b, Describable)
+
     def test_ask_for_browser_title(self, Tester):
         expected_title = "Welcome to the WORLD of TOMORROW!"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
@@ -70,6 +83,11 @@ class TestBrowserURL:
 
         assert isinstance(b, BrowserURL)
 
+    def test_implements_protocol(self):
+        b = BrowserURL()
+        assert isinstance(b, Answerable)
+        assert isinstance(b, Describable)
+
     def test_ask_for_browser_url(self, Tester):
         expected_url = "https://screenpy-docs.readthedocs.io/en/latest/"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
@@ -83,6 +101,10 @@ class TestCookies:
         c = Cookies()
 
         assert isinstance(c, Cookies)
+
+    def test_implements_protocol(self):
+        c = Cookies()
+        assert isinstance(c, Answerable)
 
     def test_ask_for_cookies(self, Tester):
         test_name = "cookie_type"
@@ -101,6 +123,17 @@ class TestElement:
         e = Element(None)
 
         assert isinstance(e, Element)
+
+    def test_implements_protocol(self):
+        e = Element(None)
+        assert isinstance(e, Answerable)
+        assert isinstance(e, ErrorWise)
+        assert isinstance(e, Describable)
+
+    def test_caught_exception_annotation(self):
+        e = Element(None)
+        stuff = e.__annotations__['caught_exception']
+        assert stuff == Optional[TargetingError]
 
     def test_question_returns_none_if_no_element_found(self, Tester):
         test_target = Target.the("foo").located_by("//bar")
@@ -138,6 +171,11 @@ class TestList:
         assert isinstance(l1, List)
         assert isinstance(l2, List)
 
+    def test_implements_protocol(self):
+        e = List(None)
+        assert isinstance(e, Answerable)
+        assert isinstance(e, Describable)
+
     def test_ask_for_list(self, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = ["a", "b", "c"]
@@ -153,6 +191,11 @@ class TestNumber:
         n1 = Number.of(None)
 
         assert isinstance(n1, Number)
+
+    def test_implements_protocol(self):
+        n = Number(None)
+        assert isinstance(n, Answerable)
+        assert isinstance(n, Describable)
 
     def test_ask_for_number(self, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
@@ -175,6 +218,11 @@ class TestSelected:
         assert isinstance(s2, Selected)
         assert isinstance(s3, Selected)
         assert isinstance(s4, Selected)
+
+    def test_implements_protocol(self):
+        s = Selected(None)
+        assert isinstance(s, Answerable)
+        assert isinstance(s, Describable)
 
     def test_options_from_sets_multi(self):
         assert Selected.options_from(None).multi
@@ -209,6 +257,11 @@ class TestText:
         assert isinstance(t1, Text)
         assert isinstance(t2, Text)
 
+    def test_implements_protocol(self):
+        t = Text(None)
+        assert isinstance(t, Answerable)
+        assert isinstance(t, Describable)
+
     def test_of_all_sets_multi(self):
         assert Text.of_all(None).multi
 
@@ -238,6 +291,11 @@ class TestTextOfTheAlert:
         tota1 = TextOfTheAlert()
 
         assert isinstance(tota1, TextOfTheAlert)
+
+    def test_implements_protocol(self):
+        t = TextOfTheAlert()
+        assert isinstance(t, Answerable)
+        assert isinstance(t, Describable)
 
     def test_ask_for_text_of_the_alert(self, Tester):
         expected_text = "It's got what plants crave."

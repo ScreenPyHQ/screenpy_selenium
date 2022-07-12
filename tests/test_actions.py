@@ -3,6 +3,7 @@ from unittest import mock
 import pytest
 from screenpy import settings
 from screenpy.exceptions import DeliveryError, UnableToAct
+from screenpy.protocols import Performable, Describable
 from screenpy.test_utils import mock_settings
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
@@ -37,7 +38,7 @@ from screenpy_selenium.actions import (
     Wait,
 )
 from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
-
+from screenpy_selenium.protocols import Chainable
 
 def get_mocked_target_and_element():
     """Get a mocked target which returns a mocked element."""
@@ -54,6 +55,11 @@ class TestAcceptAlert:
 
         assert isinstance(aa, AcceptAlert)
 
+    def test_implements_protocol(self):
+        a = AcceptAlert()
+        assert isinstance(a, Performable)
+        assert isinstance(a, Describable)
+
     def test_perform_accept_alert(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
@@ -68,6 +74,11 @@ class TestChain:
 
         assert isinstance(c1, Chain)
 
+    def test_implements_protocol(self):
+        c = Chain()
+        assert isinstance(c, Performable)
+        assert isinstance(c, Describable)
+
     @mock.patch("screenpy_selenium.actions.chain.ActionChains")
     def test_perform_chain(self, mocked_chain, Tester):
         actions = [mock.Mock(add_to_chain=mock.Mock()) for _ in range(3)]
@@ -77,6 +88,9 @@ class TestChain:
         for action in actions:
             action.add_to_chain.assert_called_once_with(Tester, mocked_chain())
 
+    def test_unchainable_action(self, Tester):
+        with pytest.raises(UnableToAct):
+            Chain(AcceptAlert()).perform_as(Tester)
 
 class TestClear:
     def test_can_be_instantiated(self):
@@ -85,6 +99,11 @@ class TestClear:
 
         assert isinstance(c1, Clear)
         assert isinstance(c2, Clear)
+
+    def test_implements_protocol(self):
+        c = Clear(None)
+        assert isinstance(c, Performable)
+        assert isinstance(c, Describable)
 
     def test_perform_clear(self, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
@@ -102,6 +121,12 @@ class TestClick:
 
         assert isinstance(c1, Click)
         assert isinstance(c2, Click)
+
+    def test_implements_protocol(self):
+        c = Click()
+        assert isinstance(c, Performable)
+        assert isinstance(c, Describable)
+        assert isinstance(c, Chainable)
 
     def test_perform_click(self, Tester):
         target, element = get_mocked_target_and_element()
@@ -133,6 +158,11 @@ class TestDismissAlert:
 
         assert isinstance(da, DismissAlert)
 
+    def test_implements_protocol(self):
+        d = DismissAlert()
+        assert isinstance(d, Performable)
+        assert isinstance(d, Describable)
+
     def test_perform_dismiss_alert(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
@@ -148,6 +178,12 @@ class TestDoubleClick:
 
         assert isinstance(dc1, DoubleClick)
         assert isinstance(dc2, DoubleClick)
+
+    def test_implements_protocol(self):
+        d = DoubleClick()
+        assert isinstance(d, Performable)
+        assert isinstance(d, Describable)
+        assert isinstance(d, Chainable)
 
     @mock.patch("screenpy_selenium.actions.double_click.ActionChains")
     def test_perform_double_click_without_target(self, mocked_chains, Tester):
@@ -200,6 +236,12 @@ class TestEnter:
         assert isinstance(e6, Enter)
         assert isinstance(e7, Enter)
         assert isinstance(e8, Enter)
+
+    def test_implements_protocol(self):
+        e = Enter("")
+        assert isinstance(e, Performable)
+        assert isinstance(e, Describable)
+        assert isinstance(e, Chainable)
 
     def test_secret_masks_text(self):
         """the_secret sets text_to_log to [CENSORED]"""
@@ -278,6 +320,12 @@ class TestEnter2FAToken:
         assert isinstance(e1, Enter2FAToken)
         assert isinstance(e2, Enter2FAToken)
 
+    def test_implements_protocol(self):
+        e = Enter2FAToken(None)
+        assert isinstance(e, Performable)
+        assert isinstance(e, Describable)
+        assert isinstance(e, Chainable)
+
     def test_perform_enter2fatoken(self, Tester):
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # The kind of thing an idiot would have on his luggage!
@@ -307,6 +355,11 @@ class TestGoBack:
 
         assert isinstance(gb, GoBack)
 
+    def test_implements_protocol(self):
+        g = GoBack()
+        assert isinstance(g, Performable)
+        assert isinstance(g, Describable)
+
     def perform_go_back(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
@@ -320,6 +373,11 @@ class TestGoForward:
         gf = GoForward()
 
         assert isinstance(gf, GoForward)
+
+    def test_implements_protocol(self):
+        g = GoForward()
+        assert isinstance(g, Performable)
+        assert isinstance(g, Describable)
 
     def perform_go_forward(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
@@ -340,6 +398,11 @@ class TestHoldDown:
         assert isinstance(hd2, HoldDown)
         assert isinstance(hd3, HoldDown)
         assert isinstance(hd4, HoldDown)
+
+    def test_implements_protocol(self):
+        h = HoldDown.left_mouse_button()
+        assert isinstance(h, Describable)
+        assert isinstance(h, Chainable)
 
     @pytest.mark.parametrize(
         "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
@@ -399,6 +462,12 @@ class TestMoveMouse:
         assert isinstance(mm3, MoveMouse)
         assert isinstance(mm4, MoveMouse)
 
+    def test_implements_protocol(self):
+        m = MoveMouse()
+        assert isinstance(m, Performable)
+        assert isinstance(m, Describable)
+        assert isinstance(m, Chainable)
+
     def test_description_is_set_by_method(self):
         """Description is built by what is included"""
         element_name = "test_element"
@@ -456,6 +525,11 @@ class TestOpen:
         assert isinstance(o1, Open)
         assert isinstance(o2, Open)
 
+    def test_implements_protocol(self):
+        o = Open("")
+        assert isinstance(o, Performable)
+        assert isinstance(o, Describable)
+
     def test_perform_open(self, Tester):
         url = "https://localtest.test"
         browser = Tester.ability_to(BrowseTheWeb).browser
@@ -470,6 +544,12 @@ class TestPause:
         p1 = Pause(1)
 
         assert isinstance(p1, Pause)
+
+    def test_implements_protocol(self):
+        a = Pause(1)
+        assert isinstance(a, Performable)
+        assert isinstance(a, Describable)
+        assert isinstance(a, Chainable)
 
     @mock.patch("screenpy.actions.pause.sleep")
     def test_perform_pause(self, MockedSleep, Tester):
@@ -494,6 +574,11 @@ class TestRefreshPage:
 
         assert isinstance(r, RefreshPage)
 
+    def test_implements_protocol(self):
+        r = RefreshPage()
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+
     def test_perform_refresh(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
@@ -511,6 +596,11 @@ class TestRelease:
         assert isinstance(r1, Release)
         assert isinstance(r2, Release)
         assert isinstance(r3, Release)
+
+    def test_implements_protocol(self):
+        r = Release.left_mouse_button()
+        assert isinstance(r, Describable)
+        assert isinstance(r, Chainable)
 
     @pytest.mark.parametrize(
         "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
@@ -555,6 +645,11 @@ class TestRespondToThePrompt:
 
         assert isinstance(rttp, RespondToThePrompt)
 
+    def test_implements_protocol(self):
+        r = RespondToThePrompt("")
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+
     def test_perform_responed_to_the_prompt(self, Tester):
         text = "Hello. My name is Inigo Montoya. You killed my father. Prepare to die."
         mocked_alert = Tester.ability_to(BrowseTheWeb).browser.switch_to.alert
@@ -572,6 +667,12 @@ class TestRightClick:
 
         assert isinstance(rc1, RightClick)
         assert isinstance(rc2, RightClick)
+
+    def test_implements_protocol(self):
+        r = RightClick()
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+        assert isinstance(r, Chainable)
 
     @mock.patch("screenpy_selenium.actions.right_click.ActionChains")
     def test_can_be_performed(self, MockedActionChains, Tester):
@@ -606,6 +707,10 @@ class TestSaveConsoleLog:
         assert isinstance(scl2, SaveConsoleLog)
         assert isinstance(scl3, SaveConsoleLog)
         assert isinstance(scl4, SaveConsoleLog)
+
+    def test_implements_protocol(self):
+        r = SaveConsoleLog("")
+        assert isinstance(r, Performable)
 
     def test_filepath_vs_filename(self):
         test_name = "cmcmanus.png"
@@ -662,6 +767,10 @@ class TestSaveScreenshot:
         assert isinstance(ss2, SaveScreenshot)
         assert isinstance(ss3, SaveScreenshot)
         assert isinstance(ss4, SaveScreenshot)
+
+    def test_implements_protocol(self):
+        r = SaveScreenshot("")
+        assert isinstance(r, Performable)
 
     def test_filepath_vs_filename(self):
         test_name = "mmcmanus.png"
@@ -720,6 +829,11 @@ class TestSelectByIndex:
 
         assert isinstance(sbi, SelectByIndex)
 
+    def test_implements_protocol(self):
+        r = SelectByIndex(0)
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
     def test_perform_select_by_index(self, mocked_selselect, Tester):
         index = 1
@@ -740,6 +854,11 @@ class TestSelectByText:
 
         assert isinstance(sbt, SelectByText)
 
+    def test_implements_protocol(self):
+        r = SelectByText("")
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
     def test_perform_select_by_text(self, mocked_selselect, Tester):
         text = "test"
@@ -759,6 +878,11 @@ class TestSelectByValue:
         sbv = SelectByValue(None)
 
         assert isinstance(sbv, SelectByValue)
+
+    def test_implements_protocol(self):
+        r = SelectByValue(None)
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
     def test_perform_select_by_value(self, mocked_selselect, Tester):
@@ -782,6 +906,11 @@ class TestSwitchTo:
         assert isinstance(st1, SwitchTo)
         assert isinstance(st2, SwitchTo)
 
+    def test_implements_protocol(self):
+        r = SwitchTo(None, "")
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
+
     def test_perform_switch_to_frame(self, Tester):
         target, element = get_mocked_target_and_element()
         browser = Tester.ability_to(BrowseTheWeb).browser
@@ -803,6 +932,11 @@ class TestSwitchToTab:
         stt = SwitchToTab(1)
 
         assert isinstance(stt, SwitchToTab)
+
+    def test_implements_protocol(self):
+        r = SwitchToTab(0)
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
 
     def test_perform_switch_to_tab(self, Tester):
         number = 3
@@ -828,6 +962,11 @@ class TestWait:
         assert isinstance(w2, Wait)
         assert isinstance(w3, Wait)
         assert isinstance(w4, Wait)
+
+    def test_implements_protocol(self):
+        r = Wait(1)
+        assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
 
     def test_default_log_message(self):
         target_name = "spam"
