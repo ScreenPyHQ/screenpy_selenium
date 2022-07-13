@@ -4,7 +4,7 @@ from typing import Optional
 import pytest
 
 from screenpy.exceptions import UnableToAnswer
-from screenpy.protocols import Answerable, ErrorWise, Describable
+from screenpy.protocols import Answerable, ErrorKeeper, Describable
 from selenium.common.exceptions import WebDriverException
 
 from screenpy_selenium import Target
@@ -127,7 +127,7 @@ class TestElement:
     def test_implements_protocol(self):
         e = Element(None)
         assert isinstance(e, Answerable)
-        assert isinstance(e, ErrorWise)
+        assert isinstance(e, ErrorKeeper)
         assert isinstance(e, Describable)
 
     def test_caught_exception_annotation(self):
