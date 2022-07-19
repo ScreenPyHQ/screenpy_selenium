@@ -1,6 +1,8 @@
 from unittest import mock
 
 import pytest
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.remote.webelement import WebElement
 from screenpy import settings
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.protocols import Performable, Describable
@@ -39,11 +41,12 @@ from screenpy_selenium.actions import (
 )
 from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
 from screenpy_selenium.protocols import Chainable
+from selenium.webdriver.support.ui import Select as SeleniumSelect
 
 def get_mocked_target_and_element():
     """Get a mocked target which returns a mocked element."""
-    target = mock.Mock()
-    element = mock.Mock()
+    target = mock.Mock(spec=Target)
+    element = mock.Mock(spec=WebElement)
     target.found_by.return_value = element
 
     return target, element
@@ -67,6 +70,8 @@ class TestAcceptAlert:
 
         browser.switch_to.alert.accept.assert_called_once()
 
+    def test_describe(self):
+        assert AcceptAlert().describe() == f"Accept the alert."
 
 class TestChain:
     def test_can_be_instantiated(self):
@@ -92,6 +97,9 @@ class TestChain:
         with pytest.raises(UnableToAct):
             Chain(AcceptAlert()).perform_as(Tester)
 
+    def test_describe(self):
+        assert Chain().describe() == f"Perform a thrilling chain of actions."
+
 class TestClear:
     def test_can_be_instantiated(self):
         c1 = Clear(None)
@@ -112,6 +120,18 @@ class TestClear:
 
         browser = Tester.ability_to(BrowseTheWeb).browser
         browser.find_element().clear.assert_called_once()
+
+    def test_exception(self, Tester):
+        target, element = get_mocked_target_and_element()
+        element.clear.side_effect = WebDriverException()
+
+        with pytest.raises(DeliveryError) as excinfo:
+            Clear(target).perform_as(Tester)
+
+        assert str(target) in str(excinfo.value)
+
+    def test_describe(self):
+        assert Clear(None).describe() == f"Clear the text from the None."
 
 
 class TestClick:
@@ -151,6 +171,21 @@ class TestClick:
 
         chain.click.assert_called_once_with(on_element=element)
 
+    def test_exception(self, Tester):
+        target, element = get_mocked_target_and_element()
+        element.click.side_effect = WebDriverException()
+    
+        with pytest.raises(DeliveryError) as excinfo:
+            Click(target).perform_as(Tester)
+    
+        assert str(target) in str(excinfo.value)
+
+    def test_no_target(self, Tester):
+        with pytest.raises(UnableToAct):
+            Click(None).perform_as(Tester)
+
+    def test_describe(self):
+        assert Click(None).describe() == f"Click on the None."
 
 class TestDismissAlert:
     def test_can_be_instantiated(self):
@@ -170,6 +205,8 @@ class TestDismissAlert:
 
         browser.switch_to.alert.dismiss.assert_called_once()
 
+    def test_describe(self):
+        assert DismissAlert().describe() == f"Dismiss the alert."
 
 class TestDoubleClick:
     def test_can_be_instantiated(self):
@@ -216,6 +253,9 @@ class TestDoubleClick:
         target.found_by.assert_called_once_with(Tester)
         chain.double_click.assert_called_once_with(on_element=element)
 
+    def test_describe(self):
+        assert DoubleClick(None).describe() == f"Double-click."
+        assert DoubleClick(Target("blah")).describe() == f"Double-click on the blah."
 
 class TestEnter:
     def test_can_be_instantiated(self):
@@ -311,6 +351,18 @@ class TestEnter:
         assert text in call1_args
         assert additional in call2_args
 
+    def test_exception(self, Tester):
+        target, element = get_mocked_target_and_element()
+        element.send_keys.side_effect = WebDriverException()
+
+        with pytest.raises(DeliveryError) as excinfo:
+            Enter("foo").into(target).perform_as(Tester)
+
+        assert str(target) in str(excinfo.value)
+
+    def test_describe(self):
+        assert Enter("blah").into(None).describe() == f'Enter "blah" into the None.'
+        assert Enter.the_secret("blah").into(None).describe() == f'Enter "[CENSORED]" into the None.'
 
 class TestEnter2FAToken:
     def test_can_be_instantiated(self):
@@ -348,6 +400,8 @@ class TestEnter2FAToken:
 
         chain.send_keys_to_element.assert_called_once_with(element, mfa_token)
 
+    def test_describe(self):
+        assert Enter2FAToken("blah").into(None).describe() == f'Enter a 2FA token into the None.'
 
 class TestGoBack:
     def test_can_be_instantiated(self):
@@ -360,13 +414,15 @@ class TestGoBack:
         assert isinstance(g, Performable)
         assert isinstance(g, Describable)
 
-    def perform_go_back(self, Tester):
+    def test_perform_go_back(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
         GoBack().perform_as(Tester)
 
         browser.back.assert_called_once()
 
+    def test_describe(self):
+        assert GoBack().describe() == f'Go back.'
 
 class TestGoForward:
     def test_can_be_instantiated(self):
@@ -379,13 +435,15 @@ class TestGoForward:
         assert isinstance(g, Performable)
         assert isinstance(g, Describable)
 
-    def perform_go_forward(self, Tester):
+    def test_perform_go_forward(self, Tester):
         browser = Tester.ability_to(BrowseTheWeb).browser
 
         GoForward().perform_as(Tester)
 
         browser.forward.assert_called_once()
 
+    def test_describe(self):
+        assert GoForward().describe() == f'Go forward.'
 
 class TestHoldDown:
     def test_can_be_instantiated(self):
@@ -448,6 +506,18 @@ class TestHoldDown:
 
         target.found_by.assert_called_once_with(Tester)
         chain.click_and_hold.assert_called_once_with(on_element=element)
+
+    def test_without_params_raises(self, Tester):
+        chain = mock.Mock()
+        hd = HoldDown(Keys.SPACE)
+        hd.description = "blah"
+        hd.key = None
+        with pytest.raises(UnableToAct) as excinfo:
+            hd.add_to_chain(Tester, chain)
+
+    def test_describe(self):
+        assert HoldDown.left_mouse_button().describe() == f'Hold down LEFT MOUSE BUTTON.'
+        assert HoldDown(Keys.SPACE).describe() == f'Hold down SPACE.'
 
 
 class TestMoveMouse:
@@ -516,6 +586,14 @@ class TestMoveMouse:
 
         chain.move_by_offset.assert_called_once_with(*offset)
 
+    def test_without_params_raises(self, Tester):
+        chain = mock.Mock()
+        with pytest.raises(UnableToAct) as excinfo:
+            MoveMouse().add_to_chain(Tester, chain)
+
+    def test_describe(self):
+        assert MoveMouse().describe() == f'Move the mouse .'
+        assert MoveMouse(description="over").describe() == f'Move the mouse over.'
 
 class TestOpen:
     def test_can_be_instantiated(self):
@@ -538,6 +616,8 @@ class TestOpen:
 
         browser.get.assert_called_once_with(url)
 
+    def test_describe(self):
+        assert Open("place.com").describe() == f'Visit place.com.'
 
 class TestPause:
     def test_can_be_instantiated(self):
@@ -567,6 +647,8 @@ class TestPause:
 
         chain.pause.assert_called_once_with(length)
 
+    def test_describe(self):
+        assert Pause(1).second_because("moo").describe() == f"Pause for 1 second because moo."
 
 class TestRefreshPage:
     def test_can_be_instantiated(self):
@@ -586,6 +668,8 @@ class TestRefreshPage:
 
         browser.refresh.assert_called_once()
 
+    def test_describe(self):
+        assert RefreshPage().describe() == f"Refresh the page."
 
 class TestRelease:
     def test_can_be_instantiated(self):
@@ -638,6 +722,16 @@ class TestRelease:
 
         chain.release.assert_called_once()
 
+    def test_without_params_raises(self, Tester):
+        chain = mock.Mock()
+        r = Release.left_mouse_button()
+        r.lmb = False
+        with pytest.raises(UnableToAct) as excinfo:
+            r.add_to_chain(Tester, chain)
+
+    def test_describe(self):
+        assert Release.left_mouse_button().describe() == f"Release LEFT MOUSE BUTTON."
+        assert Release(Keys.SPACE).describe() == f'Release SPACE.'
 
 class TestRespondToThePrompt:
     def test_can_be_instantiated(self):
@@ -659,6 +753,8 @@ class TestRespondToThePrompt:
         mocked_alert.send_keys.assert_called_once_with(text)
         mocked_alert.accept.assert_called_once()
 
+    def test_describe(self):
+        assert RespondToThePrompt("baz").describe() == f'Respond to the prompt with "baz".'
 
 class TestRightClick:
     def test_can_be_instantiated(self):
@@ -695,6 +791,9 @@ class TestRightClick:
 
         chain.context_click.assert_called_once_with(on_element=None)
 
+    def test_describe(self):
+        assert RightClick().describe() == f'Right-click.'
+        assert RightClick(Target("foo")).describe() == f'Right-click on the foo.'
 
 class TestSaveConsoleLog:
     def test_can_be_instantiated(self):
@@ -755,6 +854,8 @@ class TestSaveConsoleLog:
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
+    def test_describe(self):
+        assert SaveConsoleLog("pth").describe() == f'Save browser console log as pth'
 
 class TestSaveScreenshot:
     def test_can_be_instantiated(self):
@@ -799,7 +900,9 @@ class TestSaveScreenshot:
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
-
+    def test_describe(self):
+        assert SaveScreenshot("pth").describe() == f'Save screenshot as pth'
+        
 class TestSelect:
     def test_specifics_can_be_instantiated(self):
         by_index1 = Select.the_option_at_index(0)
@@ -834,7 +937,7 @@ class TestSelectByIndex:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
     def test_perform_select_by_index(self, mocked_selselect, Tester):
         index = 1
         fake_target = Target.the("fake").located_by("//xpath")
@@ -847,6 +950,19 @@ class TestSelectByIndex:
         with pytest.raises(UnableToAct):
             SelectByIndex(1).perform_as(Tester)
 
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
+    def test_exception(self, mocked_selselect, Tester):
+        target, element = get_mocked_target_and_element()
+        # element.tag_name = "select"
+        mocked_selselect().select_by_index.side_effect = WebDriverException()
+        
+        with pytest.raises(DeliveryError) as excinfo:
+            SelectByIndex(1).from_(target).perform_as(Tester)
+
+        assert str(target) in str(excinfo.value)
+
+    def test_describe(self):
+        assert SelectByIndex(1, None).describe() == f'Select the option at index 1 from the None.'
 
 class TestSelectByText:
     def test_can_be_instantiated(self):
@@ -859,7 +975,7 @@ class TestSelectByText:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
     def test_perform_select_by_text(self, mocked_selselect, Tester):
         text = "test"
         fake_target = Target.the("fake").located_by("//xpath")
@@ -872,6 +988,18 @@ class TestSelectByText:
         with pytest.raises(UnableToAct):
             SelectByText("text").perform_as(Tester)
 
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
+    def test_exception(self, mocked_selselect, Tester):
+        target, element = get_mocked_target_and_element()
+        mocked_selselect().select_by_visible_text.side_effect = WebDriverException()
+
+        with pytest.raises(DeliveryError) as excinfo:
+            SelectByText("blah").from_(target).perform_as(Tester)
+
+        assert str(target) in str(excinfo.value)
+
+    def test_describe(self):
+        assert SelectByText("bar", None).describe() == f'Select the option "bar" from the None.'
 
 class TestSelectByValue:
     def test_can_be_instantiated(self):
@@ -884,7 +1012,7 @@ class TestSelectByValue:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect")
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
     def test_perform_select_by_value(self, mocked_selselect, Tester):
         value = 1337
         fake_target = Target.the("fake").located_by("//xpath")
@@ -897,6 +1025,18 @@ class TestSelectByValue:
         with pytest.raises(UnableToAct):
             SelectByValue("value").perform_as(Tester)
 
+    @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", spec=SeleniumSelect)
+    def test_exception(self, mocked_selselect, Tester):
+        target, element = get_mocked_target_and_element()
+        mocked_selselect().select_by_value.side_effect = WebDriverException()
+
+        with pytest.raises(DeliveryError) as excinfo:
+            SelectByValue("2").from_(target).perform_as(Tester)
+
+        assert str(target) in str(excinfo.value)
+
+    def test_describe(self):
+        assert SelectByValue("baz", None).describe() == f'Select the option with value "baz" from the None.'
 
 class TestSwitchTo:
     def test_can_be_instantiated(self):
@@ -926,6 +1066,9 @@ class TestSwitchTo:
 
         browser.switch_to.default_content.assert_called_once()
 
+    def test_describe(self):
+        assert SwitchTo.default().describe() == f'Switch to the default frame.'
+
 
 class TestSwitchToTab:
     def test_can_be_instantiated(self):
@@ -947,6 +1090,8 @@ class TestSwitchToTab:
 
         browser.switch_to.window.assert_called_once_with(number - 1)
 
+    def test_describe(self):
+        assert SwitchToTab(2).describe() == f'Switch to tab #2.'
 
 class TestWait:
     def test_can_be_instantiated(self):
@@ -1031,3 +1176,14 @@ class TestWait:
             Wait.for_the(test_target).perform_as(Tester)
 
         assert str(test_target) in str(excinfo.value)
+
+    def test_helpful_methods(self):
+        assert Wait(1).to_appear().condition == EC.visibility_of_element_located
+        assert Wait(1).to_be_clickable().condition == EC.element_to_be_clickable
+        assert Wait(1).to_disappear().condition == EC.invisibility_of_element_located
+        assert Wait(1).to_contain_text("").condition == EC.text_to_be_present_in_element
+        
+
+    def test_describe(self):
+        assert Wait(2).describe() == f'Wait 2 seconds using visibility_of_element_located with [].'
+        assert Wait(5).seconds_for_the(None).to_contain_text("foo").describe() == f'Wait 5 seconds for "foo" to appear in the None....'

@@ -57,6 +57,8 @@ class TestAttribute:
         mocked_browser.find_element.assert_called_once_with(*fake_target)
         mocked_element.get_attribute.assert_called_once_with(attr)
 
+    def test_describe(self):
+        assert Attribute("foo").describe() == f'The "foo" attribute of the None.'
 
 class TestBrowserTitle:
     def test_can_be_instantiated(self):
@@ -76,6 +78,8 @@ class TestBrowserTitle:
 
         assert BrowserTitle().answered_by(Tester) == expected_title
 
+    def test_describe(self):
+        assert BrowserTitle().describe() == f"The current page's title."
 
 class TestBrowserURL:
     def test_can_be_instantiated(self):
@@ -95,6 +99,8 @@ class TestBrowserURL:
 
         assert BrowserURL().answered_by(Tester) == expected_url
 
+    def test_describe(self):
+        assert BrowserURL().describe() == f"The browser URL."
 
 class TestCookies:
     def test_can_be_instantiated(self):
@@ -117,6 +123,8 @@ class TestCookies:
 
         assert Cookies().answered_by(Tester) == expected_cookie
 
+    def test_describe(self):
+        assert Cookies().describe() == f"The browser's cookies."
 
 class TestElement:
     def test_can_be_instantiated(self):
@@ -162,6 +170,8 @@ class TestElement:
         assert Element(fake_target).answered_by(Tester) is mocked_element
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
+    def test_describe(self):
+        assert Element(None).describe() == f"The None."
 
 class TestList:
     def test_can_be_instantiated(self):
@@ -185,6 +195,8 @@ class TestList:
         assert List.of(fake_target).answered_by(Tester) == return_value
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
+    def test_describe(self):
+        assert List(None).describe() == f"The list of None."
 
 class TestNumber:
     def test_can_be_instantiated(self):
@@ -206,6 +218,8 @@ class TestNumber:
         assert Number.of(fake_target).answered_by(Tester) == len(return_value)
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
+    def test_describe(self):
+        assert Number(None).describe() == f"The number of None."
 
 class TestSelected:
     def test_can_be_instantiated(self):
@@ -248,6 +262,8 @@ class TestSelected:
         assert Selected.options_from(fake_target).answered_by(Tester) == expected_value
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
+    def test_describe(self):
+        assert Selected(None).describe() == f"The selected option(s) from the None."
 
 class TestText:
     def test_can_be_instantiated(self):
@@ -285,6 +301,8 @@ class TestText:
         assert Text.of_all(fake_target).answered_by(Tester) == expected_texts
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
+    def test_describe(self):
+        assert Text(None).describe() == f"The text from the None."
 
 class TestTextOfTheAlert:
     def test_can_be_instantiated(self):
@@ -303,3 +321,6 @@ class TestTextOfTheAlert:
         mocked_browser.switch_to.alert = mock.Mock(text=expected_text)
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
+
+    def test_describe(self):
+        assert TextOfTheAlert().describe() == f"The text of the alert."

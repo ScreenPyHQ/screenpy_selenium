@@ -6,7 +6,7 @@ import pytest
 from screenpy.protocols import Forgettable
 from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy_selenium.exceptions import BrowsingError
-
+from selenium.webdriver import Chrome, Firefox, Remote, Safari
 
 class TestBrowseTheWeb:
     def test_can_be_instantiated(self):
@@ -57,3 +57,12 @@ class TestBrowseTheWeb:
     def test_using_android_without_env_var(self):
         with pytest.raises(BrowsingError):
             BrowseTheWeb.using_android()
+
+    @mock.patch("screenpy_selenium.abilities.browse_the_web.Chrome", spec=Chrome)
+    def test_forget_calls_quit(self, mocked_chrome):
+        b = BrowseTheWeb(mocked_chrome)
+        b.forget()
+        mocked_chrome.quit.assert_called_once()
+
+    def test_repr(self):
+        assert repr(BrowseTheWeb(None)) == "Browse the Web"
