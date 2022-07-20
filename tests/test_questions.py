@@ -50,7 +50,7 @@ class TestAttribute:
         attr = "foo"
         value = "bar"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.Mock(spec=WebElement)
+        mocked_element = mock.create_autospec(WebElement)
         mocked_element.get_attribute.return_value = value
         mocked_browser.find_element.return_value = mocked_element
 
@@ -166,7 +166,7 @@ class TestElement:
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.Mock(spec=WebElement)
+        mocked_element = mock.create_autospec(WebElement)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Element(fake_target).answered_by(Tester) is mocked_element
@@ -287,7 +287,7 @@ class TestText:
         fake_target = Target.the("fake").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_text = "spam and eggs"
-        mocked_element = mock.Mock(text=expected_text, spec=WebElement)
+        mocked_element = mock.create_autospec(WebElement, text=expected_text)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Text.of_the(fake_target).answered_by(Tester) == expected_text
@@ -320,7 +320,7 @@ class TestTextOfTheAlert:
     def test_ask_for_text_of_the_alert(self, Tester):
         expected_text = "It's got what plants crave."
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.switch_to.alert = mock.Mock(text=expected_text, spec=SeleniumAlert)
+        mocked_browser.switch_to.alert = mock.create_autospec(SeleniumAlert, text=expected_text)
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
 
