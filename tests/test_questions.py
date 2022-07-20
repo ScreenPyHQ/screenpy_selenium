@@ -111,6 +111,7 @@ class TestCookies:
     def test_implements_protocol(self):
         c = Cookies()
         assert isinstance(c, Answerable)
+        assert isinstance(c, Describable)
 
     def test_ask_for_cookies(self, Tester):
         test_name = "cookie_type"
