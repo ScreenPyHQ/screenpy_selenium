@@ -1,11 +1,9 @@
-from unittest import mock
 from typing import Optional
+from unittest import mock
 
 import pytest
-
 from screenpy.exceptions import UnableToAnswer
 from screenpy.protocols import Answerable, ErrorKeeper, Describable
-from selenium.common.exceptions import WebDriverException
 
 from screenpy_selenium import Target
 from screenpy_selenium.abilities import BrowseTheWeb
@@ -22,6 +20,10 @@ from screenpy_selenium.questions import (
     Text,
     TextOfTheAlert,
 )
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.alert import Alert as SeleniumAlert
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.ui import Select as SeleniumSelect
 
 
 class TestAttribute:
@@ -49,7 +51,7 @@ class TestAttribute:
         attr = "foo"
         value = "bar"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.Mock()
+        mocked_element = mock.Mock(spec=WebElement)
         mocked_element.get_attribute.return_value = value
         mocked_browser.find_element.return_value = mocked_element
 
@@ -165,7 +167,7 @@ class TestElement:
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.Mock()
+        mocked_element = mock.Mock(spec=WebElement)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Element(fake_target).answered_by(Tester) is mocked_element
@@ -242,7 +244,7 @@ class TestSelected:
     def test_options_from_sets_multi(self):
         assert Selected.options_from(None).multi
 
-    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect")
+    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", spec=SeleniumSelect)
     def test_ask_for_selected_option(self, mocked_selenium_select, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = "test"
@@ -252,7 +254,7 @@ class TestSelected:
         assert Selected.option_from(fake_target).answered_by(Tester) == return_value
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
-    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect")
+    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", spec=SeleniumSelect)
     def test_ask_for_selected_options_plural(self, mocked_selenium_select, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
         expected_value = ["test", "the", "options"]
@@ -286,7 +288,7 @@ class TestText:
         fake_target = Target.the("fake").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_text = "spam and eggs"
-        mocked_element = mock.Mock(text=expected_text)
+        mocked_element = mock.Mock(text=expected_text, spec=WebElement)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Text.of_the(fake_target).answered_by(Tester) == expected_text
@@ -319,7 +321,7 @@ class TestTextOfTheAlert:
     def test_ask_for_text_of_the_alert(self, Tester):
         expected_text = "It's got what plants crave."
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.switch_to.alert = mock.Mock(text=expected_text)
+        mocked_browser.switch_to.alert = mock.Mock(text=expected_text, spec=SeleniumAlert)
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
 
