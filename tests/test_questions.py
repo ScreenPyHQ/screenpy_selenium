@@ -23,7 +23,6 @@ from screenpy_selenium.questions import (
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import Select as SeleniumSelect
 
 
 class TestAttribute:
@@ -244,7 +243,7 @@ class TestSelected:
     def test_options_from_sets_multi(self):
         assert Selected.options_from(None).multi
 
-    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", spec=SeleniumSelect)
+    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
     def test_ask_for_selected_option(self, mocked_selenium_select, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = "test"
@@ -254,7 +253,7 @@ class TestSelected:
         assert Selected.option_from(fake_target).answered_by(Tester) == return_value
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
-    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", spec=SeleniumSelect)
+    @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
     def test_ask_for_selected_options_plural(self, mocked_selenium_select, Tester):
         fake_target = Target.the("fake").located_by("//xpath")
         expected_value = ["test", "the", "options"]
