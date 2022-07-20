@@ -810,6 +810,7 @@ class TestSaveConsoleLog:
     def test_implements_protocol(self):
         r = SaveConsoleLog("")
         assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
 
     def test_filepath_vs_filename(self):
         test_name = "cmcmanus.png"
@@ -872,6 +873,7 @@ class TestSaveScreenshot:
     def test_implements_protocol(self):
         r = SaveScreenshot("")
         assert isinstance(r, Performable)
+        assert isinstance(r, Describable)
 
     def test_filepath_vs_filename(self):
         test_name = "mmcmanus.png"
