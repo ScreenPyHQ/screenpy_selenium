@@ -40,6 +40,10 @@ class SaveScreenshot:
 
     attach_kwargs: Optional[dict]
 
+    def describe(self) -> str:
+        """Describe the Action in present tense."""
+        return f"Save screenshot as {self.filename}"
+
     @staticmethod
     def as_(path: str) -> "SaveScreenshot":
         """Supply the name and/or filepath for the screenshot.

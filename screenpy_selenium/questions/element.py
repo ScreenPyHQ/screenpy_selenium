@@ -23,6 +23,8 @@ class Element:
         the_actor.should(See.the(Element(WELCOME_BANNER), IsVisible()))
     """
 
+    caught_exception: Optional[TargetingError]
+
     def describe(self) -> str:
         """Describe the Question."""
         return f"The {self.target}."
@@ -32,8 +34,10 @@ class Element:
         """Direct the Actor to find the element."""
         try:
             return self.target.found_by(the_actor)
-        except TargetingError:
+        except TargetingError as exc:
+            self.caught_exception = exc
             return None
 
     def __init__(self, target: Target) -> None:
         self.target = target
+        self.caught_exception = None

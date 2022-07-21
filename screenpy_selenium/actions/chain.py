@@ -40,7 +40,7 @@ class Chain:
         the_chain = ActionChains(browser)
 
         for action in self.actions:
-            if "add_to_chain" not in dir(action):
+            if not isinstance(action, Chainable):
                 raise UnableToAct(
                     f"The {action.__class__.__name__} Action cannot be chained."
                 )

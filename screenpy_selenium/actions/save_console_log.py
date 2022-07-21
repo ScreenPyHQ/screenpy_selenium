@@ -44,6 +44,10 @@ class SaveConsoleLog:
 
     attach_kwargs: Optional[dict]
 
+    def describe(self) -> str:
+        """Describe the Action in present tense."""
+        return f"Save browser console log as {self.filename}"
+
     @staticmethod
     def as_(path: str) -> "SaveConsoleLog":
         """Supply the name and/or filepath for the saved text file.
