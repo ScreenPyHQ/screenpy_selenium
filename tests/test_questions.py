@@ -50,7 +50,7 @@ class TestAttribute:
         attr = "foo"
         value = "bar"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.create_autospec(WebElement)
+        mocked_element = mock.create_autospec(WebElement, instance=True)
         mocked_element.get_attribute.return_value = value
         mocked_browser.find_element.return_value = mocked_element
 
@@ -148,7 +148,7 @@ class TestElement:
     def test_question_returns_none_if_no_element_found(self, Tester):
         test_target = Target.the("foo").located_by("//bar")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.find_element.side_effect = WebDriverException
+        mocked_browser.find_element.side_effect = WebDriverException()
 
         assert Element(test_target).answered_by(Tester) is None
 
@@ -166,7 +166,7 @@ class TestElement:
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.create_autospec(WebElement)
+        mocked_element = mock.create_autospec(WebElement, instance=True)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Element(fake_target).answered_by(Tester) is mocked_element
@@ -287,7 +287,7 @@ class TestText:
         fake_target = Target.the("fake").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_text = "spam and eggs"
-        mocked_element = mock.create_autospec(WebElement, text=expected_text)
+        mocked_element = mock.create_autospec(WebElement, text=expected_text, instance=True)
         mocked_browser.find_element.return_value = mocked_element
 
         assert Text.of_the(fake_target).answered_by(Tester) == expected_text
@@ -297,7 +297,7 @@ class TestText:
         fake_target = Target.the("fakes").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_texts = ["spam", "eggs", "baked beans"]
-        mocked_elements = [mock.Mock(text=text) for text in expected_texts]
+        mocked_elements = [mock.create_autospec(WebElement, text=text, instance=True) for text in expected_texts]
         mocked_browser.find_elements.return_value = mocked_elements
 
         assert Text.of_all(fake_target).answered_by(Tester) == expected_texts
@@ -320,7 +320,7 @@ class TestTextOfTheAlert:
     def test_ask_for_text_of_the_alert(self, Tester):
         expected_text = "It's got what plants crave."
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.switch_to.alert = mock.create_autospec(SeleniumAlert, text=expected_text)
+        mocked_browser.switch_to.alert = mock.create_autospec(SeleniumAlert, text=expected_text, instance=True)
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
 

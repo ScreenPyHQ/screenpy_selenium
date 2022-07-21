@@ -37,6 +37,7 @@ from screenpy_selenium.actions import (
 )
 from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
 from screenpy_selenium.protocols import Chainable
+from tests.unittest_protocols import ChainableAction
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
@@ -47,8 +48,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def get_mocked_target_and_element():
     """Get a mocked target which returns a mocked element."""
-    target = mock.create_autospec(Target)
-    element = mock.create_autospec(WebElement)
+    target = mock.create_autospec(Target, instance=True)
+    element = mock.create_autospec(WebElement, instance=True)
     target.found_by.return_value = element
 
     return target, element
@@ -88,7 +89,7 @@ class TestChain:
 
     @mock.patch("screenpy_selenium.actions.chain.ActionChains", autospec=True)
     def test_perform_chain(self, mocked_chain, Tester):
-        actions = [mock.Mock(add_to_chain=mock.Mock()) for _ in range(3)]
+        actions = [mock.create_autospec(ChainableAction, instance=True) for _ in range(3)]
         browser = Tester.ability_to(BrowseTheWeb).browser
 
         Chain(*actions).perform_as(Tester)
@@ -160,7 +161,7 @@ class TestClick:
         element.click.assert_called_once()
 
     def test_add_click_to_chain_without_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         Click().add_to_chain(Tester, chain)
 
@@ -168,7 +169,7 @@ class TestClick:
 
     def test_add_click_to_chain_with_target(self, Tester):
         target, element = get_mocked_target_and_element()
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         Click.on_the(target).add_to_chain(Tester, chain)
 
@@ -241,14 +242,14 @@ class TestDoubleClick:
         mocked_chains(browser).double_click.assert_called_once_with(on_element=element)
 
     def test_chain_double_click_without_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         DoubleClick().add_to_chain(Tester, chain)
 
         chain.double_click.assert_called_once_with(on_element=None)
 
     def test_chain_double_click_with_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         target, element = get_mocked_target_and_element()
 
         DoubleClick.on_the(target).add_to_chain(Tester, chain)
@@ -326,7 +327,7 @@ class TestEnter:
         assert additional in call2_args
 
     def test_chain_enter_with_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         target, element = get_mocked_target_and_element()
         text = "Hello, Champion City."
 
@@ -335,7 +336,7 @@ class TestEnter:
         chain.send_keys_to_element.assert_called_once_with(element, text)
 
     def test_chain_enter_without_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         text = "I am a super hero, Mother. An effete British super hero."
 
         Enter.the_text(text).add_to_chain(Tester, chain)
@@ -343,7 +344,7 @@ class TestEnter:
         chain.send_keys.assert_called_once_with(text)
 
     def test_chain_enter_with_additional_text(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         text = "If just one person vomits in my pool, I'm divorcing you."
         additional = "That's fair."
 
@@ -393,7 +394,7 @@ class TestEnter2FAToken:
         element.send_keys.assert_called_once_with(mfa_token)
 
     def test_chain_enter2fatoken(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # Hey, I've got the same combination on my luggage!
         mocked_2fa = Tester.ability_to(AuthenticateWith2FA)
@@ -487,7 +488,7 @@ class TestHoldDown:
         assert hd3.description == "SHIFT"
 
     def test_chain_hold_down_key(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         key = Keys.PAGE_UP
 
         HoldDown(key).add_to_chain(Tester, chain)
@@ -495,14 +496,14 @@ class TestHoldDown:
         chain.key_down.assert_called_once_with(key)
 
     def test_chain_hold_down_mouse_button(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         HoldDown.left_mouse_button().add_to_chain(Tester, chain)
 
         chain.click_and_hold.assert_called_once_with(on_element=None)
 
     def test_chain_hold_down_mouse_button_on_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         target, element = get_mocked_target_and_element()
 
         HoldDown.left_mouse_button().on(target).add_to_chain(Tester, chain)
@@ -511,7 +512,7 @@ class TestHoldDown:
         chain.click_and_hold.assert_called_once_with(on_element=element)
 
     def test_without_params_raises(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         hd = HoldDown(Keys.SPACE)
         hd.description = "blah"
         hd.key = None
@@ -586,14 +587,14 @@ class TestMoveMouse:
 
     def test_can_be_chained(self, Tester):
         offset = (1, 2)
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         MoveMouse.by_offset(*offset).add_to_chain(Tester, chain)
 
         chain.move_by_offset.assert_called_once_with(*offset)
 
     def test_without_params_raises(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         with pytest.raises(UnableToAct) as excinfo:
             MoveMouse().add_to_chain(Tester, chain)
 
@@ -647,7 +648,7 @@ class TestPause:
 
     def test_chain_pause(self, Tester):
         length = 20
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         Pause.for_(length).seconds_because("... reasons").add_to_chain(Tester, chain)
 
@@ -714,7 +715,7 @@ class TestRelease:
         assert r3.description == "SHIFT"
 
     def test_calls_key_down(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         key = Keys.ALT
 
         Release(key).add_to_chain(Tester, chain)
@@ -722,14 +723,14 @@ class TestRelease:
         chain.key_up.assert_called_once_with(key)
 
     def test_calls_release(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         Release.left_mouse_button().add_to_chain(Tester, chain)
 
         chain.release.assert_called_once()
 
     def test_without_params_raises(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
         r = Release.left_mouse_button()
         r.lmb = False
         with pytest.raises(UnableToAct) as excinfo:
@@ -786,14 +787,14 @@ class TestRightClick:
 
     def test_add_right_click_to_chain(self, Tester):
         target, element = get_mocked_target_and_element()
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         RightClick.on_the(target).add_to_chain(Tester, chain)
 
         chain.context_click.assert_called_once_with(on_element=element)
 
     def test_chain_right_click_without_target(self, Tester):
-        chain = mock.create_autospec(ActionChains)
+        chain = mock.create_autospec(ActionChains, instance=True)
 
         RightClick().add_to_chain(Tester, chain)
 
@@ -1025,7 +1026,7 @@ class TestSelectByValue:
     def test_perform_select_by_value(self, mocked_selselect, Tester):
         value = 1337
         fake_target = Target.the("fake").located_by("//xpath")
-        element = mock.create_autospec(WebElement)
+        element = mock.create_autospec(WebElement, instance=True)
 
         SelectByValue(value).from_the(fake_target).perform_as(Tester)
 
@@ -1107,7 +1108,7 @@ class TestWait:
     def test_can_be_instantiated(self):
         def foo():
             pass
-        target = mock.create_autospec(Target)
+        target = mock.create_autospec(Target, instance=True)
         w1 = Wait.for_the(target)
         w2 = Wait(0).seconds_for_the(target)
         w3 = Wait().using(foo)
@@ -1145,7 +1146,7 @@ class TestWait:
 
     @mock_settings(TIMEOUT=8)
     def test_adjusting_settings_timeout(self):
-        w1 = Wait.for_the(mock.create_autospec(Target))
+        w1 = Wait.for_the(mock.create_autospec(Target, instance=True))
         w2 = Wait()
 
         assert w1.timeout == 8
