@@ -3,7 +3,10 @@ from unittest import mock
 
 import pytest
 from screenpy.exceptions import UnableToAnswer
-from screenpy.protocols import Answerable, ErrorKeeper, Describable
+from screenpy.protocols import Answerable, Describable, ErrorKeeper
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.alert import Alert as SeleniumAlert
+from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import Target
 from screenpy_selenium.abilities import BrowseTheWeb
@@ -20,9 +23,10 @@ from screenpy_selenium.questions import (
     Text,
     TextOfTheAlert,
 )
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.alert import Alert as SeleniumAlert
-from selenium.webdriver.remote.webelement import WebElement
+
+
+def get_mocked_element():
+    return mock.create_autospec(WebElement, instance=True)
 
 
 class TestAttribute:
@@ -50,13 +54,13 @@ class TestAttribute:
         attr = "foo"
         value = "bar"
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.create_autospec(WebElement, instance=True)
-        mocked_element.get_attribute.return_value = value
-        mocked_browser.find_element.return_value = mocked_element
+        element = get_mocked_element()
+        element.get_attribute.return_value = value
+        mocked_browser.find_element.return_value = element
 
         assert Attribute(attr).of_the(fake_target).answered_by(Tester) == value
         mocked_browser.find_element.assert_called_once_with(*fake_target)
-        mocked_element.get_attribute.assert_called_once_with(attr)
+        element.get_attribute.assert_called_once_with(attr)
 
     def test_describe(self):
         assert Attribute("foo").describe() == f'The "foo" attribute of the None.'
@@ -166,10 +170,10 @@ class TestElement:
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_element = mock.create_autospec(WebElement, instance=True)
-        mocked_browser.find_element.return_value = mocked_element
+        element = get_mocked_element()
+        mocked_browser.find_element.return_value = element
 
-        assert Element(fake_target).answered_by(Tester) is mocked_element
+        assert Element(fake_target).answered_by(Tester) is element
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
     def test_describe(self):

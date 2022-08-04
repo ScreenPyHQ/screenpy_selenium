@@ -2,8 +2,8 @@ import os
 from unittest import mock
 
 import pytest
-
 from screenpy.protocols import Forgettable
+
 from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy_selenium.exceptions import BrowsingError
 

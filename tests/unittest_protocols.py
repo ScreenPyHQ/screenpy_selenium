@@ -6,19 +6,19 @@ class Describable(Protocol):
     def describe(self) -> str:
         ...
 
-class Question(Answerable, Describable):
+class Question(Answerable, Describable, Protocol):
     ...
 
-class ErrorQuestion(Answerable, Describable, ErrorKeeper):
+class ErrorQuestion(Answerable, Describable, ErrorKeeper, Protocol):
     ...
 
-class Action(Performable, Describable):
+class Action(Performable, Describable, Protocol):
     ...
 
-class ChainableAction(Chainable, Performable, Describable):
+class ChainableAction(Chainable, Performable, Describable, Protocol):
     ...
 
-class Ability(Forgettable):
+class Ability(Forgettable, Protocol):
     ...
 
 

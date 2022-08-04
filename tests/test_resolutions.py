@@ -39,6 +39,10 @@ def assert_matcher_annotation(obj: BaseResolution):
     assert type(obj.matcher) is obj.__annotations__['matcher']
 
 
+def get_mocked_element():
+    return mock.create_autospec(WebElement, instance=True)
+
+
 class TestIsClickable:
     def test_can_be_instantiated(self):
         ic = IsClickable()
@@ -46,7 +50,7 @@ class TestIsClickable:
         assert isinstance(ic, IsClickable)
 
     def test_matches_a_clickable_element(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         element.is_enabled.return_value = True
         element.is_displayed.return_value = True
         ic = IsClickable()
@@ -54,8 +58,8 @@ class TestIsClickable:
         assert ic._matches(element)
 
     def test_does_not_match_unclickable_element(self):
-        invisible_element = mock.create_autospec(WebElement, instance=True)
-        inactive_element = mock.create_autospec(WebElement, instance=True)
+        invisible_element = get_mocked_element()
+        inactive_element = get_mocked_element()
 
         invisible_element.is_displayed.return_value = False
         invisible_element.is_enabled.return_value = True
@@ -68,7 +72,7 @@ class TestIsClickable:
         assert not ic._matches(inactive_element)
 
     def test_descriptions(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is enabled/clickable",
             describe_match="it was enabled/clickable",
@@ -88,22 +92,22 @@ class TestIsVisible:
         assert isinstance(iv, IsVisible)
 
     def test_matches_a_visible_element(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         element.is_displayed.return_value = True
         iv = IsVisible()
 
         assert iv._matches(element)
 
     def test_does_not_match_invisible_element(self):
-        invisible_element = mock.create_autospec(WebElement, instance=True)
-        invisible_element.is_displayed.return_value = False
+        element = get_mocked_element()
+        element.is_displayed.return_value = False
         iv = IsVisible()
 
         assert not iv._matches(None)  # element was not found by Element()
-        assert not iv._matches(invisible_element)
+        assert not iv._matches(element)
 
     def test_descriptions(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is visible",
             describe_match="it was visible",
@@ -123,22 +127,22 @@ class TestIsInvisible:
         assert isinstance(ii, IsInvisible)
 
     def test_matches_a_visible_element(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         element.is_displayed.return_value = False
         ii = IsInvisible()
 
         assert ii._matches(element)
 
     def test_does_not_match_invisible_element(self):
-        visible_element = mock.create_autospec(WebElement, instance=True)
-        visible_element.is_displayed.return_value = True
+        element = get_mocked_element()
+        element.is_displayed.return_value = True
         ii = IsInvisible()
 
         assert not ii._matches(None)  # element was not found by Element()
-        assert not ii._matches(visible_element)
+        assert not ii._matches(element)
 
     def test_descriptions(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is invisible",
             describe_match="it was invisible",
@@ -158,31 +162,31 @@ class TestIsPresent:
         assert isinstance(ip, IsPresent)
 
     def test_matches_a_present_element(self):
-        mock_element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         ic = IsPresent()
 
-        mock_element.is_enabled.return_value = False
-        mock_element.is_displayed.return_value = False
-        assert ic._matches(mock_element)
+        element.is_enabled.return_value = False
+        element.is_displayed.return_value = False
+        assert ic._matches(element)
 
-        mock_element.is_enabled.return_value = True
-        mock_element.is_displayed.return_value = True
-        assert ic._matches(mock_element)
+        element.is_enabled.return_value = True
+        element.is_displayed.return_value = True
+        assert ic._matches(element)
 
-        mock_element.is_enabled.return_value = True
-        mock_element.is_displayed.return_value = False
-        assert ic._matches(mock_element)
+        element.is_enabled.return_value = True
+        element.is_displayed.return_value = False
+        assert ic._matches(element)
 
-        mock_element.is_enabled.return_value = False
-        mock_element.is_displayed.return_value = True
-        assert ic._matches(mock_element)
+        element.is_enabled.return_value = False
+        element.is_displayed.return_value = True
+        assert ic._matches(element)
 
     def test_does_not_match_missing_element(self):
         ic = IsPresent()
         assert not ic._matches(None)
 
     def test_descriptions(self):
-        element = mock.create_autospec(WebElement, instance=True)
+        element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is present",
             describe_match="it was present",
