@@ -4,7 +4,7 @@ human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
 """
 
-from typing import Iterator, List, Tuple, Union
+from typing import Iterator, List, Optional, Tuple, Union
 
 from screenpy.actor import Actor
 from selenium.common.exceptions import WebDriverException
@@ -26,10 +26,28 @@ class Target:
         Target.the("header search bar").located_by("div.searchbar")
 
         Target.the("welcome message").located_by('//h2[@name = "welcome"]')
+
+        Target().located_by((By.ID, "username-field"))
     """
 
-    target_name: str
-    locator: Union[None, Tuple[str, str]]
+    _description: Optional[str] = None
+    locator: Optional[Tuple[str, str]] = None
+
+    @property
+    def target_name(self):
+        if self._description is not None:
+            return self._description
+        if self.locator:
+            return self.locator[1]
+        return self._description
+
+    @target_name.setter
+    def target_name(self, value):
+        self._description = value
+
+    @target_name.deleter
+    def target_name(self):
+        del self._description
 
     @staticmethod
     def the(desc: str) -> "Target":
@@ -46,8 +64,16 @@ class Target:
             * A tuple of a By classifier and a string (e.g. ``(By.ID, "welcome")``)
             * An XPATH string (e.g. ``"//div/h3"``)
             * A CSS selector string (e.g. ``"div.confetti"``)
+
+        Aliases:
+            * :meth:`~screenpy_selenium.Target.located`
         """
+        if not isinstance(locator, (tuple, str)):
+            raise TypeError("invalid locator type")
+
         if isinstance(locator, tuple):
+            if len(locator) != 2:
+                raise ValueError("locator tuple length should be 2")
             self.locator = locator
         elif locator[0] in ("(", "/"):
             self.locator = (By.XPATH, locator)
@@ -56,7 +82,9 @@ class Target:
 
         return self
 
-    located = located_by
+    def located(self, locator: Union[Tuple[str, str], str]) -> "Target":
+        """Alias for :meth:~screenpy_selenium.Target.located_by"""
+        return self.located_by(locator)
 
     def get_locator(self) -> Tuple[str, str]:
         """Return the stored locator.
@@ -98,6 +126,6 @@ class Target:
     def __getitem__(self, index: int) -> str:
         return self.get_locator()[index]
 
-    def __init__(self, desc: str) -> None:
+    def __init__(self, desc: str = None, locator: Tuple[str, str] = None) -> None:
         self.target_name = desc
-        self.locator = None
+        self.locator = locator

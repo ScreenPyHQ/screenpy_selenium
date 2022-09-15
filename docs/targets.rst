@@ -53,3 +53,33 @@ by passing them to Actions::
         Enter.the_secret("reallySecurePassword!!").into_the(PASSWORD_FIELD),
         Click.on_the(SIGN_IN_BUTTON),
     )
+
+The resulting log::
+
+    Webster enters "webster_1987" into the username field.
+    Webster enters "[CENSORED]" into the password field.
+    Websert clicks on the "Sign In" button.
+
+By default the :ref:`target` will use the locator string as a human-readable
+target name in the absense of providing one. This can be convenient if your
+locators are self-describing::
+
+    from screenpy_selenium import Target
+    from selenium.webdriver.common.by import By
+    
+    USERNAME_FIELD = Target().located((By.ID, "username-field"))
+    PASSWORD_FIELD = Target().located((By.ID, "password-field"))
+    SIGN_IN_BUTTON = Target().located((By.ID, "sign-in-button"))
+    
+    Webster.attempts_to(
+        Enter.the_text("foo").into_the(USERNAME_FIELD),
+        Enter.the_secret("bar").into_the(PASSWORD_FIELD),
+        Click.on_the(SIGN_IN_BUTTON),
+    )
+
+The resulting log::
+
+    Webster enters "foo" into the username-field.
+    Webster enters "[CENSORED]" into the password-field.
+    Websert clicks on the sign-in-button.
+
