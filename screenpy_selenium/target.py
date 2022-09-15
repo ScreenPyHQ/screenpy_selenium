@@ -116,7 +116,7 @@ class Target:
             raise TargetingError(f"{e} raised while trying to find {self}.") from e
 
     def __repr__(self) -> str:
-        return self.target_name
+        return f"{self.target_name}"
 
     __str__ = __repr__
 

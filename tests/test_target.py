@@ -150,3 +150,18 @@ def test_empty_target_iterator():
     nulltarget = Target("bogus")
     with pytest.raises(TargetingError):
         iter(nulltarget)
+
+
+def test_repr():
+    t1 = Target()
+    t2 = Target("foo")
+    assert repr(t1) == "None"
+    assert repr(t2) == "foo"
+
+
+def test_str():
+    t1 = Target()
+    t2 = Target("foo")
+    assert str(t1) == "None"
+    assert str(t2) == "foo"
+    
