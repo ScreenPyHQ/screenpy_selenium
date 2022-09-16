@@ -37,9 +37,7 @@ class Target:
     def target_name(self):
         if self._description is not None:
             return self._description
-        if self.locator:
-            return self.locator[1]
-        return self._description
+        return self.locator[1] if self.locator else None
 
     @target_name.setter
     def target_name(self, value):
