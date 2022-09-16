@@ -54,14 +54,14 @@ by passing them to Actions::
         Click.on_the(SIGN_IN_BUTTON),
     )
 
-The resulting log::
+The resulting log:
 
-    Webster enters "webster_1987" into the username field.
-    Webster enters "[CENSORED]" into the password field.
-    Websert clicks on the "Sign In" button.
+    | Webster enters "webster_1987" into the username field.
+    | Webster enters "[CENSORED]" into the password field.
+    | Websert clicks on the "Sign In" button.
 
 By default the :ref:`target` will use the locator string as a human-readable
-target name in the absense of providing one. This can be convenient if your
+``target_name`` in the absence of providing one. This can be convenient if your
 locators are self-describing::
 
     from screenpy_selenium import Target
@@ -77,9 +77,9 @@ locators are self-describing::
         Click.on_the(SIGN_IN_BUTTON),
     )
 
-The resulting log::
+The resulting log:
 
-    Webster enters "foo" into the username-field.
-    Webster enters "[CENSORED]" into the password-field.
-    Websert clicks on the sign-in-button.
+    | Webster enters "foo" into the username-field.
+    | Webster enters "[CENSORED]" into the password-field.
+    | Websert clicks on the sign-in-button.
 
