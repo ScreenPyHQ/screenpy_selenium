@@ -5,8 +5,8 @@ from setuptools import find_packages, setup
 requires = [
     "screenpy>=4.0.2",
     "screenpy_pyotp>=4.0.0,<4.1",
-    "typing-extensions>=4.1.1,<4.2",
-    "selenium>=4.1.0,<4.2",
+    "typing-extensions>=4.1.1,<4.4",
+    "selenium>=4.1.0,<4.5",
 ]
 
 repo_dir = path.abspath(path.dirname(__file__))
