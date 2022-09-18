@@ -16,6 +16,7 @@ class TestBrowseTheWeb:
 
     def test_implements_protocol(self):
         b = BrowseTheWeb(None)
+
         assert isinstance(b, Forgettable)
 
     @mock.patch("screenpy_selenium.abilities.browse_the_web.Firefox", autospec=True)
@@ -61,7 +62,9 @@ class TestBrowseTheWeb:
     @mock.patch("screenpy_selenium.abilities.browse_the_web.Chrome", autospec=True)
     def test_forget_calls_quit(self, mocked_chrome):
         b = BrowseTheWeb(mocked_chrome)
+
         b.forget()
+
         mocked_chrome.quit.assert_called_once()
 
     def test_repr(self):

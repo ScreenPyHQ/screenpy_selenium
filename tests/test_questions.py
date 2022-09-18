@@ -24,9 +24,7 @@ from screenpy_selenium.questions import (
     TextOfTheAlert,
 )
 
-
-def get_mocked_element():
-    return mock.create_autospec(WebElement, instance=True)
+from tests.useful_mocks import get_mocked_element
 
 
 class TestAttribute:
@@ -39,6 +37,7 @@ class TestAttribute:
 
     def test_implements_protocol(self):
         a = Attribute("")
+
         assert isinstance(a, Answerable)
         assert isinstance(a, Describable)
 
@@ -49,7 +48,7 @@ class TestAttribute:
     def test_of_all_sets_multi(self):
         assert Attribute("").of_all(None).multi
 
-    def test_uses_get_attribute(self, Tester):
+    def test_ask_for_attribute(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
         attr = "foo"
         value = "bar"
@@ -62,8 +61,22 @@ class TestAttribute:
         mocked_browser.find_element.assert_called_once_with(*fake_target)
         element.get_attribute.assert_called_once_with(attr)
 
+    def test_ask_for_attribute_multi(self, Tester):
+        fake_target = Target.the("fake").located_by("//html")
+        attr = "foo"
+        value = "bar"
+        mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+        element = get_mocked_element()
+        element.get_attribute.return_value = value
+        mocked_browser.find_elements.return_value = [element]
+
+        assert Attribute(attr).of_all(fake_target).answered_by(Tester) == [value]
+        mocked_browser.find_elements.assert_called_once_with(*fake_target)
+        element.get_attribute.assert_called_once_with(attr)
+
     def test_describe(self):
-        assert Attribute("foo").describe() == f'The "foo" attribute of the None.'
+        assert Attribute("foo").describe() == 'The "foo" attribute of the None.'
+
 
 class TestBrowserTitle:
     def test_can_be_instantiated(self):
@@ -73,6 +86,7 @@ class TestBrowserTitle:
 
     def test_implements_protocol(self):
         b = BrowserTitle()
+
         assert isinstance(b, Answerable)
         assert isinstance(b, Describable)
 
@@ -84,7 +98,8 @@ class TestBrowserTitle:
         assert BrowserTitle().answered_by(Tester) == expected_title
 
     def test_describe(self):
-        assert BrowserTitle().describe() == f"The current page's title."
+        assert BrowserTitle().describe() == "The current page's title."
+
 
 class TestBrowserURL:
     def test_can_be_instantiated(self):
@@ -94,6 +109,7 @@ class TestBrowserURL:
 
     def test_implements_protocol(self):
         b = BrowserURL()
+
         assert isinstance(b, Answerable)
         assert isinstance(b, Describable)
 
@@ -105,7 +121,8 @@ class TestBrowserURL:
         assert BrowserURL().answered_by(Tester) == expected_url
 
     def test_describe(self):
-        assert BrowserURL().describe() == f"The browser URL."
+        assert BrowserURL().describe() == "The browser URL."
+
 
 class TestCookies:
     def test_can_be_instantiated(self):
@@ -115,6 +132,7 @@ class TestCookies:
 
     def test_implements_protocol(self):
         c = Cookies()
+
         assert isinstance(c, Answerable)
         assert isinstance(c, Describable)
 
@@ -130,7 +148,8 @@ class TestCookies:
         assert Cookies().answered_by(Tester) == expected_cookie
 
     def test_describe(self):
-        assert Cookies().describe() == f"The browser's cookies."
+        assert Cookies().describe() == "The browser's cookies."
+
 
 class TestElement:
     def test_can_be_instantiated(self):
@@ -140,14 +159,16 @@ class TestElement:
 
     def test_implements_protocol(self):
         e = Element(None)
+
         assert isinstance(e, Answerable)
         assert isinstance(e, ErrorKeeper)
         assert isinstance(e, Describable)
 
     def test_caught_exception_annotation(self):
         e = Element(None)
-        stuff = e.__annotations__['caught_exception']
-        assert stuff == Optional[TargetingError]
+
+        annotation = e.__annotations__["caught_exception"]
+        assert annotation == Optional[TargetingError]
 
     def test_question_returns_none_if_no_element_found(self, Tester):
         test_target = Target.the("foo").located_by("//bar")
@@ -159,13 +180,16 @@ class TestElement:
     def test_question_captures_exception(self, Tester):
         test_target = Target.the("foo").located_by("//bar")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.find_element.side_effect = WebDriverException('Specific Msg')
+        mocked_browser.find_element.side_effect = WebDriverException("Specific Msg")
 
         elem = Element(test_target)
         elem.answered_by(Tester)
 
         assert isinstance(elem.caught_exception, TargetingError)
-        assert elem.caught_exception.args[0] == "Message: Specific Msg\n raised while trying to find foo."
+        assert (
+            elem.caught_exception.args[0]
+            == "Message: Specific Msg\n raised while trying to find foo."
+        )
 
     def test_ask_for_element(self, Tester):
         fake_target = Target.the("fake").located_by("//html")
@@ -177,7 +201,8 @@ class TestElement:
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
     def test_describe(self):
-        assert Element(None).describe() == f"The None."
+        assert Element(None).describe() == "The None."
+
 
 class TestList:
     def test_can_be_instantiated(self):
@@ -189,6 +214,7 @@ class TestList:
 
     def test_implements_protocol(self):
         e = List(None)
+
         assert isinstance(e, Answerable)
         assert isinstance(e, Describable)
 
@@ -202,7 +228,8 @@ class TestList:
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
     def test_describe(self):
-        assert List(None).describe() == f"The list of None."
+        assert List(None).describe() == "The list of None."
+
 
 class TestNumber:
     def test_can_be_instantiated(self):
@@ -212,6 +239,7 @@ class TestNumber:
 
     def test_implements_protocol(self):
         n = Number(None)
+
         assert isinstance(n, Answerable)
         assert isinstance(n, Describable)
 
@@ -225,7 +253,8 @@ class TestNumber:
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
     def test_describe(self):
-        assert Number(None).describe() == f"The number of None."
+        assert Number(None).describe() == "The number of None."
+
 
 class TestSelected:
     def test_can_be_instantiated(self):
@@ -241,6 +270,7 @@ class TestSelected:
 
     def test_implements_protocol(self):
         s = Selected(None)
+
         assert isinstance(s, Answerable)
         assert isinstance(s, Describable)
 
@@ -269,7 +299,8 @@ class TestSelected:
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
     def test_describe(self):
-        assert Selected(None).describe() == f"The selected option(s) from the None."
+        assert Selected(None).describe() == "The selected option(s) from the None."
+
 
 class TestText:
     def test_can_be_instantiated(self):
@@ -281,6 +312,7 @@ class TestText:
 
     def test_implements_protocol(self):
         t = Text(None)
+
         assert isinstance(t, Answerable)
         assert isinstance(t, Describable)
 
@@ -291,7 +323,9 @@ class TestText:
         fake_target = Target.the("fake").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_text = "spam and eggs"
-        mocked_element = mock.create_autospec(WebElement, text=expected_text, instance=True)
+        mocked_element = mock.create_autospec(
+            WebElement, text=expected_text, instance=True
+        )
         mocked_browser.find_element.return_value = mocked_element
 
         assert Text.of_the(fake_target).answered_by(Tester) == expected_text
@@ -301,14 +335,18 @@ class TestText:
         fake_target = Target.the("fakes").located_by("//xpath")
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
         expected_texts = ["spam", "eggs", "baked beans"]
-        mocked_elements = [mock.create_autospec(WebElement, text=text, instance=True) for text in expected_texts]
+        mocked_elements = [
+            mock.create_autospec(WebElement, text=text, instance=True)
+            for text in expected_texts
+        ]
         mocked_browser.find_elements.return_value = mocked_elements
 
         assert Text.of_all(fake_target).answered_by(Tester) == expected_texts
         mocked_browser.find_elements.assert_called_once_with(*fake_target)
 
     def test_describe(self):
-        assert Text(None).describe() == f"The text from the None."
+        assert Text(None).describe() == "The text from the None."
+
 
 class TestTextOfTheAlert:
     def test_can_be_instantiated(self):
@@ -318,15 +356,18 @@ class TestTextOfTheAlert:
 
     def test_implements_protocol(self):
         t = TextOfTheAlert()
+
         assert isinstance(t, Answerable)
         assert isinstance(t, Describable)
 
     def test_ask_for_text_of_the_alert(self, Tester):
         expected_text = "It's got what plants crave."
         mocked_browser = Tester.ability_to(BrowseTheWeb).browser
-        mocked_browser.switch_to.alert = mock.create_autospec(SeleniumAlert, text=expected_text, instance=True)
+        mocked_browser.switch_to.alert = mock.create_autospec(
+            SeleniumAlert, text=expected_text, instance=True
+        )
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
 
     def test_describe(self):
-        assert TextOfTheAlert().describe() == f"The text of the alert."
+        assert TextOfTheAlert().describe() == "The text of the alert."

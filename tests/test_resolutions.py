@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from unittest import mock
 
+import pytest
+
 from hamcrest.core.string_description import StringDescription
 from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
@@ -36,7 +38,7 @@ def _assert_descriptions(
 
 
 def assert_matcher_annotation(obj: BaseResolution):
-    assert type(obj.matcher) is obj.__annotations__['matcher']
+    assert type(obj.matcher) is obj.__annotations__["matcher"]
 
 
 def get_mocked_element():
@@ -79,6 +81,7 @@ class TestIsClickable:
             describe_mismatch="was not enabled/clickable",
             describe_none="was not even present",
         )
+
         _assert_descriptions(IsClickable(), element, expected)
 
     def test_type_hint(self):
@@ -114,6 +117,7 @@ class TestIsVisible:
             describe_mismatch="was not visible",
             describe_none="was not even present",
         )
+
         _assert_descriptions(IsVisible(), element, expected)
 
     def test_type_hint(self):
@@ -149,6 +153,7 @@ class TestIsInvisible:
             describe_mismatch="was not invisible",
             describe_none="was not even present",
         )
+
         _assert_descriptions(IsInvisible(), element, expected)
 
     def test_type_hint(self):
@@ -161,28 +166,21 @@ class TestIsPresent:
 
         assert isinstance(ip, IsPresent)
 
-    def test_matches_a_present_element(self):
+    @pytest.mark.parametrize(
+        "enabled, displayed",
+        ((False, False), (False, True), (True, False), (True, True))
+    )
+    def test_matches_a_present_element(self, enabled, displayed):
         element = get_mocked_element()
         ic = IsPresent()
 
-        element.is_enabled.return_value = False
-        element.is_displayed.return_value = False
-        assert ic._matches(element)
-
-        element.is_enabled.return_value = True
-        element.is_displayed.return_value = True
-        assert ic._matches(element)
-
-        element.is_enabled.return_value = True
-        element.is_displayed.return_value = False
-        assert ic._matches(element)
-
-        element.is_enabled.return_value = False
-        element.is_displayed.return_value = True
+        element.is_enabled.return_value = enabled
+        element.is_displayed.return_value = displayed
         assert ic._matches(element)
 
     def test_does_not_match_missing_element(self):
         ic = IsPresent()
+
         assert not ic._matches(None)
 
     def test_descriptions(self):
@@ -193,6 +191,7 @@ class TestIsPresent:
             describe_mismatch="was not present",
             describe_none="was not present",
         )
+
         _assert_descriptions(IsPresent(), element, expected)
 
     def test_type_hint(self):
