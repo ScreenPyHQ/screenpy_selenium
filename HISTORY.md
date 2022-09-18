@@ -1,6 +1,18 @@
 Release History
 ===============
 
+4.0.3 (2022-09-18)
+------------------
+
+### New Features
+
+- Now Questions which catch an exception (e.g. `Element`) will store any exceptions which they encounter, which will allow reporting of those caught exceptions. This is particularly useful when `Element` doesn't find the element, so you can inspect the actual exception message. (h/t @bandophahita!)
+
+### Improvements
+
+- Massive improvement in code covered by unit tests! (h/t @bandophahita!)
+- Cleanup, dependency updates, and more!
+
 4.0.2 (2022-05-13)
 ------------------
 
