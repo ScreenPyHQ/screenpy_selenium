@@ -19,4 +19,3 @@ class Chainable(Protocol):
             the_actor: the Actor who will be performing the Action chain.
             the_chain: the |ActionChains| instance that is being built.
         """
-        ...
