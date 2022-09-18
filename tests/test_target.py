@@ -32,14 +32,15 @@ def test_auto_describe():
 
     assert t1.target_name == "foo-id"
     assert t2.target_name == "blah"
-    assert t3.target_name == None
+    assert t3.target_name is None
     assert t4.target_name == ""
 
 
 def test_del_description():
     t1 = Target("test")
-    del(t1.target_name)
-    assert t1.target_name == None
+    del t1.target_name
+
+    assert t1.target_name is None
 
 
 def test_complains_for_no_locator():
@@ -155,6 +156,7 @@ def test_empty_target_iterator():
 def test_repr():
     t1 = Target()
     t2 = Target("foo")
+
     assert repr(t1) == "None"
     assert repr(t2) == "foo"
 
@@ -162,6 +164,6 @@ def test_repr():
 def test_str():
     t1 = Target()
     t2 = Target("foo")
+
     assert str(t1) == "None"
     assert str(t2) == "foo"
-    

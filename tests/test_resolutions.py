@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from unittest import mock
 
 import pytest
-
 from hamcrest.core.string_description import StringDescription
 from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
@@ -168,7 +167,7 @@ class TestIsPresent:
 
     @pytest.mark.parametrize(
         "enabled, displayed",
-        ((False, False), (False, True), (True, False), (True, True))
+        ((False, False), (False, True), (True, False), (True, True)),
     )
     def test_matches_a_present_element(self, enabled, displayed):
         element = get_mocked_element()
