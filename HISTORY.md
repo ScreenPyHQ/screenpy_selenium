@@ -6,6 +6,7 @@ Release History
 
 ### New Features
 
+- Targets are now able to be created without an explicit name, like `Target().located_by(...)`. A Target created this way will use the locator string to describe itself. You'll be able to save some coding space and reduce repetition! (h/t @bandophahita!)
 - Now Questions which catch an exception (e.g. `Element`) will store any exceptions which they encounter, which will allow reporting of those caught exceptions. This is particularly useful when `Element` doesn't find the element, so you can inspect the actual exception message. (h/t @bandophahita!)
 
 ### Improvements
