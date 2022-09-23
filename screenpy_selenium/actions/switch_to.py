@@ -2,13 +2,15 @@
 Switch the driver's frame of reference.
 """
 
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from screenpy.actor import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
 from ..target import Target
+
+SelfSwitchTo = TypeVar("SelfSwitchTo", bound="SwitchTo")
 
 
 class SwitchTo:
@@ -26,22 +28,22 @@ class SwitchTo:
         the_actor.attempts_to(SwitchTo.default())
     """
 
-    @staticmethod
-    def the(target: Target) -> "SwitchTo":
+    @classmethod
+    def the(cls: Type[SelfSwitchTo], target: Target) -> SelfSwitchTo:
         """Target an element, probably an iframe, to switch to."""
-        return SwitchTo(target, str(target))
+        return cls(target=target, frame_to_log=str(target))
 
-    @staticmethod
-    def default() -> "SwitchTo":
+    @classmethod
+    def default(cls: Type[SelfSwitchTo]) -> SelfSwitchTo:
         """Switch back to the default frame, the browser window."""
-        return SwitchTo(None, "default frame")
+        return cls(target=None, frame_to_log="default frame")
 
-    def describe(self) -> str:
+    def describe(self: SelfSwitchTo) -> str:
         """Describe the Action in present tense."""
         return f"Switch to the {self.frame_to_log}."
 
     @beat("{} switches to the {frame_to_log}.")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfSwitchTo, the_actor: Actor) -> None:
         """Direct the Actor to switch to an element or back to default."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         if self.target is None:
@@ -49,6 +51,8 @@ class SwitchTo:
         else:
             browser.switch_to.frame(self.target.found_by(the_actor))
 
-    def __init__(self, target: Optional[Target], frame_to_log: str) -> None:
+    def __init__(
+        self: SelfSwitchTo, target: Optional[Target], frame_to_log: str
+    ) -> None:
         self.target = target
         self.frame_to_log = frame_to_log

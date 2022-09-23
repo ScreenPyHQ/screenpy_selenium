@@ -3,7 +3,7 @@ Hold down a specific key or the left mouse button, optionally on an element.
 """
 
 import platform
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from screenpy import Actor
 from screenpy.exceptions import UnableToAct
@@ -13,6 +13,8 @@ from selenium.webdriver.common.keys import Keys
 
 from ..speech_tools import KEY_NAMES
 from ..target import Target
+
+SelfHoldDown = TypeVar("SelfHoldDown", bound="HoldDown")
 
 
 class HoldDown:
@@ -38,34 +40,36 @@ class HoldDown:
 
     target: Optional[Target]
 
-    @staticmethod
-    def command_or_control_key() -> "HoldDown":
+    @classmethod
+    def command_or_control_key(cls: Type[SelfHoldDown]) -> SelfHoldDown:
         """
         A convenience method that figures out what operating system the Actor
         is using and directs the Actor which execution key to hold down.
         """
         if platform.system() == "Darwin":
-            return HoldDown(Keys.COMMAND)
-        return HoldDown(Keys.CONTROL)
+            return cls(Keys.COMMAND)
+        return cls(Keys.CONTROL)
 
-    @staticmethod
-    def left_mouse_button() -> "HoldDown":
+    @classmethod
+    def left_mouse_button(cls: Type[SelfHoldDown]) -> SelfHoldDown:
         """Hold down the left mouse button."""
-        return HoldDown(lmb=True)
+        return cls(lmb=True)
 
-    def on_the(self, target: Target) -> "HoldDown":
+    def on_the(self: SelfHoldDown, target: Target) -> SelfHoldDown:
         """Target an element to hold down left click on."""
         self.target = target
         return self
 
     on = on_the
 
-    def describe(self) -> str:
+    def describe(self: SelfHoldDown) -> str:
         """Describe the Action in present tense."""
         return f"Hold down {self.description}."
 
     @beat("  Hold down {description}!")
-    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
+    def add_to_chain(
+        self: SelfHoldDown, the_actor: Actor, the_chain: ActionChains
+    ) -> None:
         """Add the HoldDown Action to a Chain of Actions."""
         if self.lmb:
             element = self.target.found_by(the_actor) if self.target else None
@@ -75,7 +79,9 @@ class HoldDown:
         else:
             raise UnableToAct("HoldDown must be told what to hold down.")
 
-    def __init__(self, key: Optional[str] = None, lmb: bool = False) -> None:
+    def __init__(
+        self: SelfHoldDown, key: Optional[str] = None, lmb: bool = False
+    ) -> None:
         self.key = key
         self.lmb = lmb
         self.target = None

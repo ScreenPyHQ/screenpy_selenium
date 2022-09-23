@@ -2,12 +2,14 @@
 Investigate the text of an element or many elements.
 """
 
-from typing import List, Union
+from typing import List, Type, TypeVar, Union
 
 from screenpy import Actor
 from screenpy.pacing import beat
 
 from ..target import Target
+
+SelfText = TypeVar("SelfText", bound="Text")
 
 
 class Text:
@@ -27,29 +29,42 @@ class Text:
         )
     """
 
-    @staticmethod
-    def of_the(target: Target) -> "Text":
-        """Target the element to extract the text from."""
-        return Text(target=target)
+    @classmethod
+    def of_the(cls: Type[SelfText], target: Target) -> SelfText:
+        """Target the element to extract the text from.
 
-    of = of_the_first_of_the = of_the
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.Text.of`
+            * :meth:`~screenpy_selenium.actions.Text.of_the_first_of_the`
+        """
+        return cls(target=target)
 
-    @staticmethod
-    def of_all(multi_target: Target) -> "Text":
+    @classmethod
+    def of(cls: Type[SelfText], target: Target) -> SelfText:
+        """Alias of :meth:`~screenpy_selenium.actions.Text.of_the`."""
+        return cls.of_the(target=target)
+
+    @classmethod
+    def of_the_first_of_the(cls: Type[SelfText], target: Target) -> SelfText:
+        """Alias of :meth:`~screenpy_selenium.actions.Text.of_the`."""
+        return cls.of_the(target=target)
+
+    @classmethod
+    def of_all(cls: Type[SelfText], multi_target: Target) -> SelfText:
         """Target the elements, plural, to extract the text from."""
-        return Text(target=multi_target, multi=True)
+        return cls(target=multi_target, multi=True)
 
-    def describe(self) -> str:
+    def describe(self: SelfText) -> str:
         """Describe the Question."""
         return f"The text from the {self.target}."
 
     @beat("{} reads the text from the {target}.")
-    def answered_by(self, the_actor: Actor) -> Union[str, List[str]]:
+    def answered_by(self: SelfText, the_actor: Actor) -> Union[str, List[str]]:
         """Direct the Actor to read off the text of the element(s)."""
         if self.multi:
             return [e.text for e in self.target.all_found_by(the_actor)]
         return self.target.found_by(the_actor).text
 
-    def __init__(self, target: Target, multi: bool = False) -> None:
+    def __init__(self: SelfText, target: Target, multi: bool = False) -> None:
         self.target = target
         self.multi = multi

@@ -3,13 +3,15 @@ Save a screenshot.
 """
 
 import os
-from typing import Any, Optional
+from typing import Any, Optional, Type, TypeVar
 
 from screenpy import Actor
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+SelfSaveScreenshot = TypeVar("SelfSaveScreenshot", bound="SaveScreenshot")
 
 
 class SaveScreenshot:
@@ -40,20 +42,20 @@ class SaveScreenshot:
 
     attach_kwargs: Optional[dict]
 
-    def describe(self) -> str:
+    def describe(self: SelfSaveScreenshot) -> str:
         """Describe the Action in present tense."""
         return f"Save screenshot as {self.filename}"
 
-    @staticmethod
-    def as_(path: str) -> "SaveScreenshot":
+    @classmethod
+    def as_(cls: Type[SelfSaveScreenshot], path: str) -> SelfSaveScreenshot:
         """Supply the name and/or filepath for the screenshot.
 
         If only a name is supplied, the screenshot will appear in the current
         working directory.
         """
-        return SaveScreenshot(path)
+        return cls(path=path)
 
-    def and_attach_it(self, **kwargs: Any) -> "SaveScreenshot":
+    def and_attach_it(self: SelfSaveScreenshot, **kwargs: Any) -> SelfSaveScreenshot:
         """Indicate the screenshot should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters
@@ -65,7 +67,7 @@ class SaveScreenshot:
     and_attach_it_with = and_attach_it
 
     @beat("{} saves a screenshot as {filename}")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfSaveScreenshot, the_actor: Actor) -> None:
         """Direct the actor to save a screenshot."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         screenshot = browser.get_screenshot_as_png()
@@ -76,7 +78,7 @@ class SaveScreenshot:
         if self.attach_kwargs is not None:
             the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
-    def __init__(self, path: str) -> None:
+    def __init__(self: SelfSaveScreenshot, path: str) -> None:
         self.path = path
         self.filename = path.split(os.path.sep)[-1]
         self.attach_kwargs = None

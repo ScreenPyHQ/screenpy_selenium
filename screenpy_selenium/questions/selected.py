@@ -3,13 +3,15 @@ Investigate the text of the selected option or options from a dropdown or
 multi-select field.
 """
 
-from typing import List, Union
+from typing import List, Type, TypeVar, Union
 
 from screenpy import Actor
 from screenpy.pacing import beat
 from selenium.webdriver.support.ui import Select as SeleniumSelect
 
 from ..target import Target
+
+SelfSelected = TypeVar("SelfSelected", bound="Selected")
 
 
 class Selected:
@@ -27,21 +29,29 @@ class Selected:
         the_actor.should(See.the(Selected.options_from(INDUSTRIES), HasLength(5)))
     """
 
-    @staticmethod
-    def option_from_the(target: Target) -> "Selected":
+    @classmethod
+    def option_from_the(cls: Type[SelfSelected], target: Target) -> SelfSelected:
         """
         Get the option that is currently selected in a dropdown or the first
         option selected in a multi-select field.
 
         *Note*: if this method is used for a multi-select field, only the
         first selected option will be returned.
+
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.Selected.option_from`
         """
-        return Selected(target)
+        return cls(target=target)
 
-    option_from = option_from_the
+    @classmethod
+    def option_from(cls: Type[SelfSelected], target: Target) -> SelfSelected:
+        """Alias of :meth:`~screenpy_selenium.actions.Selected.option_from_the`."""
+        return cls.option_from_the(target=target)
 
-    @staticmethod
-    def options_from_the(multiselect_target: Target) -> "Selected":
+    @classmethod
+    def options_from_the(
+        cls: Type[SelfSelected], multiselect_target: Target
+    ) -> SelfSelected:
         """
         Get all the options that are currently selected in a multi-select
         field.
@@ -49,17 +59,25 @@ class Selected:
         *Note*: this method should not be used for single-select dropdowns,
         that will cause a NotImplemented error to be raised from Selenium when
         answering this Question.
+
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.Selected.options_from`
         """
-        return Selected(multiselect_target, multi=True)
+        return cls(target=multiselect_target, multi=True)
 
-    options_from = options_from_the
+    @classmethod
+    def options_from(
+        cls: Type[SelfSelected], multiselect_target: Target
+    ) -> SelfSelected:
+        """Alias of :meth:`~screenpy_selenium.actions.Selected.options_from_the`."""
+        return cls.options_from_the(multiselect_target=multiselect_target)
 
-    def describe(self) -> str:
+    def describe(self: SelfSelected) -> str:
         """Describe the Question."""
         return f"The selected option(s) from the {self.target}."
 
     @beat("{} checks the selected option(s) from the {target}.")
-    def answered_by(self, the_actor: Actor) -> Union[str, List[str]]:
+    def answered_by(self: SelfSelected, the_actor: Actor) -> Union[str, List[str]]:
         """Direct the Actor to name the selected option(s)."""
         select = SeleniumSelect(self.target.found_by(the_actor))
 
@@ -67,6 +85,6 @@ class Selected:
             return [e.text for e in select.all_selected_options]
         return select.first_selected_option.text
 
-    def __init__(self, target: Target, multi: bool = False):
+    def __init__(self: SelfSelected, target: Target, multi: bool = False):
         self.target = target
         self.multi = multi

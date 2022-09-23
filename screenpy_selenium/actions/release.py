@@ -3,7 +3,7 @@ Release the left mouse button or a held modifier key.
 """
 
 import platform
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from screenpy import Actor
 from screenpy.exceptions import UnableToAct
@@ -12,6 +12,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 from ..speech_tools import KEY_NAMES
+
+SelfRelease = TypeVar("SelfRelease", bound="Release")
 
 
 class Release:
@@ -33,28 +35,28 @@ class Release:
         the_actor.attempts_to(Release.command_or_control_key())
     """
 
-    @staticmethod
-    def command_or_control_key() -> "Release":
+    @classmethod
+    def command_or_control_key(cls: Type[SelfRelease]) -> SelfRelease:
         """
         A convenience method that figures out what operating system the Actor
         is using and tells the Actor which execution key to release.
         """
         if platform.system() == "Darwin":
-            return Release(Keys.COMMAND)
-        return Release(Keys.CONTROL)
+            return cls(key=Keys.COMMAND)
+        return cls(key=Keys.CONTROL)
 
-    @staticmethod
-    def left_mouse_button() -> "Release":
+    @classmethod
+    def left_mouse_button(cls: Type[SelfRelease]) -> SelfRelease:
         """Release the left mouse button."""
-        return Release(lmb=True)
+        return cls(lmb=True)
 
-    def describe(self) -> str:
+    def describe(self: SelfRelease) -> str:
         """Describe the Action in present tense."""
         # darn, it doesn't work quite as well here. :P
         return f"Release {self.the_kraken}."
 
     @beat("  Release {the_kraken}!")
-    def add_to_chain(self, _: Actor, the_chain: ActionChains) -> None:
+    def add_to_chain(self: SelfRelease, _: Actor, the_chain: ActionChains) -> None:
         """Add the Release Action to a Chain of Actions."""
         if self.lmb:
             the_chain.release()
@@ -63,7 +65,9 @@ class Release:
         else:
             raise UnableToAct("Release must be told what to release.")
 
-    def __init__(self, key: Optional[str] = None, lmb: bool = False) -> None:
+    def __init__(
+        self: SelfRelease, key: Optional[str] = None, lmb: bool = False
+    ) -> None:
         self.key = key
         self.lmb = lmb
         self.description = "LEFT MOUSE BUTTON" if lmb else KEY_NAMES[key]
