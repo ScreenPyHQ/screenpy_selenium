@@ -29,6 +29,9 @@ class Text:
         )
     """
 
+    target: Target
+    multi: bool
+
     @classmethod
     def of_the(cls: Type[SelfText], target: Target) -> SelfText:
         """Target the element to extract the text from.

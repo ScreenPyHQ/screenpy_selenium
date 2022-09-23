@@ -41,6 +41,8 @@ class MoveMouse:
     """
 
     offset: Optional[Tuple[int, int]]
+    target: Optional[Target]
+    description: str
 
     @classmethod
     def to_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:

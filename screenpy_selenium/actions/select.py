@@ -48,7 +48,7 @@ class Select:
         return SelectByIndex(index)
 
     @staticmethod
-    def the_option_with_value(value: str) -> "SelectByValue":
+    def the_option_with_value(value: Union[int, str]) -> "SelectByValue":
         """Select the option by its value."""
         return SelectByValue(value)
 
@@ -64,6 +64,7 @@ class SelectByText:
     """
 
     target: Optional[Target]
+    text: str
 
     def from_the(self, target: Target) -> "SelectByText":
         """
@@ -114,6 +115,7 @@ class SelectByIndex:
     """
 
     target: Optional[Target]
+    index: str
 
     def from_the(self, target: Target) -> "SelectByIndex":
         """
@@ -164,6 +166,7 @@ class SelectByValue:
     """
 
     target: Optional[Target]
+    value: str
 
     def from_the(self, target: Target) -> "SelectByValue":
         """

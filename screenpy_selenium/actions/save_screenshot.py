@@ -41,6 +41,8 @@ class SaveScreenshot:
     """
 
     attach_kwargs: Optional[dict]
+    path: str
+    filename: str
 
     def describe(self: SelfSaveScreenshot) -> str:
         """Describe the Action in present tense."""

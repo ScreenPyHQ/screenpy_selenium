@@ -29,6 +29,9 @@ class Selected:
         the_actor.should(See.the(Selected.options_from(INDUSTRIES), HasLength(5)))
     """
 
+    target: Target
+    multi: bool
+
     @classmethod
     def option_from_the(cls: Type[SelfSelected], target: Target) -> SelfSelected:
         """

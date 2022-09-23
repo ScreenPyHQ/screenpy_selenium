@@ -49,6 +49,8 @@ class Wait:
     """
 
     args: Iterable[Any]
+    timeout: int
+    log_detail: Optional[str]
 
     @classmethod
     def for_the(cls: Type[SelfWait], target: Target) -> SelfWait:

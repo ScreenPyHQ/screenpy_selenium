@@ -35,6 +35,11 @@ class Release:
         the_actor.attempts_to(Release.command_or_control_key())
     """
 
+    key: Optional[str]
+    lmb: bool
+    description: str
+    the_kraken: str
+
     @classmethod
     def command_or_control_key(cls: Type[SelfRelease]) -> SelfRelease:
         """

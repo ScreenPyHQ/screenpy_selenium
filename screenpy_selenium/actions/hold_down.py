@@ -39,6 +39,9 @@ class HoldDown:
     """
 
     target: Optional[Target]
+    key: Optional[str]
+    lmb: bool
+    description: str
 
     @classmethod
     def command_or_control_key(cls: Type[SelfHoldDown]) -> SelfHoldDown:

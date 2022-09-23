@@ -32,6 +32,8 @@ class Enter:
 
     target: Optional[Target]
     following_keys: List[str]
+    text: str
+    text_to_log: str
 
     @classmethod
     def the_text(cls: Type[SelfEnter], text: str) -> SelfEnter:
