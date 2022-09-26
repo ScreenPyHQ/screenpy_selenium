@@ -1,3 +1,17 @@
 [MASTER]
 ignore-paths=^.*/tests/.*$
-disable=unused-argument,too-few-public-methods,no-member,arguments-renamed,invalid-name
+disable=
+    arguments-renamed,
+    bad-continuation,
+    duplicate-code,
+    import-error,
+    invalid-name,
+    logging-format-interpolation,
+    logging-fstring-interpolation,
+    no-member,
+    no-self-use,
+    super-init-not-called,
+    too-few-public-methods,
+    unused-argument,
+    useless-super-delegation
+    wrong-import-order,
