@@ -3,12 +3,20 @@
   ▀▀▀▄▄ █   █▄▄▀ █▀▀ █▀▀ █  █ ░█▄▄█ █▄▄█    ▀▀▀▄▄ █▀▀ █   █▀▀ █  █ ▀█▀ █  █ █ ▀ █
  ░█▄▄▄█ ▀▀▀ ▀ ▀▀ ▀▀▀ ▀▀▀ ▀  ▀ ░█    ▄▄▄█   ░█▄▄▄█ ▀▀▀ ▀▀▀ ▀▀▀ ▀  ▀ ▀▀▀  ▀▀▀ ▀   ▀
 """
+try:
+    # importlib.metadata is present in Python 3.8 and later
+    import importlib.metadata as importlib_metadata
+except ImportError:
+    # use the shim package importlib-metadata pre-3.8
+    import importlib_metadata  # type: ignore
 
-__title__ = "screenpy_selenium"
-__description__ = "ScreenPy extension to enable interacting with Selenium."
-__url__ = "https://github.com/ScreenPyHQ/screenpy_selenium"
-__version__ = "4.0.3"
-__author__ = "Perry Goy"
-__author_email__ = "perry.goy@gmail.com"
-__license__ = "MIT"
-__copyright__ = "Copyright (c) 2022-2022 Perry Goy"
+metadata = importlib_metadata.metadata("screenpy_selenium")
+
+__title__ = metadata["Name"]
+__description__ = metadata["Summary"]
+__url__ = metadata["Home-page"]
+__version__ = metadata["Version"]
+__author__ = metadata["Author"]
+__author_email__ = metadata["Author-email"]
+__license_file__ = metadata["License-File"]
+__copyright__ = f"2022 {__author__}"
