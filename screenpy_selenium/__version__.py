@@ -18,5 +18,5 @@ __url__ = metadata["Home-page"]
 __version__ = metadata["Version"]
 __author__ = metadata["Author"]
 __author_email__ = metadata["Author-email"]
-__license_file__ = metadata["License-File"]
+__license__ = metadata["License"]
 __copyright__ = f"2022 {__author__}"
