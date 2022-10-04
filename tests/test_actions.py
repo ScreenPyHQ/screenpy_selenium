@@ -10,8 +10,8 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from tests.unittest_protocols import ChainableAction
-from tests.useful_mocks import get_mocked_chain, get_mocked_target_and_element
+from unittest_protocols import ChainableAction
+from useful_mocks import get_mocked_chain, get_mocked_target_and_element
 
 from screenpy_selenium import Target
 from screenpy_selenium.abilities import BrowseTheWeb

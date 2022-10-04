@@ -7,7 +7,7 @@ from screenpy.protocols import Answerable, Describable, ErrorKeeper
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
-from tests.useful_mocks import get_mocked_element
+from useful_mocks import get_mocked_element
 
 from screenpy_selenium import Target
 from screenpy_selenium.abilities import BrowseTheWeb
