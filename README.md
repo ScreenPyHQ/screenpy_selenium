@@ -1,6 +1,14 @@
 ScreenPy Selenium
 =================
 
+[![Build Status](../../actions/workflows/tests.yml/badge.svg?branch=trunk)](../../actions/workflows/tests.yml?query=branch%3Atrunk)
+[![Build Status](../../actions/workflows/lint.yml/badge.svg?branch=trunk)](../../actions/workflows/lint.yml?query=branch%3Atrunk)
+
+[![Supported Versions](https://img.shields.io/pypi/pyversions/screenpy-selenium.svg)](https://pypi.org/project/screenpy)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+
 ```
 TITLE CARD:
                                "ScreenPy Selenium"
@@ -58,8 +66,13 @@ Contributing
 ------------
 You want to contribute? Great! Here are the things you should do before submitting your PR:
 
-1. Install [`pre-commit`](https://pre-commit.com/)
-1. run `pre-commit install` once.
-1. run `tox` to perform tests frequently.
+1. Fork the repo and git clone your fork.
+1. `dev` install the project package:
+    1. `pip install -e .[dev]`
+    1. Optional (poetry users):
+        1. `poetry install --extras dev`
+1. Run `pre-commit install` once.
+1. Run `tox` to perform tests frequently.
+1. Create pull-request from your branch.
 
 That's it! :)
