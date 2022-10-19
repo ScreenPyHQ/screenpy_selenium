@@ -42,4 +42,4 @@ jobs:
           mypy screenpy_selenium
       - name: Lint with pylint
         run: |
-          pylint screenpy
+          pylint screenpy_selenium
