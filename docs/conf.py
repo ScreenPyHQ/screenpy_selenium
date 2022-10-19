@@ -17,7 +17,7 @@ import sys
 sys.path.insert(0, os.path.abspath("./ext"))
 sys.path.insert(0, os.path.abspath("../"))
 
-from screenpy_selenium.__version__ import __version__  # noqa: need the path first
+from screenpy_selenium.__version__ import __version__, __author__, __copyright__  # noqa: need the path first
 
 autodoc_mock_imports = ["selenium", "screenpy", "screenpy_pyotp"]
 
@@ -25,8 +25,8 @@ autodoc_mock_imports = ["selenium", "screenpy", "screenpy_pyotp"]
 # -- Project information -----------------------------------------------------
 
 project = 'screenpy_selenium'
-copyright = '2022, Perry Goy'
-author = 'Perry Goy'
+copyright = __copyright__
+author = __author__
 
 # The full version, including alpha/beta/rc tags
 release = __version__
@@ -49,7 +49,6 @@ intersphinx_mapping = {
     "selenium": ("https://selenium-python.readthedocs.io/", None),
     "screenpy_pyotp": ("https://screenpy-pyotp-docs.readthedocs.io/en/latest/", None),
 }
-
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
