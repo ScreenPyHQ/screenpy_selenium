@@ -35,6 +35,7 @@ class Target:
 
     @property
     def target_name(self):
+        """return the description when set or the 2nd half of the locator"""
         if self._description is not None:
             return self._description
         return self.locator[1] if self.locator else None
