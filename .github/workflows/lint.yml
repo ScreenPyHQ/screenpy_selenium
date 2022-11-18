@@ -1,0 +1,45 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev-all]
+      - name: Lint with black
+        run: |
+          black --check --diff screenpy_selenium
+      - name: Lint with isort
+        run: |
+          isort --check-only --diff screenpy_selenium
+      - name: Lint with flake8
+        run: |
+          flake8 --exit-zero screenpy_selenium
+      - name: Lint with mypy
+        run: |
+          mypy screenpy_selenium
+      - name: Lint with pylint
+        run: |
+          pylint screenpy_selenium
