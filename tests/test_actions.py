@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from unittest_protocols import ChainableAction
 from useful_mocks import (
     get_mocked_chain,
-    get_mocked_target,
+    get_mock_target_class,
     get_mocked_target_and_element,
     get_mocked_browser,
 )
@@ -48,7 +48,8 @@ from screenpy_selenium.actions import (
 from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
 from screenpy_selenium.protocols import Chainable
 
-TARGET = get_mocked_target()
+FakeTarget = get_mock_target_class()
+TARGET = FakeTarget()
 
 
 class TestAcceptAlert:

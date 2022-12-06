@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Any, Tuple
 from unittest import mock
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -18,13 +18,17 @@ def get_mocked_chain() -> mock.Mock:
     return mock.create_autospec(ActionChains, instance=True)
 
 
-def get_mocked_target() -> mock.Mock:
-    return mock.create_autospec(Target, instance=True)
+def get_mock_target_class() -> Any:
+    class FakeTarget(Target):
+        def __new__(cls, *args, **kwargs):
+            rt = mock.create_autospec(FakeTarget, instance=True)
+            return rt
+    return FakeTarget
 
 
 def get_mocked_target_and_element() -> Tuple[mock.Mock, mock.Mock]:
     """Get a mocked target which returns a mocked element."""
-    target = get_mocked_target()
+    target = get_mock_target_class()()
     element = get_mocked_element()
     target.found_by.return_value = element
 
