@@ -70,3 +70,11 @@ class TestBrowseTheWeb:
 
     def test_repr(self) -> None:
         assert repr(BrowseTheWeb(get_mocked_webdriver())) == "Browse the Web"
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubBrowseTheWeb(BrowseTheWeb):
+            def new_method(self):
+                return True
+
+        assert SubBrowseTheWeb.using(get_mocked_webdriver()).new_method() == True

@@ -140,6 +140,14 @@ class TestClear:
     def test_describe(self) -> None:
         assert Clear(TARGET).describe() == f"Clear the text from the {TARGET}."
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubClear(Clear):
+            def new_method(self):
+                return True
+
+        assert SubClear.the_text_from_the(TARGET).new_method() is True
+
 
 class TestClick:
     def test_can_be_instantiated(self) -> None:
@@ -194,6 +202,14 @@ class TestClick:
 
     def test_describe(self) -> None:
         assert Click(None).describe() == "Click on the None."
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubClick(Click):
+            def new_method(self):
+                return True
+
+        assert SubClick.on(TARGET).new_method() is True
 
 
 class TestDismissAlert:
@@ -269,6 +285,14 @@ class TestDoubleClick:
     def test_describe(self) -> None:
         assert DoubleClick(None).describe() == "Double-click."
         assert DoubleClick(Target("blah")).describe() == "Double-click on the blah."
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubDoubleClick(DoubleClick):
+            def new_method(self):
+                return True
+
+        assert SubDoubleClick.on(TARGET).new_method() is True
 
 
 class TestEnter:
@@ -384,6 +408,14 @@ class TestEnter:
             == f'Enter "[CENSORED]" into the {TARGET}.'
         )
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubEnter(Enter):
+            def new_method(self):
+                return True
+
+        assert SubEnter.the_text("blah").new_method() is True
+
 
 class TestEnter2FAToken:
     def test_can_be_instantiated(self) -> None:
@@ -425,6 +457,14 @@ class TestEnter2FAToken:
         assert (
             Enter2FAToken(TARGET).describe() == f"Enter a 2FA token into the {TARGET}."
         )
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubEnter2FA(Enter2FAToken):
+            def new_method(self):
+                return True
+
+        assert SubEnter2FA.into(TARGET).new_method() is True
 
 
 class TestGoBack:
@@ -549,6 +589,14 @@ class TestHoldDown:
         assert HoldDown.left_mouse_button().describe() == "Hold down LEFT MOUSE BUTTON."
         assert HoldDown(Keys.SPACE).describe() == "Hold down SPACE."
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubHoldDown(HoldDown):
+            def new_method(self):
+                return True
+
+        assert SubHoldDown.left_mouse_button().new_method() is True
+
 
 class TestMoveMouse:
     def test_can_be_instantiated(self) -> None:
@@ -630,6 +678,14 @@ class TestMoveMouse:
         assert MoveMouse().describe() == "Move the mouse ."
         assert MoveMouse(description="over").describe() == "Move the mouse over."
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubMoveMouse(MoveMouse):
+            def new_method(self):
+                return True
+
+        assert SubMoveMouse.on_the(TARGET).new_method() is True
+
 
 class TestOpen:
     def test_can_be_instantiated(self) -> None:
@@ -655,6 +711,14 @@ class TestOpen:
 
     def test_describe(self) -> None:
         assert Open("place.com").describe() == "Visit place.com."
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubOpen(Open):
+            def new_method(self):
+                return True
+
+        assert SubOpen.browser_on("url").new_method() is True
 
 
 class TestPause:
@@ -779,6 +843,14 @@ class TestRelease:
         assert Release.left_mouse_button().describe() == "Release LEFT MOUSE BUTTON."
         assert Release(Keys.SPACE).describe() == "Release SPACE."
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubRelease(Release):
+            def new_method(self):
+                return True
+
+        assert SubRelease.left_mouse_button().new_method() is True
+
 
 class TestRespondToThePrompt:
     def test_can_be_instantiated(self) -> None:
@@ -805,6 +877,14 @@ class TestRespondToThePrompt:
         assert (
             RespondToThePrompt("baz").describe() == 'Respond to the prompt with "baz".'
         )
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubRespond(RespondToThePrompt):
+            def new_method(self):
+                return True
+
+        assert SubRespond.with_("").new_method() is True
 
 
 class TestRightClick:
@@ -849,6 +929,14 @@ class TestRightClick:
     def test_describe(self) -> None:
         assert RightClick().describe() == "Right-click."
         assert RightClick(Target("foo")).describe() == "Right-click on the foo."
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubRightClick(RightClick):
+            def new_method(self):
+                return True
+
+        assert SubRightClick.on(TARGET).new_method() is True
 
 
 class TestSaveConsoleLog:
@@ -917,6 +1005,14 @@ class TestSaveConsoleLog:
     def test_describe(self) -> None:
         assert SaveConsoleLog("pth").describe() == "Save browser console log as pth"
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSaveConsoleLog(SaveConsoleLog):
+            def new_method(self):
+                return True
+
+        assert SubSaveConsoleLog.as_("").new_method() is True
+
 
 class TestSaveScreenshot:
     def test_can_be_instantiated(self) -> None:
@@ -969,6 +1065,14 @@ class TestSaveScreenshot:
 
     def test_describe(self) -> None:
         assert SaveScreenshot("pth").describe() == "Save screenshot as pth"
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSaveScreenshot(SaveScreenshot):
+            def new_method(self):
+                return True
+
+        assert SubSaveScreenshot.as_("").new_method() is True
 
 
 class TestSelect:
@@ -1037,6 +1141,14 @@ class TestSelectByIndex:
             == "Select the option at index 1 from the None."
         )
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSelectByIndex(SelectByIndex):
+            def new_method(self):
+                return True
+
+        assert SubSelectByIndex(1).from_the(TARGET).new_method() is True
+
 
 class TestSelectByText:
     def test_can_be_instantiated(self) -> None:
@@ -1083,6 +1195,14 @@ class TestSelectByText:
             == 'Select the option "bar" from the None.'
         )
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSelectByText(SelectByText):
+            def new_method(self):
+                return True
+
+        assert SubSelectByText("").from_the(TARGET).new_method() is True
+
 
 class TestSelectByValue:
     def test_can_be_instantiated(self) -> None:
@@ -1126,6 +1246,14 @@ class TestSelectByValue:
             == 'Select the option with value "baz" from the None.'
         )
 
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSelectByValue(SelectByValue):
+            def new_method(self):
+                return True
+
+        assert SubSelectByValue("").from_the(TARGET).new_method() is True
+
 
 class TestSwitchTo:
     def test_can_be_instantiated(self) -> None:
@@ -1158,6 +1286,14 @@ class TestSwitchTo:
 
     def test_describe(self) -> None:
         assert SwitchTo.default().describe() == "Switch to the default frame."
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubSwitchTo(SwitchTo):
+            def new_method(self):
+                return True
+
+        assert SubSwitchTo.the(TARGET).new_method() is True
 
 
 class TestSwitchToTab:
@@ -1294,3 +1430,11 @@ class TestWait:
             Wait(5).seconds_for_the(TARGET).to_contain_text("foo").describe()
             == f'Wait 5 seconds for "foo" to appear in the {TARGET}....'
         )
+
+    def test_subclass(self) -> None:
+        """test code for mypy to scan without issue"""
+        class SubWait(Wait):
+            def new_method(self):
+                return True
+
+        assert SubWait.for_the(TARGET).new_method() is True
