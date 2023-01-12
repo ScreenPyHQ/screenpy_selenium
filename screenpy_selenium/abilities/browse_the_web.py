@@ -3,6 +3,7 @@ Enable the actor to browse the web.
 """
 
 import os
+from typing import Type, TypeVar
 
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -10,6 +11,9 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from ..exceptions import BrowsingError
 
 DEFAULT_APPIUM_HUB_URL = "http://localhost:4723/wd/hub"
+
+
+SelfBrowseTheWeb = TypeVar("SelfBrowseTheWeb", bound="BrowseTheWeb")
 
 
 class BrowseTheWeb:
@@ -26,23 +30,25 @@ class BrowseTheWeb:
         )
     """
 
-    @staticmethod
-    def using_chrome() -> "BrowseTheWeb":
+    browser: WebDriver
+
+    @classmethod
+    def using_chrome(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Chrome Selenium webdriver instance."""
-        return BrowseTheWeb.using(Chrome())
+        return cls.using(browser=Chrome())
 
-    @staticmethod
-    def using_firefox() -> "BrowseTheWeb":
+    @classmethod
+    def using_firefox(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Firefox Selenium webdriver instance."""
-        return BrowseTheWeb.using(Firefox())
+        return cls.using(browser=Firefox())
 
-    @staticmethod
-    def using_safari() -> "BrowseTheWeb":
+    @classmethod
+    def using_safari(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Safari Selenium webdriver instance."""
-        return BrowseTheWeb.using(Safari())
+        return cls.using(browser=Safari())
 
-    @staticmethod
-    def using_ios() -> "BrowseTheWeb":
+    @classmethod
+    def using_ios(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
         Create and use a default Remote driver instance to connect to a
         running Appium server and open Safari on iOS.
@@ -70,10 +76,10 @@ class BrowseTheWeb:
         if IOS_CAPABILITIES["platformVersion"] is None:
             raise BrowsingError("IOS_DEVICE_VERSION Environment variable must be set.")
 
-        return BrowseTheWeb.using(Remote(hub_url, IOS_CAPABILITIES))
+        return cls.using(browser=Remote(hub_url, IOS_CAPABILITIES))
 
-    @staticmethod
-    def using_android() -> "BrowseTheWeb":
+    @classmethod
+    def using_android(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
         Create and use a default Remote driver instance to connect to a
         running Appium server and open Chrome on Android.
@@ -103,21 +109,21 @@ class BrowseTheWeb:
                 "ANDROID_DEVICE_VERSION environment variable must be set."
             )
 
-        return BrowseTheWeb.using(Remote(hub_url, ANDROID_CAPABILITIES))
+        return cls.using(browser=Remote(hub_url, ANDROID_CAPABILITIES))
 
-    @staticmethod
-    def using(browser: WebDriver) -> "BrowseTheWeb":
+    @classmethod
+    def using(cls: Type[SelfBrowseTheWeb], browser: WebDriver) -> SelfBrowseTheWeb:
         """Provide an already-set-up WebDriver to use to browse the web."""
-        return BrowseTheWeb(browser)
+        return cls(browser=browser)
 
-    def forget(self) -> None:
+    def forget(self: SelfBrowseTheWeb) -> None:
         """Quit the attached browser."""
         self.browser.quit()
 
-    def __repr__(self) -> str:
+    def __repr__(self: SelfBrowseTheWeb) -> str:
         return "Browse the Web"
 
     __str__ = __repr__
 
-    def __init__(self, browser: WebDriver) -> None:
+    def __init__(self: SelfBrowseTheWeb, browser: WebDriver) -> None:
         self.browser = browser

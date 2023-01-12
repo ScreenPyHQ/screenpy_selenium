@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from unittest import mock
+
+# from unittest import mock
 
 import pytest
 from hamcrest.core.string_description import StringDescription
@@ -7,6 +8,7 @@ from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium.resolutions import IsClickable, IsInvisible, IsPresent, IsVisible
+from useful_mocks import get_mocked_element
 
 
 @dataclass
@@ -19,7 +21,7 @@ class ExpectedDescriptions:
 
 def _assert_descriptions(
     obj: BaseResolution, element: WebElement, expected: ExpectedDescriptions
-):
+) -> None:
     describe_to = StringDescription()
     describe_match = StringDescription()
     describe_mismatch = StringDescription()
@@ -36,21 +38,17 @@ def _assert_descriptions(
     assert describe_none.out == expected.describe_none
 
 
-def assert_matcher_annotation(obj: BaseResolution):
+def assert_matcher_annotation(obj: BaseResolution) -> None:
     assert type(obj.matcher) is obj.__annotations__["matcher"]
 
 
-def get_mocked_element():
-    return mock.create_autospec(WebElement, instance=True)
-
-
 class TestIsClickable:
-    def test_can_be_instantiated(self):
+    def test_can_be_instantiated(self) -> None:
         ic = IsClickable()
 
         assert isinstance(ic, IsClickable)
 
-    def test_matches_a_clickable_element(self):
+    def test_matches_a_clickable_element(self) -> None:
         element = get_mocked_element()
         element.is_enabled.return_value = True
         element.is_displayed.return_value = True
@@ -58,7 +56,7 @@ class TestIsClickable:
 
         assert ic._matches(element)
 
-    def test_does_not_match_unclickable_element(self):
+    def test_does_not_match_unclickable_element(self) -> None:
         invisible_element = get_mocked_element()
         inactive_element = get_mocked_element()
 
@@ -72,7 +70,7 @@ class TestIsClickable:
         assert not ic._matches(invisible_element)
         assert not ic._matches(inactive_element)
 
-    def test_descriptions(self):
+    def test_descriptions(self) -> None:
         element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is enabled/clickable",
@@ -83,24 +81,24 @@ class TestIsClickable:
 
         _assert_descriptions(IsClickable(), element, expected)
 
-    def test_type_hint(self):
+    def test_type_hint(self) -> None:
         assert_matcher_annotation(IsClickable())
 
 
 class TestIsVisible:
-    def test_can_be_instantiated(self):
+    def test_can_be_instantiated(self) -> None:
         iv = IsVisible()
 
         assert isinstance(iv, IsVisible)
 
-    def test_matches_a_visible_element(self):
+    def test_matches_a_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
         iv = IsVisible()
 
         assert iv._matches(element)
 
-    def test_does_not_match_invisible_element(self):
+    def test_does_not_match_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
         iv = IsVisible()
@@ -108,7 +106,7 @@ class TestIsVisible:
         assert not iv._matches(None)  # element was not found by Element()
         assert not iv._matches(element)
 
-    def test_descriptions(self):
+    def test_descriptions(self) -> None:
         element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is visible",
@@ -119,24 +117,24 @@ class TestIsVisible:
 
         _assert_descriptions(IsVisible(), element, expected)
 
-    def test_type_hint(self):
+    def test_type_hint(self) -> None:
         assert_matcher_annotation(IsVisible())
 
 
 class TestIsInvisible:
-    def test_can_be_instantiated(self):
+    def test_can_be_instantiated(self) -> None:
         ii = IsInvisible()
 
         assert isinstance(ii, IsInvisible)
 
-    def test_matches_a_visible_element(self):
+    def test_matches_a_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
         ii = IsInvisible()
 
         assert ii._matches(element)
 
-    def test_does_not_match_invisible_element(self):
+    def test_does_not_match_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
         ii = IsInvisible()
@@ -144,7 +142,7 @@ class TestIsInvisible:
         assert not ii._matches(None)  # element was not found by Element()
         assert not ii._matches(element)
 
-    def test_descriptions(self):
+    def test_descriptions(self) -> None:
         element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is invisible",
@@ -155,12 +153,12 @@ class TestIsInvisible:
 
         _assert_descriptions(IsInvisible(), element, expected)
 
-    def test_type_hint(self):
+    def test_type_hint(self) -> None:
         assert_matcher_annotation(IsInvisible())
 
 
 class TestIsPresent:
-    def test_can_be_instantiated(self):
+    def test_can_be_instantiated(self) -> None:
         ip = IsPresent()
 
         assert isinstance(ip, IsPresent)
@@ -169,7 +167,7 @@ class TestIsPresent:
         "enabled, displayed",
         ((False, False), (False, True), (True, False), (True, True)),
     )
-    def test_matches_a_present_element(self, enabled, displayed):
+    def test_matches_a_present_element(self, enabled, displayed) -> None:
         element = get_mocked_element()
         ic = IsPresent()
 
@@ -177,12 +175,12 @@ class TestIsPresent:
         element.is_displayed.return_value = displayed
         assert ic._matches(element)
 
-    def test_does_not_match_missing_element(self):
+    def test_does_not_match_missing_element(self) -> None:
         ic = IsPresent()
 
         assert not ic._matches(None)
 
-    def test_descriptions(self):
+    def test_descriptions(self) -> None:
         element = get_mocked_element()
         expected = ExpectedDescriptions(
             describe_to="the element is present",
@@ -193,5 +191,5 @@ class TestIsPresent:
 
         _assert_descriptions(IsPresent(), element, expected)
 
-    def test_type_hint(self):
+    def test_type_hint(self) -> None:
         assert_matcher_annotation(IsPresent())

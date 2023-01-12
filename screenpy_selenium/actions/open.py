@@ -3,12 +3,14 @@ Open a browser on a URL.
 """
 
 import os
-from typing import Union
+from typing import Type, TypeVar, Union
 
 from screenpy import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+SelfOpen = TypeVar("SelfOpen", bound="Open")
 
 
 class Open:
@@ -37,24 +39,32 @@ class Open:
         the_actor.attempts_to(Open.browser_on(HomepageObject))
     """
 
-    @staticmethod
-    def their_browser_on(location: Union[str, object]) -> "Open":
-        """Provide a URL to visit."""
-        return Open(location)
+    @classmethod
+    def their_browser_on(cls: Type[SelfOpen], location: Union[str, object]) -> SelfOpen:
+        """
+        Provide a URL to visit.
 
-    browser_on = their_browser_on
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.Open.browser_on`
+        """
+        return cls(location=location)
 
-    def describe(self) -> str:
+    @classmethod
+    def browser_on(cls: Type[SelfOpen], location: Union[str, object]) -> SelfOpen:
+        """Alias for :meth:`~screenpy_selenium.actions.Open.their_browser_on`."""
+        return cls.their_browser_on(location=location)
+
+    def describe(self: SelfOpen) -> str:
         """Describe the Action in present tense."""
         return f"Visit {self.url}."
 
     @beat("{} visits {url}")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfOpen, the_actor: Actor) -> None:
         """Direct the Actor to visit the specified URL."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         browser.get(self.url)
 
-    def __init__(self, location: Union[str, object]) -> None:
+    def __init__(self: SelfOpen, location: Union[str, object]) -> None:
         url = getattr(location, "url", location)
         url = f'{os.getenv("BASE_URL", "")}{url}'
         self.url = url

@@ -4,7 +4,7 @@ human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
 """
 
-from typing import Iterator, List, Optional, Tuple, Union
+from typing import Iterator, List, Optional, Tuple, Type, TypeVar, Union
 
 from screenpy.actor import Actor
 from selenium.common.exceptions import WebDriverException
@@ -13,6 +13,8 @@ from selenium.webdriver.remote.webdriver import WebElement
 
 from .abilities.browse_the_web import BrowseTheWeb
 from .exceptions import TargetingError
+
+SelfTarget = TypeVar("SelfTarget", bound="Target")
 
 
 class Target:
@@ -34,29 +36,31 @@ class Target:
     locator: Optional[Tuple[str, str]] = None
 
     @property
-    def target_name(self):
+    def target_name(self: SelfTarget) -> Optional[str]:
         """return the description when set or the 2nd half of the locator"""
         if self._description is not None:
             return self._description
         return self.locator[1] if self.locator else None
 
     @target_name.setter
-    def target_name(self, value):
+    def target_name(self: SelfTarget, value) -> None:
         self._description = value
 
     @target_name.deleter
-    def target_name(self):
+    def target_name(self: SelfTarget) -> None:
         del self._description
 
-    @staticmethod
-    def the(desc: str) -> "Target":
+    @classmethod
+    def the(cls: Type[SelfTarget], desc: str) -> SelfTarget:
         """Name this Target.
 
         Beginning with a lower-case letter makes the logs look the nicest.
         """
-        return Target(desc)
+        return cls(desc=desc)
 
-    def located_by(self, locator: Union[Tuple[str, str], str]) -> "Target":
+    def located_by(
+        self: SelfTarget, locator: Union[Tuple[str, str], str]
+    ) -> SelfTarget:
         """Set the locator for this Target.
 
         Possible values for locator:
@@ -81,11 +85,11 @@ class Target:
 
         return self
 
-    def located(self, locator: Union[Tuple[str, str], str]) -> "Target":
+    def located(self: SelfTarget, locator: Union[Tuple[str, str], str]) -> SelfTarget:
         """Alias for :meth:~screenpy_selenium.Target.located_by"""
         return self.located_by(locator)
 
-    def get_locator(self) -> Tuple[str, str]:
+    def get_locator(self: SelfTarget) -> Tuple[str, str]:
         """Return the stored locator.
 
         Raises:
@@ -98,7 +102,7 @@ class Target:
             )
         return self.locator
 
-    def found_by(self, the_actor: Actor) -> WebElement:
+    def found_by(self: SelfTarget, the_actor: Actor) -> WebElement:
         """Retrieve the |WebElement| as viewed by the Actor."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         try:
@@ -106,7 +110,7 @@ class Target:
         except WebDriverException as e:
             raise TargetingError(f"{e} raised while trying to find {self}.") from e
 
-    def all_found_by(self, the_actor: Actor) -> List[WebElement]:
+    def all_found_by(self: SelfTarget, the_actor: Actor) -> List[WebElement]:
         """Retrieve a list of |WebElement| objects as viewed by the Actor."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         try:
@@ -114,17 +118,19 @@ class Target:
         except WebDriverException as e:
             raise TargetingError(f"{e} raised while trying to find {self}.") from e
 
-    def __repr__(self) -> str:
+    def __repr__(self: SelfTarget) -> str:
         return f"{self.target_name}"
 
     __str__ = __repr__
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self: SelfTarget) -> Iterator[str]:
         return self.get_locator().__iter__()
 
-    def __getitem__(self, index: int) -> str:
+    def __getitem__(self: SelfTarget, index: int) -> str:
         return self.get_locator()[index]
 
-    def __init__(self, desc: str = None, locator: Tuple[str, str] = None) -> None:
+    def __init__(
+        self: SelfTarget, desc: str = None, locator: Tuple[str, str] = None
+    ) -> None:
         self.target_name = desc
         self.locator = locator

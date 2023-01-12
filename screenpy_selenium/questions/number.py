@@ -2,10 +2,14 @@
 Investigate how many of an element are present on the page.
 """
 
+from typing import Type, TypeVar
+
 from screenpy import Actor
 from screenpy.pacing import beat
 
 from ..target import Target
+
+SelfNumber = TypeVar("SelfNumber", bound="Number")
 
 
 class Number:
@@ -19,19 +23,19 @@ class Number:
         the_actor.should(See.the(Number.of(SEARCH_RESULTS), IsEqualTo(4)))
     """
 
-    @staticmethod
-    def of(target: Target) -> "Number":
+    @classmethod
+    def of(cls: Type[SelfNumber], target: Target) -> SelfNumber:
         """Target the element to be counted."""
-        return Number(target=target)
+        return cls(target=target)
 
-    def describe(self) -> str:
+    def describe(self: SelfNumber) -> str:
         """Describe the Question."""
         return f"The number of {self.target}."
 
     @beat("{} counts the number of {target}.")
-    def answered_by(self, the_actor: Actor) -> int:
+    def answered_by(self: SelfNumber, the_actor: Actor) -> int:
         """Direct the Actor to count the elements."""
         return len(self.target.all_found_by(the_actor))
 
-    def __init__(self, target: Target) -> None:
+    def __init__(self: SelfNumber, target: Target) -> None:
         self.target = target
