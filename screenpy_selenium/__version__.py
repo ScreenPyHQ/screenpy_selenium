@@ -19,4 +19,4 @@ __version__ = metadata["Version"]
 __author__ = metadata["Author"]
 __author_email__ = metadata["Author-email"]
 __license__ = metadata["License"]
-__copyright__ = f"2022 {__author__}"
+__copyright__ = f"2022-2023 {__author__}"
