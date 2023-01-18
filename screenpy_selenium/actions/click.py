@@ -2,7 +2,7 @@
 Click on an element.
 """
 
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from screenpy.actor import Actor
 from screenpy.exceptions import DeliveryError, UnableToAct
@@ -11,6 +11,8 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..target import Target
+
+SelfClick = TypeVar("SelfClick", bound="Click")
 
 
 class Click:
@@ -28,19 +30,33 @@ class Click:
         the_actor.attempts_to(Chain(Click(THE_LOGIN_LINK)))
     """
 
-    @staticmethod
-    def on_the(target: Target) -> "Click":
-        """Target the element to click on."""
-        return Click(target)
+    @classmethod
+    def on_the(cls: Type[SelfClick], target: Target) -> SelfClick:
+        """
+        Target the element to click on.
 
-    on = on_the_first_of_the = on_the
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.Click.on`
+            * :meth:`~screenpy_selenium.actions.Click.on_the_first_of_the`
+        """
+        return cls(target=target)
 
-    def describe(self) -> str:
+    @classmethod
+    def on(cls: Type[SelfClick], target: Target) -> SelfClick:
+        """Alias for :meth:`~screenpy_selenium.actions.Click.on_the`."""
+        return cls.on_the(target=target)
+
+    @classmethod
+    def on_the_first_of_the(cls: Type[SelfClick], target: Target) -> SelfClick:
+        """Alias for :meth:`~screenpy_selenium.actions.Click.on_the`."""
+        return cls.on_the(target=target)
+
+    def describe(self: SelfClick) -> str:
         """Describe the Action in present tense."""
         return f"Click on the {self.target}."
 
     @beat("{} clicks on the {target}.")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfClick, the_actor: Actor) -> None:
         """Direct the Actor to click on the element."""
         if self.target is None:
             raise UnableToAct(
@@ -60,7 +76,9 @@ class Click:
             raise DeliveryError(msg) from e
 
     @beat("  Click{description}!")
-    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
+    def add_to_chain(
+        self: SelfClick, the_actor: Actor, the_chain: ActionChains
+    ) -> None:
         """Add the Click Action to a Chain of Actions."""
         if self.target is not None:
             the_element = self.target.found_by(the_actor)
@@ -69,6 +87,6 @@ class Click:
 
         the_chain.click(on_element=the_element)
 
-    def __init__(self, target: Optional[Target] = None) -> None:
+    def __init__(self: SelfClick, target: Optional[Target] = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

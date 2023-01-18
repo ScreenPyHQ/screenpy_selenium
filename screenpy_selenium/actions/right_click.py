@@ -2,7 +2,7 @@
 Right-click on an element, or wherever the cursor currently is.
 """
 
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from screenpy import Actor
 from screenpy.pacing import beat
@@ -10,6 +10,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
 from ..target import Target
+
+SelfRightClick = TypeVar("SelfRightClick", bound="RightClick")
 
 
 class RightClick:
@@ -32,14 +34,31 @@ class RightClick:
 
     target: Optional[Target]
 
-    @staticmethod
-    def on_the(target: Target) -> "RightClick":
-        """Target an element to right-click on."""
-        return RightClick(target=target)
+    @classmethod
+    def on_the(cls: Type[SelfRightClick], target: Target) -> SelfRightClick:
+        """Target an element to right-click on.
 
-    on = on_the_first_of_the = on_the
+        Aliases:
+            * :meth:`~screenpy_selenium.actions.RightClick.on`
+            * :meth:`~screenpy_selenium.actions.RightClick.on_the_first_of_the`
+        """
+        return cls(target=target)
 
-    def _add_action_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
+    @classmethod
+    def on(cls: Type[SelfRightClick], target: Target) -> SelfRightClick:
+        """Alias for :meth:`~screenpy_selenium.actions.RightClick.on_the`."""
+        return cls.on_the(target=target)
+
+    @classmethod
+    def on_the_first_of_the(
+        cls: Type[SelfRightClick], target: Target
+    ) -> SelfRightClick:
+        """Alias for :meth:`~screenpy_selenium.actions.RightClick.on_the`."""
+        return cls.on_the(target=target)
+
+    def _add_action_to_chain(
+        self: SelfRightClick, the_actor: Actor, the_chain: ActionChains
+    ) -> None:
         """Private method to add this Action to the chain."""
         if self.target is not None:
             the_element = self.target.found_by(the_actor)
@@ -48,12 +67,12 @@ class RightClick:
 
         the_chain.context_click(on_element=the_element)
 
-    def describe(self) -> str:
+    def describe(self: SelfRightClick) -> str:
         """Describe the Action in present tense."""
         return f"Right-click{self.description}."
 
     @beat("{} right-clicks{description}.")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfRightClick, the_actor: Actor) -> None:
         """Direct the Actor to right-click on the element."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         the_chain = ActionChains(browser)
@@ -61,10 +80,12 @@ class RightClick:
         the_chain.perform()
 
     @beat("  Right-click{description}!")
-    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
+    def add_to_chain(
+        self: SelfRightClick, the_actor: Actor, the_chain: ActionChains
+    ) -> None:
         """Add the RightClick Action to a Chain of Actions."""
         self._add_action_to_chain(the_actor, the_chain)
 
-    def __init__(self, target: Optional[Target] = None) -> None:
+    def __init__(self: SelfRightClick, target: Optional[Target] = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

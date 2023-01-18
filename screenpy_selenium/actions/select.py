@@ -2,7 +2,7 @@
 Select an item from a multi-selection field or dropdown.
 """
 
-from typing import Optional, Union
+from typing import Optional, TypeVar, Union
 
 from screenpy import Actor
 from screenpy.exceptions import DeliveryError, UnableToAct
@@ -11,6 +11,10 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select as SeleniumSelect
 
 from ..target import Target
+
+SelfSelectByText = TypeVar("SelfSelectByText", bound="SelectByText")
+SelfSelectByIndex = TypeVar("SelfSelectByIndex", bound="SelectByIndex")
+SelfSelectByValue = TypeVar("SelfSelectByValue", bound="SelectByValue")
 
 
 class Select:
@@ -48,7 +52,7 @@ class Select:
         return SelectByIndex(index)
 
     @staticmethod
-    def the_option_with_value(value: str) -> "SelectByValue":
+    def the_option_with_value(value: Union[int, str]) -> "SelectByValue":
         """Select the option by its value."""
         return SelectByValue(value)
 
@@ -64,8 +68,9 @@ class SelectByText:
     """
 
     target: Optional[Target]
+    text: str
 
-    def from_the(self, target: Target) -> "SelectByText":
+    def from_the(self: SelfSelectByText, target: Target) -> SelfSelectByText:
         """
         Target the dropdown or multi-select field to select the option from.
         """
@@ -74,12 +79,12 @@ class SelectByText:
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self) -> str:
+    def describe(self: SelfSelectByText) -> str:
         """Describe the Action in present tense."""
         return f'Select the option "{self.text}" from the {self.target}.'
 
     @beat('{} selects the option "{text}" from the {target}.')
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfSelectByText, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its text."""
         if self.target is None:
             raise UnableToAct(
@@ -98,7 +103,9 @@ class SelectByText:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(self, text: str, target: Optional[Target] = None) -> None:
+    def __init__(
+        self: SelfSelectByText, text: str, target: Optional[Target] = None
+    ) -> None:
         self.target = target
         self.text = text
 
@@ -114,8 +121,9 @@ class SelectByIndex:
     """
 
     target: Optional[Target]
+    index: str
 
-    def from_the(self, target: Target) -> "SelectByIndex":
+    def from_the(self: SelfSelectByIndex, target: Target) -> SelfSelectByIndex:
         """
         Target the dropdown or multi-select field to select the option from.
         """
@@ -124,12 +132,12 @@ class SelectByIndex:
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self) -> str:
+    def describe(self: SelfSelectByIndex) -> str:
         """Describe the Action in present tense."""
         return f"Select the option at index {self.index} from the {self.target}."
 
     @beat("{} selects the option at index {index} from the {target}.")
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfSelectByIndex, the_actor: Actor) -> None:
         """Direct the Actor to select the option using its index."""
         if self.target is None:
             raise UnableToAct(
@@ -148,7 +156,9 @@ class SelectByIndex:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(self, index: Union[int, str], target: Optional[Target] = None) -> None:
+    def __init__(
+        self: SelfSelectByIndex, index: Union[int, str], target: Optional[Target] = None
+    ) -> None:
         self.target = target
         self.index = str(index)
 
@@ -164,8 +174,9 @@ class SelectByValue:
     """
 
     target: Optional[Target]
+    value: str
 
-    def from_the(self, target: Target) -> "SelectByValue":
+    def from_the(self: SelfSelectByValue, target: Target) -> SelfSelectByValue:
         """
         Target the dropdown or multi-select field to select the option from.
         """
@@ -174,12 +185,12 @@ class SelectByValue:
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self) -> str:
+    def describe(self: SelfSelectByValue) -> str:
         """Describe the Action in present tense."""
         return f'Select the option with value "{self.value}" from the {self.target}.'
 
     @beat('{} selects the option with value "{value}" from the {target}.')
-    def perform_as(self, the_actor: Actor) -> None:
+    def perform_as(self: SelfSelectByValue, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its value."""
         if self.target is None:
             raise UnableToAct(
@@ -198,6 +209,8 @@ class SelectByValue:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(self, value: Union[int, str], target: Optional[Target] = None) -> None:
+    def __init__(
+        self: SelfSelectByValue, value: Union[int, str], target: Optional[Target] = None
+    ) -> None:
         self.target = target
         self.value = str(value)

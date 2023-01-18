@@ -3,11 +3,11 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target
-from screenpy_selenium.abilities import BrowseTheWeb
 from screenpy_selenium.exceptions import TargetingError
+from useful_mocks import get_mocked_browser
 
 
-def test_can_be_instantiated():
+def test_can_be_instantiated() -> None:
     t1 = Target.the("test")
     t2 = Target.the("test").located_by("test")
     t3 = Target.the("test").located("test")
@@ -23,7 +23,7 @@ def test_can_be_instantiated():
     assert isinstance(t6, Target)
 
 
-def test_auto_describe():
+def test_auto_describe() -> None:
     """When no description is provided, automatically use the string of the locator"""
     t1 = Target().located_by((By.ID, "foo-id"))
     t2 = Target("blah").located_by("foo")
@@ -36,14 +36,14 @@ def test_auto_describe():
     assert t4.target_name == ""
 
 
-def test_del_description():
+def test_del_description() -> None:
     t1 = Target("test")
     del t1.target_name
 
     assert t1.target_name is None
 
 
-def test_complains_for_no_locator():
+def test_complains_for_no_locator() -> None:
     """Raises if no locator was supplied."""
     target = Target.the("test")
 
@@ -51,7 +51,7 @@ def test_complains_for_no_locator():
         target.get_locator()
 
 
-def test_get_locator():
+def test_get_locator() -> None:
     """Returns the locator tuple when asked for it"""
     css_selector = "#id"
     xpath_locator = '//div[@id="id"]'
@@ -69,7 +69,7 @@ def test_get_locator():
     assert id_target.get_locator() == (By.ID, id_locator)
 
 
-def test_located():
+def test_located() -> None:
     """Uses the provided locator tuple, unaltered"""
     locator = (By.ID, "spam")
     target = Target.the("test").located(locator)
@@ -77,7 +77,7 @@ def test_located():
     assert target.get_locator() == locator
 
 
-def test_can_be_indexed():
+def test_can_be_indexed() -> None:
     locator = (By.ID, "eggs")
     target = Target.the("test").located(locator)
 
@@ -85,31 +85,31 @@ def test_can_be_indexed():
     assert target[1] == locator[1]
 
 
-def test_locator_tuple_size():
+def test_locator_tuple_size() -> None:
     with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID, "foo", "baz"))
+        Target("test").located((By.ID, "foo", "baz"))  # type: ignore
     assert "locator tuple length should be 2" in f"{excinfo.value}"
 
     with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID,))
+        Target("test").located((By.ID,))  # type: ignore
     assert "locator tuple length should be 2" in f"{excinfo.value}"
 
-    with pytest.raises(TypeError) as excinfo:
-        Target("test").located_by([By.ID, "foo"])
+    with pytest.raises(TypeError) as excinfo:  # type: ignore
+        Target("test").located_by([By.ID, "foo"])  # type: ignore
     assert "invalid locator type" in f"{excinfo.value}"
 
 
-def test_found_by(Tester):
+def test_found_by(Tester) -> None:
     test_locator = (By.ID, "eggs")
     Target.the("test").located(test_locator).found_by(Tester)
 
-    mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+    mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_element.assert_called_once_with(*test_locator)
 
 
-def test_found_by_raises(Tester):
+def test_found_by_raises(Tester) -> None:
     test_name = "frobnosticator"
-    mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+    mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_element.side_effect = WebDriverException
 
     with pytest.raises(TargetingError) as excinfo:
@@ -117,17 +117,17 @@ def test_found_by_raises(Tester):
     assert test_name in str(excinfo.value)
 
 
-def test_all_found_by(Tester):
+def test_all_found_by(Tester) -> None:
     test_locator = (By.ID, "baked beans")
     Target.the("test").located(test_locator).all_found_by(Tester)
 
-    mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+    mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_elements.assert_called_once_with(*test_locator)
 
 
-def test_all_found_by_raises(Tester):
+def test_all_found_by_raises(Tester) -> None:
     test_name = "transmogrifier"
-    mocked_browser = Tester.ability_to(BrowseTheWeb).browser
+    mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_elements.side_effect = WebDriverException
 
     with pytest.raises(TargetingError) as excinfo:
@@ -135,7 +135,7 @@ def test_all_found_by_raises(Tester):
     assert test_name in str(excinfo.value)
 
 
-def test_iterator():
+def test_iterator() -> None:
     locator = (By.ID, "eggs")
     target = Target.the("test").located(locator)
     it1 = target.__iter__()
@@ -146,14 +146,14 @@ def test_iterator():
         next(it1)
 
 
-def test_empty_target_iterator():
+def test_empty_target_iterator() -> None:
     nulltarget = Target("bogus")
 
     with pytest.raises(TargetingError):
         iter(nulltarget)
 
 
-def test_repr():
+def test_repr() -> None:
     t1 = Target()
     t2 = Target("foo")
 
@@ -161,7 +161,7 @@ def test_repr():
     assert repr(t2) == "foo"
 
 
-def test_str():
+def test_str() -> None:
     t1 = Target()
     t2 = Target("foo")
 
