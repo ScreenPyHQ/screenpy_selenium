@@ -125,6 +125,8 @@ class Target:
     def __getitem__(self, index: int) -> str:
         return self.get_locator()[index]
 
-    def __init__(self, desc: str = None, locator: Tuple[str, str] = None) -> None:
+    def __init__(
+        self, desc: Optional[str] = None, locator: Optional[Tuple[str, str]] = None
+    ) -> None:
         self.target_name = desc
         self.locator = locator
