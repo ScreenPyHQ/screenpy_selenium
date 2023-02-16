@@ -12,7 +12,7 @@ INT. SITEPACKAGES DIRECTORY
 ScreenPy Selenium is an extension for ScreenPy, enabling interaction with
 Selenium.
 
-:copyright: (c) 2022–2022 by Perry Goy.
+:copyright: (c) 2022–2023, Perry Goy.
 :license: MIT, see LICENSE for more details.
 """
 
