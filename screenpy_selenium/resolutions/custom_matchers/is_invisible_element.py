@@ -18,7 +18,7 @@ class IsInvisibleElement(BaseMatcher[Optional[WebElement]]):
 
     def _matches(self, item: Optional[WebElement]) -> bool:
         if item is None:
-            return False
+            return True
         return item.is_displayed() is False
 
     def describe_to(self, description: Description) -> None:
@@ -34,9 +34,6 @@ class IsInvisibleElement(BaseMatcher[Optional[WebElement]]):
         self, item: Optional[WebElement], mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
-        if item is None:
-            mismatch_description.append_text("was not even present")
-            return
         mismatch_description.append_text("was not invisible")
 
 
