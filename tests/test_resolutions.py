@@ -139,7 +139,7 @@ class TestIsInvisible:
         element.is_displayed.return_value = True
         ii = IsInvisible()
 
-        assert not ii._matches(None)  # element was not found by Element()
+        assert ii._matches(None)  # element was not found by Element()
         assert not ii._matches(element)
 
     def test_descriptions(self) -> None:
@@ -148,10 +148,24 @@ class TestIsInvisible:
             describe_to="the element is invisible",
             describe_match="it was invisible",
             describe_mismatch="was not invisible",
-            describe_none="was not even present",
+            describe_none="it was invisible",
         )
 
-        _assert_descriptions(IsInvisible(), element, expected)
+        obj = IsInvisible()
+        describe_to = StringDescription()
+        describe_match = StringDescription()
+        describe_mismatch = StringDescription()
+        describe_none = StringDescription()
+
+        obj.describe_to(describe_to)
+        obj.describe_match(element, describe_match)
+        obj.describe_mismatch(element, describe_mismatch)
+        obj.describe_match(None, describe_none)
+
+        assert describe_to.out == expected.describe_to
+        assert describe_match.out == expected.describe_match
+        assert describe_mismatch.out == expected.describe_mismatch
+        assert describe_none.out == expected.describe_none
 
     def test_type_hint(self) -> None:
         assert_matcher_annotation(IsInvisible())
