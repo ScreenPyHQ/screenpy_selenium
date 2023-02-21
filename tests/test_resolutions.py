@@ -127,19 +127,19 @@ class TestIsInvisible:
 
         assert isinstance(ii, IsInvisible)
 
-    def test_matches_a_visible_element(self) -> None:
+    def test_matches_an_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
         ii = IsInvisible()
 
         assert ii._matches(element)
+        assert ii._matches(None)  # element was not found by Element()
 
-    def test_does_not_match_invisible_element(self) -> None:
+    def test_does_not_match_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
         ii = IsInvisible()
 
-        assert ii._matches(None)  # element was not found by Element()
         assert not ii._matches(element)
 
     def test_descriptions(self) -> None:
