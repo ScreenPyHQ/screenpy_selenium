@@ -1,14 +1,12 @@
 from dataclasses import dataclass
 
-# from unittest import mock
-
 import pytest
 from hamcrest.core.string_description import StringDescription
 from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
-
-from screenpy_selenium.resolutions import IsClickable, IsInvisible, IsPresent, IsVisible
 from useful_mocks import get_mocked_element
+
+from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
 
 
 @dataclass

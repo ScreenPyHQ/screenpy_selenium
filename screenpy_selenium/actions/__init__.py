@@ -1,6 +1,8 @@
 """
 Actions an Actor can perform using their ability to BrowseTheWeb.
 """
+import screenpy.actions
+from screenpy.actions import *  # noqa
 
 from .accept_alert import AcceptAlert
 from .chain import Chain
@@ -38,7 +40,8 @@ TakeScreenshot = SaveScreenshot
 Visit = Open
 
 
-__all__ = [
+__all__ = screenpy.actions.__all__
+__all__ += [
     "AcceptAlert",
     "Chain",
     "Clear",

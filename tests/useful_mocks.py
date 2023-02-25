@@ -1,13 +1,12 @@
 from typing import Any, Tuple
 from unittest import mock
 
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.remote.webdriver import WebDriver
-
 from screenpy import Actor
-from screenpy_selenium import Target
-from screenpy_selenium.abilities import BrowseTheWeb
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
+
+from screenpy_selenium import BrowseTheWeb, Target
 
 
 def get_mocked_element() -> mock.Mock:

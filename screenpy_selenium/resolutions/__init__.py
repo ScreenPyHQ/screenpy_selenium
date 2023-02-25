@@ -2,6 +2,9 @@
 Additional Resolutions to provide expected answers for Selenium tests.
 """
 
+import screenpy.resolutions
+from screenpy.resolutions import *  # noqa
+
 from .is_clickable import IsClickable
 from .is_invisible import IsInvisible
 from .is_present import IsPresent
@@ -13,7 +16,9 @@ IsDisplayed = Displayed = Visible = IsVisible
 IsNotDisplayed = NotDisplayed = Invisible = IsInvisible
 Exist = Exists = Present = IsPresent
 
-__all__ = [
+
+__all__ = screenpy.resolutions.__all__
+__all__ += [
     "Clickable",
     "Displayed",
     "Enabled",

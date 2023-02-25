@@ -12,14 +12,13 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from unittest_protocols import ChainableAction
 from useful_mocks import (
-    get_mocked_chain,
     get_mock_target_class,
-    get_mocked_target_and_element,
     get_mocked_browser,
+    get_mocked_chain,
+    get_mocked_target_and_element,
 )
 
-from screenpy_selenium import Target
-from screenpy_selenium.actions import (
+from screenpy_selenium import (
     AcceptAlert,
     Chain,
     Clear,
@@ -41,11 +40,14 @@ from screenpy_selenium.actions import (
     SaveConsoleLog,
     SaveScreenshot,
     Select,
+    SelectByIndex,
+    SelectByText,
+    SelectByValue,
     SwitchTo,
     SwitchToTab,
+    Target,
     Wait,
 )
-from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
 from screenpy_selenium.protocols import Chainable
 
 FakeTarget = get_mock_target_class()

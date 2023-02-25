@@ -5,7 +5,7 @@ from screenpy import AnActor
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from screenpy_selenium.abilities import BrowseTheWeb
+from screenpy_selenium import BrowseTheWeb
 
 
 @pytest.fixture(scope="function")
