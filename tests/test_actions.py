@@ -10,13 +10,6 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from unittest_protocols import ChainableAction
-from useful_mocks import (
-    get_mock_target_class,
-    get_mocked_browser,
-    get_mocked_chain,
-    get_mocked_target_and_element,
-)
 
 from screenpy_selenium import (
     AcceptAlert,
@@ -49,6 +42,13 @@ from screenpy_selenium import (
     Wait,
 )
 from screenpy_selenium.protocols import Chainable
+from unittest_protocols import ChainableAction
+from useful_mocks import (
+    get_mock_target_class,
+    get_mocked_browser,
+    get_mocked_chain,
+    get_mocked_target_and_element,
+)
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()

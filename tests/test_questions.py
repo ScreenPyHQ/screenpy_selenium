@@ -7,7 +7,6 @@ from screenpy.protocols import Answerable, Describable, ErrorKeeper
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
-from useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
 
 from screenpy_selenium import (
     Attribute,
@@ -23,6 +22,7 @@ from screenpy_selenium import (
     TextOfTheAlert,
 )
 from screenpy_selenium.exceptions import TargetingError
+from useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()
