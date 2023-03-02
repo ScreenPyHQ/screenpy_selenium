@@ -17,22 +17,26 @@ IsNotDisplayed = NotDisplayed = Invisible = IsInvisible
 Exist = Exists = Present = IsPresent
 
 
-__all__ = screenpy.resolutions.__all__
-__all__ += [
-    "Clickable",
-    "Displayed",
-    "Enabled",
-    "Exist",
-    "Exists",
-    "Invisible",
-    "IsClickable",
-    "IsDisplayed",
-    "IsEnabled",
-    "IsInvisible",
-    "IsNotDisplayed",
-    "IsPresent",
-    "IsVisible",
-    "NotDisplayed",
-    "Present",
-    "Visible",
-]
+__all__ = list(
+    set(
+        [
+            "Clickable",
+            "Displayed",
+            "Enabled",
+            "Exist",
+            "Exists",
+            "Invisible",
+            "IsClickable",
+            "IsDisplayed",
+            "IsEnabled",
+            "IsInvisible",
+            "IsNotDisplayed",
+            "IsPresent",
+            "IsVisible",
+            "NotDisplayed",
+            "Present",
+            "Visible",
+        ]
+        + screenpy.resolutions.__all__
+    )
+)
