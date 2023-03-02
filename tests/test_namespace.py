@@ -155,6 +155,7 @@ def test_screenpy_selenium():
         "StartsWith",
         "StartWith",
         "StdOutAdapter",
+        "StdOutManager",
         "SwitchTo",
         "SwitchToTab",
         "SwitchToWindow",

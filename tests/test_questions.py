@@ -2,26 +2,28 @@ from typing import Optional
 from unittest import mock
 
 import pytest
-from screenpy.exceptions import UnableToAnswer
-from screenpy.protocols import Answerable, Describable, ErrorKeeper
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import (
+    Answerable,
     Attribute,
     BrowserTitle,
     BrowserURL,
     Cookies,
+    Describable,
     Element,
+    ErrorKeeper,
     List,
     Number,
     Selected,
     Target,
+    TargetingError,
     Text,
     TextOfTheAlert,
+    UnableToAnswer,
 )
-from screenpy_selenium.exceptions import TargetingError
 from useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
 
 FakeTarget = get_mock_target_class()

@@ -1,12 +1,11 @@
 from typing import Any, Tuple
 from unittest import mock
 
-from screenpy import Actor
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from screenpy_selenium import BrowseTheWeb, Target
+from screenpy_selenium import Actor, BrowseTheWeb, Target
 
 
 def get_mocked_element() -> mock.Mock:
@@ -22,6 +21,7 @@ def get_mock_target_class() -> Any:
         def __new__(cls, *args, **kwargs):
             rt = mock.create_autospec(FakeTarget, instance=True)
             return rt
+
     return FakeTarget
 
 

@@ -2,10 +2,15 @@ from dataclasses import dataclass
 
 import pytest
 from hamcrest.core.string_description import StringDescription
-from screenpy.resolutions.base_resolution import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
 
-from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
+from screenpy_selenium import (
+    BaseResolution,
+    IsClickable,
+    IsInvisible,
+    IsPresent,
+    IsVisible,
+)
 from useful_mocks import get_mocked_element
 
 

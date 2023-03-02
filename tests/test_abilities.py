@@ -2,10 +2,8 @@ import os
 from unittest import mock
 
 import pytest
-from screenpy.protocols import Forgettable
 
-from screenpy_selenium import BrowseTheWeb
-from screenpy_selenium.exceptions import BrowsingError
+from screenpy_selenium import BrowseTheWeb, BrowsingError, Forgettable
 from useful_mocks import get_mocked_webdriver
 
 

@@ -1,10 +1,15 @@
 from unittest import mock
 
 import pytest
-from screenpy import Actor, settings
+from screenpy import (
+    Actor,
+    DeliveryError,
+    Describable,
+    Performable,
+    UnableToAct,
+    settings,
+)
 from screenpy.configuration import ScreenPySettings
-from screenpy.exceptions import DeliveryError, UnableToAct
-from screenpy.protocols import Describable, Performable
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -14,6 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from screenpy_selenium import (
     AcceptAlert,
     Chain,
+    Chainable,
     Clear,
     Click,
     DismissAlert,
@@ -41,7 +47,6 @@ from screenpy_selenium import (
     Target,
     Wait,
 )
-from screenpy_selenium.protocols import Chainable
 from unittest_protocols import ChainableAction
 from useful_mocks import (
     get_mock_target_class,
@@ -403,11 +408,11 @@ class TestEnter:
 
     def test_describe(self) -> None:
         assert (
-            Enter("blah").into(TARGET).describe() == f'Enter "blah" into the {TARGET}.'
+                Enter("blah").into(TARGET).describe() == f'Enter "blah" into the {TARGET}.'
         )
         assert (
-            Enter.the_secret("blah").into(TARGET).describe()
-            == f'Enter "[CENSORED]" into the {TARGET}.'
+                Enter.the_secret("blah").into(TARGET).describe()
+                == f'Enter "[CENSORED]" into the {TARGET}.'
         )
 
     def test_subclass(self) -> None:
@@ -457,7 +462,7 @@ class TestEnter2FAToken:
 
     def test_describe(self) -> None:
         assert (
-            Enter2FAToken(TARGET).describe() == f"Enter a 2FA token into the {TARGET}."
+                Enter2FAToken(TARGET).describe() == f"Enter a 2FA token into the {TARGET}."
         )
 
     def test_subclass(self) -> None:
@@ -754,8 +759,8 @@ class TestPause:
 
     def test_describe(self) -> None:
         assert (
-            Pause(1).second_because("moo").describe()
-            == "Pause for 1 second because moo."
+                Pause(1).second_because("moo").describe()
+                == "Pause for 1 second because moo."
         )
 
 
@@ -877,7 +882,7 @@ class TestRespondToThePrompt:
 
     def test_describe(self) -> None:
         assert (
-            RespondToThePrompt("baz").describe() == 'Respond to the prompt with "baz".'
+                RespondToThePrompt("baz").describe() == 'Respond to the prompt with "baz".'
         )
 
     def test_subclass(self) -> None:
@@ -1056,7 +1061,7 @@ class TestSaveScreenshot:
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf, mocked_open, Tester
+            self, mocked_atf, mocked_open, Tester
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}
@@ -1120,7 +1125,7 @@ class TestSelectByIndex:
         SelectByIndex(index).from_the(fake_target).perform_as(Tester)
 
         mocked_selselect(fake_target).select_by_index.assert_called_once_with(
-            str(index)
+            int(index)
         )
 
     def test_perform_complains_for_no_target(self, Tester) -> None:
@@ -1139,8 +1144,8 @@ class TestSelectByIndex:
 
     def test_describe(self) -> None:
         assert (
-            SelectByIndex(1, None).describe()
-            == "Select the option at index 1 from the None."
+                SelectByIndex(1, None).describe()
+                == "Select the option at index 1 from the None."
         )
 
     def test_subclass(self) -> None:
@@ -1193,8 +1198,8 @@ class TestSelectByText:
 
     def test_describe(self) -> None:
         assert (
-            SelectByText("bar", None).describe()
-            == 'Select the option "bar" from the None.'
+                SelectByText("bar", None).describe()
+                == 'Select the option "bar" from the None.'
         )
 
     def test_subclass(self) -> None:
@@ -1244,8 +1249,8 @@ class TestSelectByValue:
 
     def test_describe(self) -> None:
         assert (
-            SelectByValue("baz", None).describe()
-            == 'Select the option with value "baz" from the None.'
+                SelectByValue("baz", None).describe()
+                == 'Select the option with value "baz" from the None.'
         )
 
     def test_subclass(self) -> None:
@@ -1430,12 +1435,12 @@ class TestWait:
 
     def test_describe(self) -> None:
         assert (
-            Wait(2).describe()
-            == "Wait 2 seconds using visibility_of_element_located with []."
+                Wait(2).describe()
+                == "Wait 2 seconds using visibility_of_element_located with []."
         )
         assert (
-            Wait(5).seconds_for_the(TARGET).to_contain_text("foo").describe()
-            == f'Wait 5 seconds for "foo" to appear in the {TARGET}....'
+                Wait(5).seconds_for_the(TARGET).to_contain_text("foo").describe()
+                == f'Wait 5 seconds for "foo" to appear in the {TARGET}....'
         )
 
     def test_subclass(self) -> None:
