@@ -29,6 +29,86 @@ Set up an Actor to browse the web with a specific driver::
     Perry = AnActor.who_can(BrowseTheWeb.using(driver))
 
 
+Attach Debug Information at the End of Tests
+============================================
+
+You can tell your Actors to take a screenshot
+just before the test is over.
+
+Using ``pytest``
+----------------
+
+Creating your Actors as `pytest fixtures <https://docs.pytest.org/en/7.1.x/how-to/fixtures.html>`__
+allows you to easily take screenshots and save the console log
+after the test is over::
+
+    from datetime import datetime
+
+    import pytest
+    from screenpy import AnActor
+    from screenpy_selenium import BrowseTheWeb, SaveConsoleLog, SaveScreenshot
+
+
+    @pytest.fixture()
+    def Sammy():
+        # arrange
+        the_actor = AnActor.named("Sammy").who_can(BrowseTheWeb.using_firefox())
+
+        # act
+        yield the_actor  # assert happens somewhere in here, probably
+
+        # cleanup
+        timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H%M%S")
+        file_prefix = f"{DEBUG_DIR_PATH}/{timestamp}_sammy_endtest"
+        the_actor.attempts_to(
+            SaveScreenshot.as_(f"{file_prefix}_screenshot.png").and_attach_it(),
+            SaveConsoleLog.as_(f"{file_prefix}_js_log.txt").and_attach_it(),
+        )
+        the_actor.exit()
+
+If you only want this information when a test fails,
+you can tweak this fixture using the information
+from `pytest's examples <https://docs.pytest.org/en/latest/example/simple.html#making-test-result-information-available-in-fixtures>`__.
+
+
+Using ``unittest.TestCase``
+---------------------------
+
+During the teardown steps of your test,
+you can use your Actor to take screenshots
+before exiting::
+
+    from datetime import datetime
+
+    import unittest
+    from screenpy import AnActor
+    from screenpy_selenium import BrowseTheWeb, SaveConsoleLog, SaveScreenshot
+
+
+    class TestSomething(unittest.TestCase):
+
+        def setUp(self):
+            self.actor = AnActor.named("Sammy").who_can(BrowseTheWeb.using_firefox())
+
+        def test_the_thing(self):
+            Sammy = self.actor
+            ...
+
+        def tearDown(self):
+            timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H%M%S")
+            file_prefix = f"{DEBUG_DIR_PATH}/{timestamp}_sammy_endtest"
+            self.actor.attempts_to(
+                SaveScreenshot.as_(f"{file_prefix}_screenshot.png").and_attach_it(),
+                SaveConsoleLog.as_(f"{file_prefix}_js_log.txt").and_attach_it(),
+            )
+            self.actor.exit()
+
+If you only want this information when a test fails,
+you can tweak this code following
+`this StackOverflow answer <https://stackoverflow.com/a/39606065>`__
+(sorry there isn't a better source!).
+
+
 Waiting
 =======
 
