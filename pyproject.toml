@@ -80,6 +80,7 @@ dev_all = [
     "isort",
     "flake8",
     "coverage",
+    "sphinx",
 ]
 test = [
     "pytest",
