@@ -112,6 +112,11 @@ you can tweak this code following
 Waiting
 =======
 
+Automated tests go *fast*.
+You will probably need to wait for your pages
+to be ready for your Actions.
+Here are some strategies you can use.
+
 Using Wait
 ----------
 
