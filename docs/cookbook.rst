@@ -32,6 +32,12 @@ Set up an Actor to browse the web with a specific driver::
 Waiting
 =======
 
+Using Wait
+----------
+
+:class:`~screenpy_selenium.actions.Wait` tells the Actor to stop until some condition is met.
+Here are some examples of its use.
+
 Bread-and-butter default wait,
 waits 20 seconds for the login modal to appear::
 
@@ -46,8 +52,7 @@ and a different condition::
 
 Using a custom condition,
 wait 20 seconds
-for the application
-to meet the condition::
+for the application to meet the condition::
 
     class appear_in_greyscale:
         def __init__(self, locator):
