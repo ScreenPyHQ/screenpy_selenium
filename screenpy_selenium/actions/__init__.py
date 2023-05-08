@@ -33,6 +33,7 @@ from .wait import Wait  # noqa
 ContextClick = RightClick
 Hover = MoveMouse
 Press = Enter
+Pauses = Pause
 Refresh = Reload = ReloadPage = RefreshPage
 RespondToPrompt = RespondToThePrompt
 SwitchToWindow = SwitchToTab
@@ -59,6 +60,7 @@ __all__ = list(
             "MoveMouse",
             "Open",
             "Pause",
+            "Pauses",
             "Press",
             "Refresh",
             "RefreshPage",
