@@ -2,9 +2,9 @@ from unittest import mock
 
 import pytest
 from screenpy import Actor, settings
+from screenpy.configuration import ScreenPySettings
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.protocols import Describable, Performable
-from screenpy.test_utils import mock_settings
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -1322,6 +1322,8 @@ class TestSwitchToTab:
 
 
 class TestWait:
+    settings_path = "screenpy_selenium.actions.wait.settings"
+
     def test_can_be_instantiated(self) -> None:
         def foo() -> None:
             pass
@@ -1363,13 +1365,16 @@ class TestWait:
 
         assert w.timeout == timeout
 
-    @mock_settings(TIMEOUT=8)
     def test_adjusting_settings_timeout(self) -> None:
-        w1 = Wait.for_the(mock.create_autospec(Target, instance=True))
-        w2 = Wait()
+        test_timeout = 8
+        mock_settings = ScreenPySettings(TIMEOUT=test_timeout)
 
-        assert w1.timeout == 8
-        assert w2.timeout == 8
+        with mock.patch(self.settings_path, mock_settings):
+            w1 = Wait.for_the(mock.create_autospec(Target, instance=True))
+            w2 = Wait()
+
+        assert w1.timeout == test_timeout
+        assert w2.timeout == test_timeout
 
     @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
