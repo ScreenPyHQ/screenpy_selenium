@@ -49,7 +49,7 @@ class Wait:
     """
 
     args: Iterable[Any]
-    timeout: int
+    timeout: float
     log_detail: Optional[str]
 
     @classmethod
