@@ -145,7 +145,7 @@ class Wait:
 
     def __init__(
         self: SelfWait,
-        seconds: Optional[int] = None,
+        seconds: Optional[float] = None,
         args: Optional[Iterable[Any]] = None,
     ) -> None:
         self.args = args if args is not None else []
