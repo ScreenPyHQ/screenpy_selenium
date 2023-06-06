@@ -31,8 +31,11 @@ class SaveScreenshot:
 
         the_actor.attempts_to(SaveScreenshot.as_(filepath))
 
+        # attach file to the Narrator's reports (behavior depends on adapter).
         the_actor.attempts_to(SaveScreenshot.as_(filepath).and_attach_it())
 
+        # using screenpy_adapter_allure plugin!
+        from allure_commons.types import AttachmentType
         the_actor.attempts_to(
             SaveScreenshot.as_(filepath).and_attach_it_with(
                 attachment_type=AttachmentTypes.PNG,

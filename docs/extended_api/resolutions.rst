@@ -27,7 +27,7 @@ IsVisible
 .. autoclass:: IsVisible
 
 IsInvisible
----------
+-----------
 
 **Aliases:** ``IsNotDisplayed``,
 ``NotDisplayed``,
