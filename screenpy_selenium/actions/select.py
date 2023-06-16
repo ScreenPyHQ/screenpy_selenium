@@ -121,7 +121,7 @@ class SelectByIndex:
     """
 
     target: Optional[Target]
-    index: str
+    index: int
 
     def from_the(self: SelfSelectByIndex, target: Target) -> SelfSelectByIndex:
         """
@@ -160,7 +160,7 @@ class SelectByIndex:
         self: SelfSelectByIndex, index: Union[int, str], target: Optional[Target] = None
     ) -> None:
         self.target = target
-        self.index = str(index)
+        self.index = int(index)
 
 
 class SelectByValue:
