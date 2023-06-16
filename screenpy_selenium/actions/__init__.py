@@ -1,8 +1,6 @@
 """
 Actions an Actor can perform using their ability to BrowseTheWeb.
 """
-import screenpy.actions
-from screenpy.actions import *  # noqa
 
 from .accept_alert import AcceptAlert  # noqa
 from .chain import Chain  # noqa
@@ -40,49 +38,43 @@ SwitchToWindow = SwitchToTab
 TakeScreenshot = SaveScreenshot
 Visit = Open
 
-
-__all__ = list(
-    set(
-        [
-            "AcceptAlert",
-            "Chain",
-            "Clear",
-            "Click",
-            "ContextClick",
-            "DismissAlert",
-            "DoubleClick",
-            "Enter",
-            "Enter2FAToken",
-            "GoBack",
-            "GoForward",
-            "HoldDown",
-            "Hover",
-            "MoveMouse",
-            "Open",
-            "Pause",
-            "Pauses",
-            "Press",
-            "Refresh",
-            "RefreshPage",
-            "Release",
-            "Reload",
-            "ReloadPage",
-            "RespondToPrompt",
-            "RespondToThePrompt",
-            "RightClick",
-            "SaveConsoleLog",
-            "SaveScreenshot",
-            "Select",
-            "SelectByIndex",
-            "SelectByText",
-            "SelectByValue",
-            "SwitchTo",
-            "SwitchToTab",
-            "SwitchToWindow",
-            "TakeScreenshot",
-            "Visit",
-            "Wait",
-        ]
-        + screenpy.actions.__all__
-    )
-)
+__all__ = [
+    "AcceptAlert",
+    "Chain",
+    "Clear",
+    "Click",
+    "ContextClick",
+    "DismissAlert",
+    "DoubleClick",
+    "Enter",
+    "Enter2FAToken",
+    "GoBack",
+    "GoForward",
+    "HoldDown",
+    "Hover",
+    "MoveMouse",
+    "Open",
+    "Pause",
+    "Pauses",
+    "Press",
+    "Refresh",
+    "RefreshPage",
+    "Release",
+    "Reload",
+    "ReloadPage",
+    "RespondToPrompt",
+    "RespondToThePrompt",
+    "RightClick",
+    "SaveConsoleLog",
+    "SaveScreenshot",
+    "Select",
+    "SelectByIndex",
+    "SelectByText",
+    "SelectByValue",
+    "SwitchTo",
+    "SwitchToTab",
+    "SwitchToWindow",
+    "TakeScreenshot",
+    "Visit",
+    "Wait",
+]

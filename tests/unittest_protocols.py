@@ -1,12 +1,7 @@
+from screenpy import Answerable, ErrorKeeper, Forgettable, Performable
 from typing_extensions import Protocol
 
-from screenpy_selenium import (
-    Answerable,
-    Chainable,
-    ErrorKeeper,
-    Forgettable,
-    Performable,
-)
+from screenpy_selenium import Chainable
 
 
 class Describable(Protocol):

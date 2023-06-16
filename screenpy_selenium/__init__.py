@@ -16,9 +16,6 @@ Selenium.
 :license: MIT, see LICENSE for more details.
 """
 
-import screenpy
-from screenpy import *  # noqa
-
 from . import abilities, actions, questions, resolutions
 from .abilities import *  # noqa
 from .actions import *  # noqa
@@ -28,18 +25,11 @@ from .questions import *  # noqa
 from .resolutions import *  # noqa
 from .target import Target  # noqa
 
-__all__ = list(
-    set(
-        [
-            "Target",
-            "TargetingError",
-            "BrowsingError",
-            "Chainable",
-        ]
-        + screenpy.__all__
-        + abilities.__all__
-        + actions.__all__
-        + questions.__all__
-        + resolutions.__all__
-    )
-)
+__all__ = [
+    "Target",
+    "TargetingError",
+    "BrowsingError",
+    "Chainable",
+]
+
+__all__ += abilities.__all__ + actions.__all__ + questions.__all__ + resolutions.__all__
