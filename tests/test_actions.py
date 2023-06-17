@@ -149,6 +149,7 @@ class TestClear:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubClear(Clear):
             def new_method(self):
                 return True
@@ -212,6 +213,7 @@ class TestClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubClick(Click):
             def new_method(self):
                 return True
@@ -295,6 +297,7 @@ class TestDoubleClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubDoubleClick(DoubleClick):
             def new_method(self):
                 return True
@@ -408,15 +411,16 @@ class TestEnter:
 
     def test_describe(self) -> None:
         assert (
-                Enter("blah").into(TARGET).describe() == f'Enter "blah" into the {TARGET}.'
+            Enter("blah").into(TARGET).describe() == f'Enter "blah" into the {TARGET}.'
         )
         assert (
-                Enter.the_secret("blah").into(TARGET).describe()
-                == f'Enter "[CENSORED]" into the {TARGET}.'
+            Enter.the_secret("blah").into(TARGET).describe()
+            == f'Enter "[CENSORED]" into the {TARGET}.'
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubEnter(Enter):
             def new_method(self):
                 return True
@@ -462,11 +466,12 @@ class TestEnter2FAToken:
 
     def test_describe(self) -> None:
         assert (
-                Enter2FAToken(TARGET).describe() == f"Enter a 2FA token into the {TARGET}."
+            Enter2FAToken(TARGET).describe() == f"Enter a 2FA token into the {TARGET}."
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubEnter2FA(Enter2FAToken):
             def new_method(self):
                 return True
@@ -598,6 +603,7 @@ class TestHoldDown:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubHoldDown(HoldDown):
             def new_method(self):
                 return True
@@ -687,6 +693,7 @@ class TestMoveMouse:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubMoveMouse(MoveMouse):
             def new_method(self):
                 return True
@@ -721,6 +728,7 @@ class TestOpen:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubOpen(Open):
             def new_method(self):
                 return True
@@ -759,8 +767,8 @@ class TestPause:
 
     def test_describe(self) -> None:
         assert (
-                Pause(1).second_because("moo").describe()
-                == "Pause for 1 second because moo."
+            Pause(1).second_because("moo").describe()
+            == "Pause for 1 second because moo."
         )
 
 
@@ -852,6 +860,7 @@ class TestRelease:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRelease(Release):
             def new_method(self):
                 return True
@@ -882,11 +891,12 @@ class TestRespondToThePrompt:
 
     def test_describe(self) -> None:
         assert (
-                RespondToThePrompt("baz").describe() == 'Respond to the prompt with "baz".'
+            RespondToThePrompt("baz").describe() == 'Respond to the prompt with "baz".'
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRespond(RespondToThePrompt):
             def new_method(self):
                 return True
@@ -939,6 +949,7 @@ class TestRightClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRightClick(RightClick):
             def new_method(self):
                 return True
@@ -1014,6 +1025,7 @@ class TestSaveConsoleLog:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSaveConsoleLog(SaveConsoleLog):
             def new_method(self):
                 return True
@@ -1061,7 +1073,7 @@ class TestSaveScreenshot:
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-            self, mocked_atf, mocked_open, Tester
+        self, mocked_atf, mocked_open, Tester
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}
@@ -1075,6 +1087,7 @@ class TestSaveScreenshot:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSaveScreenshot(SaveScreenshot):
             def new_method(self):
                 return True
@@ -1144,12 +1157,13 @@ class TestSelectByIndex:
 
     def test_describe(self) -> None:
         assert (
-                SelectByIndex(1, None).describe()
-                == "Select the option at index 1 from the None."
+            SelectByIndex(1, None).describe()
+            == "Select the option at index 1 from the None."
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByIndex(SelectByIndex):
             def new_method(self):
                 return True
@@ -1198,12 +1212,13 @@ class TestSelectByText:
 
     def test_describe(self) -> None:
         assert (
-                SelectByText("bar", None).describe()
-                == 'Select the option "bar" from the None.'
+            SelectByText("bar", None).describe()
+            == 'Select the option "bar" from the None.'
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByText(SelectByText):
             def new_method(self):
                 return True
@@ -1249,12 +1264,13 @@ class TestSelectByValue:
 
     def test_describe(self) -> None:
         assert (
-                SelectByValue("baz", None).describe()
-                == 'Select the option with value "baz" from the None.'
+            SelectByValue("baz", None).describe()
+            == 'Select the option with value "baz" from the None.'
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByValue(SelectByValue):
             def new_method(self):
                 return True
@@ -1296,6 +1312,7 @@ class TestSwitchTo:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSwitchTo(SwitchTo):
             def new_method(self):
                 return True
@@ -1435,16 +1452,17 @@ class TestWait:
 
     def test_describe(self) -> None:
         assert (
-                Wait(2).describe()
-                == "Wait 2 seconds using visibility_of_element_located with []."
+            Wait(2).describe()
+            == "Wait 2 seconds using visibility_of_element_located with []."
         )
         assert (
-                Wait(5).seconds_for_the(TARGET).to_contain_text("foo").describe()
-                == f'Wait 5 seconds for "foo" to appear in the {TARGET}....'
+            Wait(5).seconds_for_the(TARGET).to_contain_text("foo").describe()
+            == f'Wait 5 seconds for "foo" to appear in the {TARGET}....'
         )
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubWait(Wait):
             def new_method(self):
                 return True
