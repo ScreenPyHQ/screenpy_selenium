@@ -1,27 +1,25 @@
 from unittest import mock
 
 import pytest
-from screenpy import Actor, settings
+from screenpy import (
+    Actor,
+    DeliveryError,
+    Describable,
+    Performable,
+    UnableToAct,
+    settings,
+)
 from screenpy.configuration import ScreenPySettings
-from screenpy.exceptions import DeliveryError, UnableToAct
-from screenpy.protocols import Describable, Performable
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from unittest_protocols import ChainableAction
-from useful_mocks import (
-    get_mocked_chain,
-    get_mock_target_class,
-    get_mocked_target_and_element,
-    get_mocked_browser,
-)
 
-from screenpy_selenium import Target
-from screenpy_selenium.actions import (
+from screenpy_selenium import (
     AcceptAlert,
     Chain,
+    Chainable,
     Clear,
     Click,
     DismissAlert,
@@ -41,12 +39,21 @@ from screenpy_selenium.actions import (
     SaveConsoleLog,
     SaveScreenshot,
     Select,
+    SelectByIndex,
+    SelectByText,
+    SelectByValue,
     SwitchTo,
     SwitchToTab,
+    Target,
     Wait,
 )
-from screenpy_selenium.actions.select import SelectByIndex, SelectByText, SelectByValue
-from screenpy_selenium.protocols import Chainable
+from unittest_protocols import ChainableAction
+from useful_mocks import (
+    get_mock_target_class,
+    get_mocked_browser,
+    get_mocked_chain,
+    get_mocked_target_and_element,
+)
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()
@@ -142,6 +149,7 @@ class TestClear:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubClear(Clear):
             def new_method(self):
                 return True
@@ -205,6 +213,7 @@ class TestClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubClick(Click):
             def new_method(self):
                 return True
@@ -288,6 +297,7 @@ class TestDoubleClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubDoubleClick(DoubleClick):
             def new_method(self):
                 return True
@@ -410,6 +420,7 @@ class TestEnter:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubEnter(Enter):
             def new_method(self):
                 return True
@@ -460,6 +471,7 @@ class TestEnter2FAToken:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubEnter2FA(Enter2FAToken):
             def new_method(self):
                 return True
@@ -591,6 +603,7 @@ class TestHoldDown:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubHoldDown(HoldDown):
             def new_method(self):
                 return True
@@ -680,6 +693,7 @@ class TestMoveMouse:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubMoveMouse(MoveMouse):
             def new_method(self):
                 return True
@@ -714,6 +728,7 @@ class TestOpen:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubOpen(Open):
             def new_method(self):
                 return True
@@ -845,6 +860,7 @@ class TestRelease:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRelease(Release):
             def new_method(self):
                 return True
@@ -880,6 +896,7 @@ class TestRespondToThePrompt:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRespond(RespondToThePrompt):
             def new_method(self):
                 return True
@@ -932,6 +949,7 @@ class TestRightClick:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubRightClick(RightClick):
             def new_method(self):
                 return True
@@ -1007,6 +1025,7 @@ class TestSaveConsoleLog:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSaveConsoleLog(SaveConsoleLog):
             def new_method(self):
                 return True
@@ -1068,6 +1087,7 @@ class TestSaveScreenshot:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSaveScreenshot(SaveScreenshot):
             def new_method(self):
                 return True
@@ -1118,7 +1138,7 @@ class TestSelectByIndex:
         SelectByIndex(index).from_the(fake_target).perform_as(Tester)
 
         mocked_selselect(fake_target).select_by_index.assert_called_once_with(
-            str(index)
+            int(index)
         )
 
     def test_perform_complains_for_no_target(self, Tester) -> None:
@@ -1143,6 +1163,7 @@ class TestSelectByIndex:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByIndex(SelectByIndex):
             def new_method(self):
                 return True
@@ -1197,6 +1218,7 @@ class TestSelectByText:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByText(SelectByText):
             def new_method(self):
                 return True
@@ -1248,6 +1270,7 @@ class TestSelectByValue:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSelectByValue(SelectByValue):
             def new_method(self):
                 return True
@@ -1289,6 +1312,7 @@ class TestSwitchTo:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubSwitchTo(SwitchTo):
             def new_method(self):
                 return True
@@ -1438,6 +1462,7 @@ class TestWait:
 
     def test_subclass(self) -> None:
         """test code for mypy to scan without issue"""
+
         class SubWait(Wait):
             def new_method(self):
                 return True

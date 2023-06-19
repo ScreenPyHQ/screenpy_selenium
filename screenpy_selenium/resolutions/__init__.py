@@ -13,6 +13,7 @@ IsDisplayed = Displayed = Visible = IsVisible
 IsNotDisplayed = NotDisplayed = Invisible = IsInvisible
 Exist = Exists = Present = IsPresent
 
+
 __all__ = [
     "Clickable",
     "Displayed",

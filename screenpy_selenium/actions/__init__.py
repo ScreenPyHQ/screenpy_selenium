@@ -31,12 +31,12 @@ from .wait import Wait
 ContextClick = RightClick
 Hover = MoveMouse
 Press = Enter
+Pauses = Pause
 Refresh = Reload = ReloadPage = RefreshPage
 RespondToPrompt = RespondToThePrompt
 SwitchToWindow = SwitchToTab
 TakeScreenshot = SaveScreenshot
 Visit = Open
-
 
 __all__ = [
     "AcceptAlert",
@@ -55,6 +55,7 @@ __all__ = [
     "MoveMouse",
     "Open",
     "Pause",
+    "Pauses",
     "Press",
     "Refresh",
     "RefreshPage",
