@@ -125,7 +125,7 @@ class MoveMouse:
         self._add_action_to_chain(the_actor, the_chain)
         the_chain.perform()
 
-    @beat("  Move the mouse {description}!")
+    @beat("Move the mouse {description}!")
     def add_to_chain(
         self: SelfMoveMouse, the_actor: Actor, the_chain: ActionChains
     ) -> None:

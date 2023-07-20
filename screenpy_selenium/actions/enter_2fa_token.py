@@ -51,7 +51,7 @@ class Enter2FAToken:
         token = the_actor.uses_ability_to(AuthenticateWith2FA).to_get_token()
         the_actor.attempts_to(Enter.the_text(token).into_the(self.target))
 
-    @beat("  Enter their 2FA token into the {target}!")
+    @beat("Enter their 2FA token into the {target}!")
     def add_to_chain(
         self: SelfEnter2FAToken, the_actor: Actor, the_chain: ActionChains
     ) -> None:

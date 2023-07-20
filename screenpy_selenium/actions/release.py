@@ -60,7 +60,7 @@ class Release:
         # darn, it doesn't work quite as well here. :P
         return f"Release {self.the_kraken}."
 
-    @beat("  Release {the_kraken}!")
+    @beat("Release {the_kraken}!")
     def add_to_chain(self: SelfRelease, _: Actor, the_chain: ActionChains) -> None:
         """Add the Release Action to a Chain of Actions."""
         if self.lmb:

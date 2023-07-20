@@ -75,7 +75,7 @@ class DoubleClick:
         self._add_action_to_chain(the_actor, the_chain)
         the_chain.perform()
 
-    @beat("  Double-click{description}!")
+    @beat("Double-click{description}!")
     def add_to_chain(
         self: SelfDoubleClick, the_actor: Actor, the_chain: ActionChains
     ) -> None:

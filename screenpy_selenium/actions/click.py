@@ -75,7 +75,7 @@ class Click:
             )
             raise DeliveryError(msg) from e
 
-    @beat("  Click{description}!")
+    @beat("Click{description}!")
     def add_to_chain(
         self: SelfClick, the_actor: Actor, the_chain: ActionChains
     ) -> None:
