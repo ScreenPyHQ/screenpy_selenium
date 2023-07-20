@@ -11,29 +11,41 @@ see ScreenPy's :external+screenpy:ref:`actions api` reference.
 AcceptAlert
 -----------
 
+**Aliases:** ``AcceptsAlert``
+
 .. autoclass:: AcceptAlert
     :members:
 
 Chain
 -----
 
+**Aliases:** ``Chains``
+
 .. autoclass:: Chain
-    :members:
-
-Click
------
-
-.. autoclass:: Click
     :members:
 
 Clear
 -----
 
+**Aliases:** ``Clears``
+
 .. autoclass:: Clear
+    :members:
+
+Click
+-----
+
+**Aliases:** ``Clicks``
+
+.. autoclass:: Click
     :members:
 
 DismissAlert
 ------------
+
+**Aliases:** ``DismissesAlert``,
+``DismissTheAlert``,
+``DismissesTheAlert``
 
 .. autoclass:: DismissAlert
     :members:
@@ -41,13 +53,17 @@ DismissAlert
 DoubleClick
 -----------
 
+**Aliases:** ``DoubleClicks``
+
 .. autoclass:: DoubleClick
     :members:
 
 Enter
 -----
 
-**Aliases:** ``Press``
+**Aliases:** ``Enters``,
+``Press``,
+``Presses``
 
 .. autoclass:: Enter
     :members:
@@ -55,11 +71,15 @@ Enter
 Enter2FAToken
 -------------
 
+**Aliases:** ``Enters2FAToken``
+
 .. autoclass:: Enter2FAToken
     :members:
 
 GoBack
 ------
+
+**Aliases:** ``GoesBack``
 
 .. autoclass:: GoBack
     :members:
@@ -67,11 +87,15 @@ GoBack
 GoForward
 ---------
 
+**Aliases:** ``GoesForward``
+
 .. autoclass:: GoForward
     :members:
 
 HoldDown
 --------
+
+**Aliases:** ``HoldsDown``
 
 .. autoclass:: HoldDown
     :members:
@@ -79,7 +103,9 @@ HoldDown
 MoveMouse
 ---------
 
-**Aliases:** ``Hover``
+**Aliases:** ``MovesMouse``,
+``Hover``,
+``Hovers``
 
 .. autoclass:: MoveMouse
     :members:
@@ -87,7 +113,9 @@ MoveMouse
 Open
 ----
 
-**Aliases:** ``Visit``
+**Aliases:** ``Opens``,
+``Visit``,
+``Visits``
 
 .. autoclass:: Open
     :members:
@@ -95,15 +123,21 @@ Open
 Pause
 -----
 
+**Aliases:** ``Pauses``
+
 .. autoclass:: Pause
     :members:
 
 RefreshPage
 -----------
 
-**Aliases:** ``Refresh``,
+**Aliases:** ``RefreshesPage``,
+``Refresh``,
+``Refreshes``,
 ``Reload``,
-``ReloadPage``
+``Reloads``,
+``ReloadPage``,
+``ReloadsPage``
 
 .. autoclass:: RefreshPage
     :members:
@@ -111,13 +145,17 @@ RefreshPage
 Release
 -------
 
+**Aliases:** ``Releases``
+
 .. autoclass:: Release
     :members:
 
 RespondToThePrompt
 ------------------
 
-**Aliases:** ``RespondToPrompt``
+**Aliases:** ``RespondsToThePrompt``,
+``RespondToPrompt``,
+``RespondsToPrompt``
 
 .. autoclass:: RespondToThePrompt
     :members:
@@ -125,7 +163,9 @@ RespondToThePrompt
 RightClick
 ----------
 
-**Aliases:** ``ContextClick``
+**Aliases:** ``RightClicks``,
+``ContextClick``,
+``ContextClicks``
 
 .. autoclass:: RightClick
     :members:
@@ -133,13 +173,17 @@ RightClick
 SaveConsoleLog
 --------------
 
+**Aliases:** ``SavesConsoleLog``
+
 .. autoclass:: SaveConsoleLog
     :members:
 
 SaveScreenshot
 --------------
 
-**Aliases:** ``TakeScreenshot``
+**Aliases:** ``SavesScreenshot``,
+``TakeScreenshot``,
+``TakesScreenshot``
 
 .. autoclass:: SaveScreenshot
     :members:
@@ -147,17 +191,30 @@ SaveScreenshot
 Select
 ------
 
+**Aliases:** ``Selects``
+
 .. autoclass:: Select
     :members:
+
+**Aliases:** ``SelectsByText``
+
 .. autoclass:: SelectByText
     :members:
+
+**Aliases:** ``SelectsByIndex``
+
 .. autoclass:: SelectByIndex
     :members:
+
+**Aliases:** ``SelectsByValue``
+
 .. autoclass:: SelectByValue
     :members:
 
 SwitchTo
 --------
+
+**Aliases:** ``SwitchesTo``
 
 .. autoclass:: SwitchTo
     :members:
@@ -165,13 +222,17 @@ SwitchTo
 SwitchToTab
 -----------
 
-**Aliases:** ``SwitchToWindow``
+**Aliases:** ``SwitchesToTab``,
+``SwitchToWindow``,
+``SwitchesToWindow``
 
 .. autoclass:: SwitchToTab
     :members:
 
 Wait
 ----
+
+**Aliases:** ``Waits``
 
 .. autoclass:: Wait
     :members:
