@@ -34,7 +34,7 @@ class Pause(BasePause):
         )
     """
 
-    @beat("  Pause for {number} {unit} ({reason})!")
+    @beat("Pause for {number} {unit} ({reason})!")
     def add_to_chain(self, _: Actor, the_chain: ActionChains) -> None:
         """Add the Pause Action to a Chain of Actions."""
         the_chain.pause(self.time)

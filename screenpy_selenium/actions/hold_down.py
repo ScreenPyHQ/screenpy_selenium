@@ -69,7 +69,7 @@ class HoldDown:
         """Describe the Action in present tense."""
         return f"Hold down {self.description}."
 
-    @beat("  Hold down {description}!")
+    @beat("Hold down {description}!")
     def add_to_chain(
         self: SelfHoldDown, the_actor: Actor, the_chain: ActionChains
     ) -> None:

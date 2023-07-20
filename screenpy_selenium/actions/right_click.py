@@ -79,7 +79,7 @@ class RightClick:
         self._add_action_to_chain(the_actor, the_chain)
         the_chain.perform()
 
-    @beat("  Right-click{description}!")
+    @beat("Right-click{description}!")
     def add_to_chain(
         self: SelfRightClick, the_actor: Actor, the_chain: ActionChains
     ) -> None:
