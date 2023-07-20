@@ -12,7 +12,7 @@ target-version = ['py311']
 
 [tool.poetry]
 name = "screenpy_selenium"
-version = "4.0.3"
+version = "4.0.4"
 description = "ScreenPy extension to enable interacting with Selenium."
 authors = ["Perry Goy <perry.goy@gmail.com>"]
 maintainers = ["Gabe Langton", "Marcel Wilson"]

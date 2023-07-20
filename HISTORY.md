@@ -1,6 +1,17 @@
 Release History
 ===============
 
+4.0.4 (2023-07-20)
+------------------
+
+### New Features
+
+- Now that Actors can be called directly, present-tense aliases have been added for all Actions.
+
+### Improvements
+
+- Some extra indentation left over from The Before Days have finally been removed. Thanks to the eagle-eyes of @bandophahita for noticing them!
+
 4.0.3 (2022-09-18)
 ------------------
 
