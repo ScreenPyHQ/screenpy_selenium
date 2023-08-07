@@ -75,7 +75,7 @@ class RightClick:
     def perform_as(self: SelfRightClick, the_actor: Actor) -> None:
         """Direct the Actor to right-click on the element."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
-        the_chain = ActionChains(browser)
+        the_chain = ActionChains(browser)  # type: ignore[arg-type]
         self._add_action_to_chain(the_actor, the_chain)
         the_chain.perform()
 

@@ -37,7 +37,7 @@ class Chain:
     def perform_as(self, the_actor: Actor) -> None:
         """Choreograph the Actions and direct the Actor to perform the chain."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
-        the_chain = ActionChains(browser)
+        the_chain = ActionChains(browser)  # type: ignore[arg-type]
 
         for action in self.actions:
             if not isinstance(action, Chainable):
