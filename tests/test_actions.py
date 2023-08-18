@@ -1425,7 +1425,6 @@ class TestWait:
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
         mocked_browser = get_mocked_browser(Tester)
-
         timeout = 4
 
         Wait(timeout).seconds_for(test_target).perform_as(Tester)
