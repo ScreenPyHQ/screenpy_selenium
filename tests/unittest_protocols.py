@@ -1,5 +1,6 @@
+from typing import Protocol
+
 from screenpy import Answerable, ErrorKeeper, Forgettable, Performable
-from typing_extensions import Protocol
 
 from screenpy_selenium import Chainable
 

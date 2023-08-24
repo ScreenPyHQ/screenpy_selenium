@@ -49,7 +49,6 @@ python = "^3.8"
 screenpy = ">=4.0.2"
 screenpy_pyotp = ">=4.0.0"
 selenium = ">=4.1.0"
-typing-extensions = ">=4.1.1"
 importlib_metadata = {version = "*", python = "3.8.*"}
 
 # convenience packages for development of screenpy only
