@@ -135,7 +135,9 @@ class Wait:
         browser = the_actor.ability_to(BrowseTheWeb).browser
 
         try:
-            WebDriverWait(browser, self.timeout).until(self.condition(*self.args))
+            WebDriverWait(browser, self.timeout, settings.POLLING).until(
+                self.condition(*self.args)
+            )
         except WebDriverException as e:
             msg = (
                 f"Encountered an exception using {self.condition.__name__} with "

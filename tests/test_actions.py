@@ -1409,11 +1409,31 @@ class TestWait:
 
         Wait.for_the(test_target).perform_as(Tester)
 
-        mocked_webdriverwait.assert_called_once_with(mocked_browser, settings.TIMEOUT)
+        mocked_webdriverwait.assert_called_once_with(
+            mocked_browser, settings.TIMEOUT, settings.POLLING
+        )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(
             mocked_browser, settings.TIMEOUT
         ).until.assert_called_once_with(
+            mocked_ec.visibility_of_element_located(test_target.locator)
+        )
+
+    @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
+    @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
+    def test_override(self, mocked_webdriverwait, mocked_ec, Tester) -> None:
+        test_target = Target.the("foo").located_by("//bar")
+        mocked_ec.visibility_of_element_located.__name__ = "foo"
+        mocked_browser = get_mocked_browser(Tester)
+        timeout = 4
+
+        Wait(timeout).seconds_for(test_target).perform_as(Tester)
+
+        mocked_webdriverwait.assert_called_once_with(
+            mocked_browser, timeout, settings.POLLING
+        )
+        mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
+        mocked_webdriverwait(mocked_browser, timeout).until.assert_called_once_with(
             mocked_ec.visibility_of_element_located(test_target.locator)
         )
 
