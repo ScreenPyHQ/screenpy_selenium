@@ -5,7 +5,6 @@ from setuptools import find_packages, setup
 requires = [
     "screenpy>=4.0.2",
     "screenpy_pyotp>=4.0.0",
-    "typing-extensions>=4.1.1",
     "selenium>=4.1.0",
 ]
 

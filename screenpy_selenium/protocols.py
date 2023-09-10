@@ -2,9 +2,10 @@
 Additional protocols for ScreenPy Selenium.
 """
 
+from typing import Protocol, runtime_checkable
+
 from screenpy import Actor
 from selenium.webdriver.common.action_chains import ActionChains
-from typing_extensions import Protocol, runtime_checkable
 
 
 @runtime_checkable
