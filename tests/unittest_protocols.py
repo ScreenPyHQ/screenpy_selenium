@@ -1,17 +1,12 @@
 from typing import Protocol, runtime_checkable
 
-from screenpy import Answerable, Describable, ErrorKeeper, Forgettable, Performable
+from screenpy import Answerable, Describable, Forgettable, Performable
 
 from screenpy_selenium import Chainable
 
 
 @runtime_checkable
 class Question(Answerable, Describable, Protocol):
-    ...
-
-
-@runtime_checkable
-class ErrorQuestion(Answerable, Describable, ErrorKeeper, Protocol):
     ...
 
 
