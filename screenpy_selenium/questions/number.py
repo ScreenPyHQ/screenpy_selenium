@@ -1,6 +1,4 @@
-"""
-Investigate how many of an element are present on the page.
-"""
+"""Investigate how many of an element are present on the page."""
 
 from typing import Type, TypeVar
 

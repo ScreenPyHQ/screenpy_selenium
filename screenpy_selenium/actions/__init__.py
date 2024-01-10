@@ -1,6 +1,4 @@
-"""
-Actions an Actor can perform using their ability to BrowseTheWeb.
-"""
+"""Actions an Actor can perform using their ability to BrowseTheWeb."""
 
 from .accept_alert import AcceptAlert
 from .chain import Chain

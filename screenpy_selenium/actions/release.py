@@ -1,6 +1,4 @@
-"""
-Release the left mouse button or a held modifier key.
-"""
+"""Release the left mouse button or a held modifier key."""
 
 import platform
 from typing import Optional, Type, TypeVar

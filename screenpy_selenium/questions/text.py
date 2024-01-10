@@ -1,6 +1,4 @@
-"""
-Investigate the text of an element or many elements.
-"""
+"""Investigate the text of an element or many elements."""
 
 from typing import List, Type, TypeVar, Union
 

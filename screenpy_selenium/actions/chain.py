@@ -1,6 +1,4 @@
-"""
-A meta-Action to group a series of chainable Actions together.
-"""
+"""A meta-Action to group a series of chainable Actions together."""
 
 from screenpy.actor import Actor
 from screenpy.exceptions import UnableToAct

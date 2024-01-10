@@ -1,6 +1,4 @@
-"""
-Dismiss a javascript alert.
-"""
+"""Dismiss a javascript alert."""
 
 from screenpy.actor import Actor
 from screenpy.pacing import aside, beat

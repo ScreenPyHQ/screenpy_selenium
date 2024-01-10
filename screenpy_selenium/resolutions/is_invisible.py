@@ -1,6 +1,4 @@
-"""
-Matches against an invisible WebElement.
-"""
+"""Matches against an invisible WebElement."""
 
 from screenpy.resolutions.base_resolution import BaseResolution
 

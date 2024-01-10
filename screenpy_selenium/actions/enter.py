@@ -1,6 +1,4 @@
-"""
-Enter text into an input field, or press keys.
-"""
+"""Enter text into an input field, or press keys."""
 
 from functools import partial
 from typing import List, Optional, Type, TypeVar

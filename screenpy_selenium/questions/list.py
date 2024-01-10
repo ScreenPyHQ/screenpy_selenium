@@ -1,6 +1,4 @@
-"""
-Investigate one or more elements.
-"""
+"""Investigate one or more elements."""
 
 from typing import List as ListType
 from typing import Type, TypeVar

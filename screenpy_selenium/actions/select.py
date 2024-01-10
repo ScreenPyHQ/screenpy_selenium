@@ -1,6 +1,4 @@
-"""
-Select an item from a multi-selection field or dropdown.
-"""
+"""Select an item from a multi-selection field or dropdown."""
 
 from typing import Optional, TypeVar, Union
 
@@ -71,9 +69,7 @@ class SelectByText:
     text: str
 
     def from_the(self: SelfSelectByText, target: Target) -> SelfSelectByText:
-        """
-        Target the dropdown or multi-select field to select the option from.
-        """
+        """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 
@@ -124,9 +120,7 @@ class SelectByIndex:
     index: int
 
     def from_the(self: SelfSelectByIndex, target: Target) -> SelfSelectByIndex:
-        """
-        Target the dropdown or multi-select field to select the option from.
-        """
+        """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 
@@ -177,9 +171,7 @@ class SelectByValue:
     value: str
 
     def from_the(self: SelfSelectByValue, target: Target) -> SelfSelectByValue:
-        """
-        Target the dropdown or multi-select field to select the option from.
-        """
+        """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 

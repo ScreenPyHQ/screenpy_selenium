@@ -1,6 +1,4 @@
-"""
-Enable the actor to browse the web.
-"""
+"""Enable the actor to browse the web."""
 
 import os
 from typing import Type, TypeVar

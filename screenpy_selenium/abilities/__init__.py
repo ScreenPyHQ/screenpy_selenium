@@ -1,6 +1,4 @@
-"""
-Abilities that enable an Actor to use Selenium.
-"""
+"""Abilities that enable an Actor to use Selenium."""
 
 from .browse_the_web import BrowseTheWeb
 

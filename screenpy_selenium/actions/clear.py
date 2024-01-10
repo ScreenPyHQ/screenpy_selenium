@@ -1,6 +1,4 @@
-"""
-Clear text from an input.
-"""
+"""Clear text from an input."""
 from typing import Type, TypeVar
 
 from screenpy.actor import Actor

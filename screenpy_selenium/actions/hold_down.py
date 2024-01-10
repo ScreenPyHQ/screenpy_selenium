@@ -1,6 +1,4 @@
-"""
-Hold down a specific key or the left mouse button, optionally on an element.
-"""
+"""Hold down a specific key or the left mouse button, optionally on an element."""
 
 import platform
 from typing import Optional, Type, TypeVar

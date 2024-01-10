@@ -1,6 +1,4 @@
-"""
-Refresh the browser page.
-"""
+"""Refresh the browser page."""
 
 from screenpy import Actor
 from screenpy.pacing import beat

@@ -1,6 +1,4 @@
-"""
-Move the mouse to a specific element, or by an offset.
-"""
+"""Move the mouse to a specific element, or by an offset."""
 
 from typing import Optional, Tuple, Type, TypeVar
 

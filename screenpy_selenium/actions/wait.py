@@ -1,6 +1,4 @@
-"""
-Wait for the application to fulfill a given condition.
-"""
+"""Wait for the application to fulfill a given condition."""
 
 from typing import Any, Callable, Iterable, Optional, Type, TypeVar
 

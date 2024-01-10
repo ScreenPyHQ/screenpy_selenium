@@ -1,6 +1,4 @@
-"""
-Switch the driver's frame of reference.
-"""
+"""Switch the driver's frame of reference."""
 
 from typing import Optional, Type, TypeVar
 

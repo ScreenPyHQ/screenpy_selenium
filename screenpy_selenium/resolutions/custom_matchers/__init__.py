@@ -1,6 +1,4 @@
-"""
-Custom matchers to extend the functionality of PyHamcrest for ScreenPy.
-"""
+"""Custom matchers to extend the functionality of PyHamcrest for ScreenPy."""
 
 from .is_clickable_element import is_clickable_element
 from .is_invisible_element import is_invisible_element

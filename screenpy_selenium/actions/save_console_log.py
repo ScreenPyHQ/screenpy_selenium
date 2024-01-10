@@ -1,6 +1,4 @@
-"""
-Save the browser console log.
-"""
+"""Save the browser console log."""
 
 import os
 from typing import Any, Optional, Type, TypeVar

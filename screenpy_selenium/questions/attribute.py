@@ -1,6 +1,4 @@
-"""
-Investigate an attribute of a Target.
-"""
+"""Investigate an attribute of a Target."""
 
 from typing import List, Optional, Union
 

@@ -1,6 +1,4 @@
-"""
-Save a screenshot.
-"""
+"""Save a screenshot."""
 
 import os
 from typing import Any, Optional, Type, TypeVar

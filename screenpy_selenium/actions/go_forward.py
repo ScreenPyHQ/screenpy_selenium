@@ -1,6 +1,4 @@
-"""
-Press the browser forward button.
-"""
+"""Press the browser forward button."""
 
 from screenpy.actor import Actor
 from screenpy.pacing import beat

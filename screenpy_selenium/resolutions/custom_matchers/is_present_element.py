@@ -12,9 +12,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 class IsPresentElement(BaseMatcher[Optional[WebElement]]):
-    """
-    Matches an element to be a present WebElement.
-    """
+    """Matches an element to be a present WebElement."""
 
     def _matches(self, item: Optional[WebElement]) -> bool:
         if item is None:

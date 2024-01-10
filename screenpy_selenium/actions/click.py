@@ -1,6 +1,4 @@
-"""
-Click on an element.
-"""
+"""Click on an element."""
 
 from typing import Optional, Type, TypeVar
 

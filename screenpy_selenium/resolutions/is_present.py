@@ -1,6 +1,4 @@
-"""
-Matches a present WebElement.
-"""
+"""Matches a present WebElement."""
 
 from screenpy.resolutions.base_resolution import BaseResolution
 

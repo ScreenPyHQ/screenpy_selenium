@@ -1,6 +1,4 @@
-"""
-Open a browser on a URL.
-"""
+"""Open a browser on a URL."""
 
 import os
 from typing import Type, TypeVar, Union

@@ -12,9 +12,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 class IsVisibleElement(BaseMatcher[Optional[WebElement]]):
-    """
-    Matches an element whose ``is_displayed`` method returns True.
-    """
+    """Matches an element whose ``is_displayed`` method returns True."""
 
     def _matches(self, item: Optional[WebElement]) -> bool:
         if item is None:

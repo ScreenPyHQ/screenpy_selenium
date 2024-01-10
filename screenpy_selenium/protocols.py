@@ -1,6 +1,4 @@
-"""
-Additional protocols for ScreenPy Selenium.
-"""
+"""Additional protocols for ScreenPy Selenium."""
 
 from typing import Protocol, runtime_checkable
 

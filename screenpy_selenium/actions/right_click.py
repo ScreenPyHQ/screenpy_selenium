@@ -1,6 +1,4 @@
-"""
-Right-click on an element, or wherever the cursor currently is.
-"""
+"""Right-click on an element, or wherever the cursor currently is."""
 
 from typing import Optional, Type, TypeVar
 

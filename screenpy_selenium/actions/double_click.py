@@ -1,6 +1,4 @@
-"""
-Double-click on an element, or wherever the cursor currently is.
-"""
+"""Double-click on an element, or wherever the cursor currently is."""
 
 from typing import Optional, Type, TypeVar
 

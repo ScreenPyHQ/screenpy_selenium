@@ -1,6 +1,4 @@
-"""
-Pause just like in ScreenPy, but also be able to do it in a Chain!
-"""
+"""Pause just like in ScreenPy, but also be able to do it in a Chain!"""
 
 from screenpy import Actor
 from screenpy.actions import Pause as BasePause
