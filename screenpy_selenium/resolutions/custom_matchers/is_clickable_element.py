@@ -28,6 +28,7 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
     def describe_match(
         self, _: Optional[WebElement], match_description: Description
     ) -> None:
+        """Describe the matching case."""
         match_description.append_text("it was enabled/clickable")
 
     def describe_mismatch(

@@ -28,6 +28,7 @@ class IsPresentElement(BaseMatcher[Optional[WebElement]]):
     def describe_match(
         self, _: Optional[WebElement], match_description: Description
     ) -> None:
+        """Describe the matching case."""
         match_description.append_text("it was present")
 
     def describe_mismatch(
