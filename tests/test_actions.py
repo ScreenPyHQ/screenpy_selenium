@@ -1408,7 +1408,7 @@ class TestWait:
         args = [1, Target.the("baked").located_by("//beans"), "and spam"]
         w = Wait().using(mock.Mock(), "{0}, {1}, {2}").with_(*args)
 
-        assert all([str(arg) in w.log_message for arg in args])
+        assert all(str(arg) in w.log_message for arg in args)
 
     def test_set_timeout(self) -> None:
         timeout = 1000
