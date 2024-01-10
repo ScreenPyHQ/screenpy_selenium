@@ -1,5 +1,19 @@
 [tool.black]
-target-version = ['py311']
+target-version = ['py312']
+
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+(
+    \.idea
+    | \.git
+    | \.mypy_cache
+    | \.tox
+    | \/docs
+    | ^/setup.py
+)
+
+'''
 
 # This pyproject.toml is setup so it can be used with or without poetry and also
 # supports editable installs (PEP 660) without breaking IDE and linter inspection.
@@ -52,40 +66,127 @@ selenium = ">=4.1.0"
 importlib_metadata = {version = "*", python = "3.8.*"}
 
 # convenience packages for development of screenpy only
-pre-commit = {version = "*", optional = true}
-pytest = {version = "*", optional = true}
-tox = {version = "*", optional = true}
-mypy = {version = "*", optional = true}
 black = {version = "*", optional = true}
-isort = {version = "*", optional = true}
-flake8 = {version = "*", optional = true}
-pylint = {version = "*", optional = true}
 coverage = {version = "*", optional = true}
+flake8 = {version = "*", optional = true}
+isort = {version = "*", optional = true}
+mypy = {version = "*", optional = true}
+pre-commit = {version = "*", optional = true}
+pylint = {version = "*", optional = true}
+pytest = {version = "*", optional = true}
+ruff = {version = "*", optional = true}
+tox = {version = "*", optional = true}
 
 [tool.poetry.extras]
 dev = [
     "pre-commit",
+    "pylint",
     "pytest",
     "tox",
-    "pylint",
 ]
 dev_all = [
-    "pre-commit",
-    "pytest",
-    "tox",
-    "pylint",
-    "mypy",
     "black",
-    "isort",
-    "flake8",
     "coverage",
+    "flake8",
+    "isort",
+    "mypy",
+    "pre-commit",
+    "pylint",
+    "pytest",
+    "ruff",
     "sphinx",
+    "tox",
 ]
 test = [
-    "pytest",
     "coverage",
+    "pytest",
 ]
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+target-version = "py38"  # minimum supported version
+line-length = 88  # same as Black.
+select = [
+    "A",  # flake8-builtins
+    "ANN",  # flake8-annotations  # coming back to this one later to compare against mypy
+    "ARG",  # flake8-unused-arguments
+    "B",  # flake8-bugbear
+    "BLE",  # flake8-blind-except
+    "C4",  # flake8-comprehensions
+    "D",  # pydocstyle
+    "E",  # pycodestyle error
+    "EM",  # flake8-errmsg
+    "ERA",  # eradicate
+    "F",  # Pyflakes
+    "FA",  # flake8-future-annotations
+    "FBT",  # flake8-boolean-trap
+    "FIX",  # flake8-fixme
+    "FLY",  # flynt
+    "I",  # isort
+    "ICN",  # flake8-import-conventions
+    "ISC",  # flake8-implicit-str-concat
+    "PGH",  # pygrep-hooks
+    "PIE",  # flake8-pie
+    "PL",  # pylint
+    "PT",  # flake8-pytest-style
+    "Q",  # flake8-quotes
+    "RET",  # flake8-return
+    "RSE",  # flake8-raise
+    "RUF",  # ruff specific
+    "SIM",  # flake8-simplify
+    "T10",  # flake8-debugger
+    "T20",  # flake8-print
+    "TCH",  # flake8-type-checking
+    "TRY",  # tryceratops
+    "UP",  # python upgrade
+    "W",  # pycodestyle warning
+    "YTT",  # flake8-2020
+
+    # we would like these someday, but not yet
+    # "FURB",  # refurb
+]
+ignore = [
+    "D107",  # missing __init__ docstring, we do that in the class docstring.
+    "D203",  # one blank line before class docstring, no thanks!
+    "D212",  # multi line summary first line, we want a one line summary.
+    "ANN101",  # missing self annotation, we only annotate self when we return it.
+    "ANN102",  # missing cls annotation, we only annotate cls when we return it.
+]
+exclude = [
+    "screenpy_selenium/__init__.py",
+    "screenpy_selenium/__version__.py",
+    "docs",
+]
+
+
+[tool.ruff.per-file-ignores]
+"tests/**" = [
+    "D",  # we don't need public-API-polished docstrings in tests.
+    "FBT",  # using a boolean as a test object is useful!
+    "PLR",  # likewise using specific numbers and strings in tests.
+]
+"tests/test_pacing.py" = [
+    "FA100",  # we are purposely testing pacing without future annotations.
+]
+
+
+[tool.ruff.isort]
+combine-as-imports = true
+split-on-trailing-comma = true
+known-first-party = ["screenpy_selenium", "tests"]
+
+
+[tool.ruff.flake8-pytest-style]
+mark-parentheses = false
+
+
+[tool.ruff.pycodestyle]
+ignore-overlong-task-comments = true
+
+
+[tool.ruff.pydocstyle]
+convention = "google"
