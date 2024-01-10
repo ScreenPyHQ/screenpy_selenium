@@ -1,5 +1,7 @@
 """
-A matcher that matches an invisible element. For example:
+A matcher that matches an invisible element.
+
+For example:
 
     assert_that(driver.find_element_by_id("search"), is_invisible_element())
 """

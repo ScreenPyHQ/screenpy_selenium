@@ -50,8 +50,9 @@ class Enter:
     @classmethod
     def the_secret(cls: Type[SelfEnter], text: str) -> SelfEnter:
         """
-        Provide the text to enter into the field, but mark that the text
-        should be masked in the log. The text will appear as "[CENSORED]".
+        Provide the text to enter into the field, but mask it in logging.
+
+        The text will appear as "[CENSORED]".
 
         Aliases:
             * :meth:`~screenpy_selenium.actions.Enter.the_password`

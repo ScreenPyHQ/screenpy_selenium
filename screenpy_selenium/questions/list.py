@@ -36,17 +36,17 @@ class List:
 
     @classmethod
     def of_all_the(cls: Type[SelfList], target: Target) -> SelfList:
-        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
     def of_all(cls: Type[SelfList], target: Target) -> SelfList:
-        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
     def of(cls: Type[SelfList], target: Target) -> SelfList:
-        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
     def describe(self: SelfList) -> str:

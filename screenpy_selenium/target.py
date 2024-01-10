@@ -1,4 +1,6 @@
 """
+Locator object.
+
 Provides an object to store a locator with a human-readable string. The
 human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
@@ -37,7 +39,7 @@ class Target:
 
     @property
     def target_name(self: SelfTarget) -> Optional[str]:
-        """Return the description when set or the 2nd half of the locator"""
+        """Return the description when set or the 2nd half of the locator."""
         if self._description is not None:
             return self._description
         return self.locator[1] if self.locator else None
@@ -86,7 +88,7 @@ class Target:
         return self
 
     def located(self: SelfTarget, locator: Union[Tuple[str, str], str]) -> SelfTarget:
-        """Alias for :meth:~screenpy_selenium.Target.located_by"""
+        """Alias for :meth:~screenpy_selenium.Target.located_by."""
         return self.located_by(locator)
 
     def get_locator(self: SelfTarget) -> Tuple[str, str]:
@@ -119,14 +121,17 @@ class Target:
             raise TargetingError(f"{e} raised while trying to find {self}.") from e
 
     def __repr__(self: SelfTarget) -> str:
+        """Target name represents."""
         return f"{self.target_name}"
 
     __str__ = __repr__
 
     def __iter__(self: SelfTarget) -> Iterator[str]:
+        """Interator."""
         return self.get_locator().__iter__()
 
     def __getitem__(self: SelfTarget, index: int) -> str:
+        """Allow slicing of target name directly."""
         return self.get_locator()[index]
 
     def __init__(

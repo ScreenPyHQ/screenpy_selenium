@@ -1,5 +1,7 @@
 """
-A matcher that matches a visible element. For example:
+A matcher that matches a visible element.
+
+For example:
 
     assert_that(driver.find_element_by_id("search"), is_visible_element())
 """

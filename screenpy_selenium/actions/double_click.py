@@ -40,14 +40,14 @@ class DoubleClick:
 
     @classmethod
     def on(cls: Type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
-        """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
 
     @classmethod
     def on_the_first_of_the(
         cls: Type[SelfDoubleClick], target: Target
     ) -> SelfDoubleClick:
-        """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
 
     def _add_action_to_chain(

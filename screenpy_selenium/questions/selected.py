@@ -1,7 +1,4 @@
-"""
-Investigate the text of the selected option or options from a dropdown or
-multi-select field.
-"""
+"""Investigate the selected option or options from a dropdown or multi-select field."""
 
 from typing import List, Type, TypeVar, Union
 
@@ -35,6 +32,8 @@ class Selected:
     @classmethod
     def option_from_the(cls: Type[SelfSelected], target: Target) -> SelfSelected:
         """
+        Get the option.
+
         Get the option that is currently selected in a dropdown or the first
         option selected in a multi-select field.
 
@@ -56,8 +55,7 @@ class Selected:
         cls: Type[SelfSelected], multiselect_target: Target
     ) -> SelfSelected:
         """
-        Get all the options that are currently selected in a multi-select
-        field.
+        Get all the options that are currently selected in a multi-select field.
 
         *Note*: this method should not be used for single-select dropdowns,
         that will cause a NotImplemented error to be raised from Selenium when

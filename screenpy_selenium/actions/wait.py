@@ -61,7 +61,7 @@ class Wait:
 
     @classmethod
     def for_(cls: Type[SelfWait], target: Target) -> SelfWait:
-        """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
     def seconds_for_the(self: SelfWait, target: Target) -> SelfWait:

@@ -1,5 +1,7 @@
 """
-A matcher that matches a present element. For example:
+A matcher that matches a present element.
+
+For example:
 
     assert_that(driver.find_element_by_id("search"), is_present_element())
 """
@@ -36,5 +38,5 @@ class IsPresentElement(BaseMatcher[Optional[WebElement]]):
 
 
 def is_present_element() -> IsPresentElement:
-    """This matcher matches any element that is present"""
+    """This matcher matches any element that is present."""
     return IsPresentElement()

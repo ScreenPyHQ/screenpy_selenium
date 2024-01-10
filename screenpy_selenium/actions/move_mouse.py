@@ -57,24 +57,24 @@ class MoveMouse:
 
     @classmethod
     def on_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
-        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
     def over_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
-        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
     def over_the_first_of_the(
         cls: Type[SelfMoveMouse], target: Target
     ) -> SelfMoveMouse:
-        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
     def to_the_first_of_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
-        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
