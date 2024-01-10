@@ -1029,7 +1029,7 @@ class TestSaveConsoleLog:
         "screenpy_selenium.actions.save_console_log.AttachTheFile", autospec=True
     )
     def test_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, mocked_open: mock.Mock, Tester: Actor
+        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
     ) -> None:
         test_path = "doppelganger.png"
         test_kwargs = {"name": "Mystique"}
@@ -1095,7 +1095,7 @@ class TestSaveScreenshot:
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, mocked_open: mock.Mock, Tester: Actor
+        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}

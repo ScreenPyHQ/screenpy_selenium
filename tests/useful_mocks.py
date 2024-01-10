@@ -20,7 +20,7 @@ def get_mocked_chain() -> mock.Mock:
 
 def get_mock_target_class() -> type:
     class FakeTarget(Target):
-        def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:
+        def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:  # noqa: ARG003
             rt = mock.create_autospec(FakeTarget, instance=True)
             return rt
 
