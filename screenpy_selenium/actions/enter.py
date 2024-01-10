@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import aside, beat
+from screenpy.speech_tools import represent_prop
 from selenium.common.exceptions import WebDriverException
 
 from ..common import pos_args_deprecated
@@ -36,7 +37,7 @@ class Enter:
     target: Target | None
     following_keys: list[str]
     text: str
-    text_to_log: str
+    mask: bool
 
     @classmethod
     def the_text(cls, text: str) -> Self:
@@ -109,11 +110,22 @@ class Enter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.then_hit`."""
         return self.then_hit(*keys)
 
+    @property
+    def text_to_log(self) -> str:
+        """Get a proper representation of the text."""
+        if self.mask:
+            altered_text = "[CENSORED]"
+        else:
+            altered_text = self.text
+            for value, keyname in KEY_NAMES.items():
+                altered_text = altered_text.replace(value, keyname)
+        return represent_prop(altered_text)
+
     def describe(self) -> str:
         """Describe the Action in present tense."""
-        return f'Enter "{self.text_to_log}" into the {self.target}.'
+        return f"Enter {self.text_to_log} into the {self.target}."
 
-    @beat('{} enters "{text_to_log}" into the {target}.')
+    @beat("{} enters {text_to_log} into the {target}.")
     def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to enter the text into the element."""
         if self.target is None:
@@ -137,7 +149,7 @@ class Enter:
             )
             raise DeliveryError(msg) from e
 
-    @beat('  Enter "{text_to_log}" into the {target}!')
+    @beat("  Enter {text_to_log} into the {target}!")
     def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Add the Enter Action to a Chain of Actions."""
         if self.target is None:
@@ -155,11 +167,4 @@ class Enter:
         self.text = text
         self.target = None
         self.following_keys = []
-
-        if mask:
-            self.text_to_log = "[CENSORED]"
-        else:
-            altered_text = text
-            for value, keyname in KEY_NAMES.items():
-                altered_text = altered_text.replace(value, keyname)
-            self.text_to_log = altered_text
+        self.mask = mask
