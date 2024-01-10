@@ -43,7 +43,7 @@ class Target:
         return self.locator[1] if self.locator else None
 
     @target_name.setter
-    def target_name(self: SelfTarget, value) -> None:
+    def target_name(self: SelfTarget, value: str) -> None:
         self._description = value
 
     @target_name.deleter

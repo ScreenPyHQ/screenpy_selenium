@@ -113,38 +113,38 @@ line-length = 88  # same as Black.
 select = [
     "A",  # flake8-builtins
     "ANN",  # flake8-annotations  # coming back to this one later to compare against mypy
-    "ARG",  # flake8-unused-arguments
-    "B",  # flake8-bugbear
-    "BLE",  # flake8-blind-except
-    "C4",  # flake8-comprehensions
-    "D",  # pydocstyle
-    "E",  # pycodestyle error
-    "EM",  # flake8-errmsg
-    "ERA",  # eradicate
-    "F",  # Pyflakes
-    "FA",  # flake8-future-annotations
-    "FBT",  # flake8-boolean-trap
-    "FIX",  # flake8-fixme
-    "FLY",  # flynt
-    "I",  # isort
-    "ICN",  # flake8-import-conventions
-    "ISC",  # flake8-implicit-str-concat
-    "PGH",  # pygrep-hooks
-    "PIE",  # flake8-pie
-    "PL",  # pylint
-    "PT",  # flake8-pytest-style
-    "Q",  # flake8-quotes
-    "RET",  # flake8-return
-    "RSE",  # flake8-raise
-    "RUF",  # ruff specific
-    "SIM",  # flake8-simplify
-    "T10",  # flake8-debugger
-    "T20",  # flake8-print
-    "TCH",  # flake8-type-checking
-    "TRY",  # tryceratops
-    "UP",  # python upgrade
-    "W",  # pycodestyle warning
-    "YTT",  # flake8-2020
+#    "ARG",  # flake8-unused-arguments
+#    "B",  # flake8-bugbear
+#    "BLE",  # flake8-blind-except
+#    "C4",  # flake8-comprehensions
+#    "D",  # pydocstyle
+#    "E",  # pycodestyle error
+#    "EM",  # flake8-errmsg
+#    "ERA",  # eradicate
+#    "F",  # Pyflakes
+#    "FA",  # flake8-future-annotations
+#    "FBT",  # flake8-boolean-trap
+#    "FIX",  # flake8-fixme
+#    "FLY",  # flynt
+#    "I",  # isort
+#    "ICN",  # flake8-import-conventions
+#    "ISC",  # flake8-implicit-str-concat
+#    "PGH",  # pygrep-hooks
+#    "PIE",  # flake8-pie
+#    "PL",  # pylint
+#    "PT",  # flake8-pytest-style
+#    "Q",  # flake8-quotes
+#    "RET",  # flake8-return
+#    "RSE",  # flake8-raise
+#    "RUF",  # ruff specific
+#    "SIM",  # flake8-simplify
+#    "T10",  # flake8-debugger
+#    "T20",  # flake8-print
+#    "TCH",  # flake8-type-checking
+#    "TRY",  # tryceratops
+#    "UP",  # python upgrade
+#    "W",  # pycodestyle warning
+#    "YTT",  # flake8-2020
 
     # we would like these someday, but not yet
     # "FURB",  # refurb

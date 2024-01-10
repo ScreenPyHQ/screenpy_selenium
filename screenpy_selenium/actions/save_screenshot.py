@@ -60,7 +60,9 @@ class SaveScreenshot:
         """
         return cls(path=path)
 
-    def and_attach_it(self: SelfSaveScreenshot, **kwargs: Any) -> SelfSaveScreenshot:
+    def and_attach_it(
+        self: SelfSaveScreenshot, **kwargs: Any  # noqa: ANN401
+    ) -> SelfSaveScreenshot:
         """Indicate the screenshot should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters

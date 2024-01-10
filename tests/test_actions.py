@@ -1,3 +1,5 @@
+from __future__ import annotations
+from typing import cast
 from unittest import mock
 
 import pytest
@@ -71,7 +73,7 @@ class TestAcceptAlert:
         assert isinstance(a, Performable)
         assert isinstance(a, Describable)
 
-    def test_perform_accept_alert(self, Tester) -> None:
+    def test_perform_accept_alert(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         AcceptAlert().perform_as(Tester)
@@ -95,7 +97,7 @@ class TestChain:
         assert isinstance(c, Describable)
 
     @mock.patch("screenpy_selenium.actions.chain.ActionChains", autospec=True)
-    def test_perform_chain(self, mocked_chain, Tester) -> None:
+    def test_perform_chain(self, mocked_chain: mock.Mock, Tester: Actor) -> None:
         actions = [
             mock.create_autospec(ChainableAction, instance=True) for _ in range(3)
         ]
@@ -106,7 +108,7 @@ class TestChain:
         for action in actions:
             action.add_to_chain.assert_called_once_with(Tester, mocked_chain(browser))
 
-    def test_unchainable_action(self, Tester) -> None:
+    def test_unchainable_action(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             Chain(AcceptAlert()).perform_as(Tester)  # type: ignore
 
@@ -127,7 +129,7 @@ class TestClear:
         assert isinstance(c, Performable)
         assert isinstance(c, Describable)
 
-    def test_perform_clear(self, Tester) -> None:
+    def test_perform_clear(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
 
         Clear.the_text_from(fake_target).perform_as(Tester)
@@ -135,7 +137,7 @@ class TestClear:
         browser = get_mocked_browser(Tester)
         browser.find_element().clear.assert_called_once()
 
-    def test_exception(self, Tester) -> None:
+    def test_exception(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         element.clear.side_effect = WebDriverException()
 
@@ -151,7 +153,7 @@ class TestClear:
         """test code for mypy to scan without issue"""
 
         class SubClear(Clear):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubClear.the_text_from_the(TARGET).new_method() is True
@@ -180,14 +182,14 @@ class TestClick:
         target.found_by.assert_called_once_with(Tester)
         element.click.assert_called_once()
 
-    def test_add_click_to_chain_without_target(self, Tester) -> None:
+    def test_add_click_to_chain_without_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         Click().add_to_chain(Tester, chain)
 
         chain.click.assert_called_once_with(on_element=None)
 
-    def test_add_click_to_chain_with_target(self, Tester) -> None:
+    def test_add_click_to_chain_with_target(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         chain = get_mocked_chain()
 
@@ -195,7 +197,7 @@ class TestClick:
 
         chain.click.assert_called_once_with(on_element=element)
 
-    def test_exception(self, Tester) -> None:
+    def test_exception(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         element.click.side_effect = WebDriverException()
 
@@ -204,7 +206,7 @@ class TestClick:
 
         assert str(target) in str(excinfo.value)
 
-    def test_no_target(self, Tester) -> None:
+    def test_no_target(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             Click(None).perform_as(Tester)
 
@@ -215,7 +217,7 @@ class TestClick:
         """test code for mypy to scan without issue"""
 
         class SubClick(Click):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubClick.on(TARGET).new_method() is True
@@ -233,7 +235,7 @@ class TestDismissAlert:
         assert isinstance(d, Performable)
         assert isinstance(d, Describable)
 
-    def test_perform_dismiss_alert(self, Tester) -> None:
+    def test_perform_dismiss_alert(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         DismissAlert().perform_as(Tester)
@@ -260,14 +262,18 @@ class TestDoubleClick:
         assert isinstance(d, Chainable)
 
     @mock.patch("screenpy_selenium.actions.double_click.ActionChains", autospec=True)
-    def test_perform_double_click_without_target(self, mocked_chains, Tester) -> None:
+    def test_perform_double_click_without_target(
+        self, mocked_chains: mock.Mock, Tester: Actor
+    ) -> None:
         DoubleClick().perform_as(Tester)
 
         browser = get_mocked_browser(Tester)
         mocked_chains(browser).double_click.assert_called_once_with(on_element=None)
 
     @mock.patch("screenpy_selenium.actions.double_click.ActionChains", autospec=True)
-    def test_perform_double_click_with_target(self, mocked_chains, Tester) -> None:
+    def test_perform_double_click_with_target(
+        self, mocked_chains: mock.Mock, Tester: Actor
+    ) -> None:
         target, element = get_mocked_target_and_element()
         browser = get_mocked_browser(Tester)
         DoubleClick.on_the(target).perform_as(Tester)
@@ -275,14 +281,14 @@ class TestDoubleClick:
         target.found_by.assert_called_once_with(Tester)
         mocked_chains(browser).double_click.assert_called_once_with(on_element=element)
 
-    def test_chain_double_click_without_target(self, Tester) -> None:
+    def test_chain_double_click_without_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         DoubleClick().add_to_chain(Tester, chain)
 
         chain.double_click.assert_called_once_with(on_element=None)
 
-    def test_chain_double_click_with_target(self, Tester) -> None:
+    def test_chain_double_click_with_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
 
@@ -299,7 +305,7 @@ class TestDoubleClick:
         """test code for mypy to scan without issue"""
 
         class SubDoubleClick(DoubleClick):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubDoubleClick.on(TARGET).new_method() is True
@@ -346,7 +352,7 @@ class TestEnter:
 
         assert "ENTER" in e.text_to_log
 
-    def test_perform_enter(self, Tester) -> None:
+    def test_perform_enter(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         text = 'Speak "Friend" and Enter'
 
@@ -355,11 +361,11 @@ class TestEnter:
         target.found_by.assert_called_once_with(Tester)
         element.send_keys.assert_called_once_with(text)
 
-    def test_perform_without_target_raises(self, Tester) -> None:
+    def test_perform_without_target_raises(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             Enter.the_text("woops!").perform_as(Tester)
 
-    def test_perform_with_then_hit(self, Tester) -> None:
+    def test_perform_with_then_hit(self, Tester: Actor) -> None:
         text = 'Speak "Friend" and...'
         additional = Keys.ENTER
         target, element = get_mocked_target_and_element()
@@ -371,7 +377,7 @@ class TestEnter:
         assert text in call1_args
         assert additional in call2_args
 
-    def test_chain_enter_with_target(self, Tester) -> None:
+    def test_chain_enter_with_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
         text = "Hello, Champion City."
@@ -380,7 +386,7 @@ class TestEnter:
 
         chain.send_keys_to_element.assert_called_once_with(element, text)
 
-    def test_chain_enter_without_target(self, Tester) -> None:
+    def test_chain_enter_without_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         text = "I am a super hero, Mother. An effete British super hero."
 
@@ -388,7 +394,7 @@ class TestEnter:
 
         chain.send_keys.assert_called_once_with(text)
 
-    def test_chain_enter_with_additional_text(self, Tester) -> None:
+    def test_chain_enter_with_additional_text(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         text = "If just one person vomits in my pool, I'm divorcing you."
         additional = "That's fair."
@@ -400,7 +406,7 @@ class TestEnter:
         assert text in call1_args
         assert additional in call2_args
 
-    def test_exception(self, Tester) -> None:
+    def test_exception(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         element.send_keys.side_effect = WebDriverException()
 
@@ -422,7 +428,7 @@ class TestEnter:
         """test code for mypy to scan without issue"""
 
         class SubEnter(Enter):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubEnter.the_text("blah").new_method() is True
@@ -442,10 +448,10 @@ class TestEnter2FAToken:
         assert isinstance(e, Describable)
         assert isinstance(e, Chainable)
 
-    def test_perform_enter2fatoken(self, Tester) -> None:
+    def test_perform_enter2fatoken(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # The kind of thing an idiot would have on his luggage!
-        mocked_2fa = Tester.ability_to(AuthenticateWith2FA)
+        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
         mocked_2fa.to_get_token.return_value = mfa_token
 
         Enter2FAToken.into_the(target).perform_as(Tester)
@@ -453,11 +459,11 @@ class TestEnter2FAToken:
         target.found_by.assert_called_once_with(Tester)
         element.send_keys.assert_called_once_with(mfa_token)
 
-    def test_chain_enter2fatoken(self, Tester) -> None:
+    def test_chain_enter2fatoken(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # Hey, I've got the same combination on my luggage!
-        mocked_2fa = Tester.ability_to(AuthenticateWith2FA)
+        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
         mocked_2fa.to_get_token.return_value = mfa_token
 
         Enter2FAToken.into_the(target).add_to_chain(Tester, chain)
@@ -473,7 +479,7 @@ class TestEnter2FAToken:
         """test code for mypy to scan without issue"""
 
         class SubEnter2FA(Enter2FAToken):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubEnter2FA.into(TARGET).new_method() is True
@@ -491,7 +497,7 @@ class TestGoBack:
         assert isinstance(g, Performable)
         assert isinstance(g, Describable)
 
-    def test_perform_go_back(self, Tester) -> None:
+    def test_perform_go_back(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         GoBack().perform_as(Tester)
@@ -514,7 +520,7 @@ class TestGoForward:
         assert isinstance(g, Performable)
         assert isinstance(g, Describable)
 
-    def test_perform_go_forward(self, Tester) -> None:
+    def test_perform_go_forward(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         GoForward().perform_as(Tester)
@@ -546,7 +552,7 @@ class TestHoldDown:
     @pytest.mark.parametrize(
         "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
     )
-    def test_command_or_control_key(self, platform, expected_key) -> None:
+    def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """HoldDown figures out which key to use based on platform"""
         system_path = "screenpy_selenium.actions.hold_down.platform.system"
         with mock.patch(system_path, return_value=platform, autospec=True):
@@ -564,7 +570,7 @@ class TestHoldDown:
         assert hd2.description == "ALT"
         assert hd3.description == "SHIFT"
 
-    def test_chain_hold_down_key(self, Tester) -> None:
+    def test_chain_hold_down_key(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         key = Keys.PAGE_UP
 
@@ -572,14 +578,14 @@ class TestHoldDown:
 
         chain.key_down.assert_called_once_with(key)
 
-    def test_chain_hold_down_mouse_button(self, Tester) -> None:
+    def test_chain_hold_down_mouse_button(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         HoldDown.left_mouse_button().add_to_chain(Tester, chain)
 
         chain.click_and_hold.assert_called_once_with(on_element=None)
 
-    def test_chain_hold_down_mouse_button_on_target(self, Tester) -> None:
+    def test_chain_hold_down_mouse_button_on_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
 
@@ -588,7 +594,7 @@ class TestHoldDown:
         target.found_by.assert_called_once_with(Tester)
         chain.click_and_hold.assert_called_once_with(on_element=element)
 
-    def test_without_params_raises(self, Tester) -> None:
+    def test_without_params_raises(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         hd = HoldDown(Keys.SPACE)
         hd.description = "blah"
@@ -605,7 +611,7 @@ class TestHoldDown:
         """test code for mypy to scan without issue"""
 
         class SubHoldDown(HoldDown):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubHoldDown.left_mouse_button().new_method() is True
@@ -644,7 +650,9 @@ class TestMoveMouse:
         assert element_name in mm3.description and str(coords) in mm3.description
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
-    def test_perform_move_mouse_with_target(self, MockedActionChains, Tester) -> None:
+    def test_perform_move_mouse_with_target(
+        self, MockedActionChains: mock.Mock, Tester: Actor
+    ) -> None:
         target, element = get_mocked_target_and_element()
         browser = get_mocked_browser(Tester)
 
@@ -653,7 +661,9 @@ class TestMoveMouse:
         MockedActionChains(browser).move_to_element.assert_called_once_with(element)
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
-    def test_perform_move_mouse_by_offset(self, MockedActionChains, Tester) -> None:
+    def test_perform_move_mouse_by_offset(
+        self, MockedActionChains: mock.Mock, Tester: Actor
+    ) -> None:
         offset = (1, 2)
         browser = get_mocked_browser(Tester)
 
@@ -662,7 +672,9 @@ class TestMoveMouse:
         MockedActionChains(browser).move_by_offset.assert_called_once_with(*offset)
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
-    def test_calls_move_to_element_by_offset(self, MockedActionChains, Tester) -> None:
+    def test_calls_move_to_element_by_offset(
+        self, MockedActionChains: mock.Mock, Tester: Actor
+    ) -> None:
         target, element = get_mocked_target_and_element()
         offset = (1, 2)
         browser = get_mocked_browser(Tester)
@@ -673,7 +685,7 @@ class TestMoveMouse:
             element, *offset
         )
 
-    def test_can_be_chained(self, Tester) -> None:
+    def test_can_be_chained(self, Tester: Actor) -> None:
         offset = (1, 2)
         chain = get_mocked_chain()
 
@@ -681,7 +693,7 @@ class TestMoveMouse:
 
         chain.move_by_offset.assert_called_once_with(*offset)
 
-    def test_without_params_raises(self, Tester) -> None:
+    def test_without_params_raises(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         with pytest.raises(UnableToAct):
@@ -695,7 +707,7 @@ class TestMoveMouse:
         """test code for mypy to scan without issue"""
 
         class SubMoveMouse(MoveMouse):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubMoveMouse.on_the(TARGET).new_method() is True
@@ -715,7 +727,7 @@ class TestOpen:
         assert isinstance(o, Performable)
         assert isinstance(o, Describable)
 
-    def test_perform_open(self, Tester) -> None:
+    def test_perform_open(self, Tester: Actor) -> None:
         url = "https://localtest.test"
         browser = get_mocked_browser(Tester)
 
@@ -730,7 +742,7 @@ class TestOpen:
         """test code for mypy to scan without issue"""
 
         class SubOpen(Open):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubOpen.browser_on("url").new_method() is True
@@ -750,14 +762,14 @@ class TestPause:
         assert isinstance(a, Chainable)
 
     @mock.patch("screenpy.actions.pause.sleep", autospec=True)
-    def test_perform_pause(self, MockedSleep, Tester) -> None:
+    def test_perform_pause(self, MockedSleep: mock.Mock, Tester: Actor) -> None:
         length = 20
 
         Pause.for_(length).seconds_because("Ah ha! Testing!").perform_as(Tester)
 
         MockedSleep.assert_called_once_with(length)
 
-    def test_chain_pause(self, Tester) -> None:
+    def test_chain_pause(self, Tester: Actor) -> None:
         length = 20
         chain = get_mocked_chain()
 
@@ -784,7 +796,7 @@ class TestRefreshPage:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_perform_refresh(self, Tester) -> None:
+    def test_perform_refresh(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         RefreshPage().perform_as(Tester)
@@ -814,7 +826,7 @@ class TestRelease:
     @pytest.mark.parametrize(
         "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
     )
-    def test_command_or_control_key(self, platform, expected_key) -> None:
+    def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """Release figures out which key to use based on platform"""
         system_path = "screenpy_selenium.actions.hold_down.platform.system"
         with mock.patch(system_path, return_value=platform, autospec=True):
@@ -832,7 +844,7 @@ class TestRelease:
         assert r2.description == "ALT"
         assert r3.description == "SHIFT"
 
-    def test_calls_key_down(self, Tester) -> None:
+    def test_calls_key_down(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         key = Keys.ALT
 
@@ -840,14 +852,14 @@ class TestRelease:
 
         chain.key_up.assert_called_once_with(key)
 
-    def test_calls_release(self, Tester) -> None:
+    def test_calls_release(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         Release.left_mouse_button().add_to_chain(Tester, chain)
 
         chain.release.assert_called_once()
 
-    def test_without_params_raises(self, Tester) -> None:
+    def test_without_params_raises(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         r = Release.left_mouse_button()
         r.lmb = False
@@ -862,7 +874,7 @@ class TestRelease:
         """test code for mypy to scan without issue"""
 
         class SubRelease(Release):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubRelease.left_mouse_button().new_method() is True
@@ -880,7 +892,7 @@ class TestRespondToThePrompt:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_perform_responed_to_the_prompt(self, Tester) -> None:
+    def test_perform_responed_to_the_prompt(self, Tester: Actor) -> None:
         text = "Hello. My name is Inigo Montoya. You killed my father. Prepare to die."
         mocked_alert = get_mocked_browser(Tester).switch_to.alert
 
@@ -898,7 +910,7 @@ class TestRespondToThePrompt:
         """test code for mypy to scan without issue"""
 
         class SubRespond(RespondToThePrompt):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubRespond.with_("").new_method() is True
@@ -912,7 +924,7 @@ class TestRightClick:
         assert isinstance(rc1, RightClick)
         assert isinstance(rc2, RightClick)
 
-    def test_implements_protocol(self):
+    def test_implements_protocol(self) -> None:
         rc = RightClick()
 
         assert isinstance(rc, Performable)
@@ -920,7 +932,9 @@ class TestRightClick:
         assert isinstance(rc, Chainable)
 
     @mock.patch("screenpy_selenium.actions.right_click.ActionChains", autospec=True)
-    def test_can_be_performed(self, MockedActionChains, Tester) -> None:
+    def test_can_be_performed(
+        self, MockedActionChains: mock.Mock, Tester: Actor
+    ) -> None:
         Tester.attempts_to(RightClick())
         browser = get_mocked_browser(Tester)
 
@@ -928,7 +942,7 @@ class TestRightClick:
             on_element=None
         )
 
-    def test_add_right_click_to_chain(self, Tester) -> None:
+    def test_add_right_click_to_chain(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         chain = get_mocked_chain()
 
@@ -936,7 +950,7 @@ class TestRightClick:
 
         chain.context_click.assert_called_once_with(on_element=element)
 
-    def test_chain_right_click_without_target(self, Tester) -> None:
+    def test_chain_right_click_without_target(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
 
         RightClick().add_to_chain(Tester, chain)
@@ -951,7 +965,7 @@ class TestRightClick:
         """test code for mypy to scan without issue"""
 
         class SubRightClick(RightClick):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubRightClick.on(TARGET).new_method() is True
@@ -985,7 +999,9 @@ class TestSaveConsoleLog:
         assert scl.filename == test_name
 
     @mock.patch("builtins.open", new_callable=mock.mock_open)
-    def test_perform_save_console_log_calls_open(self, mocked_open, Tester) -> None:
+    def test_perform_save_console_log_calls_open(
+        self, mocked_open: mock.Mock, Tester: Actor
+    ) -> None:
         test_path = "jhowlett/images/a_wolverine.py"
         browser = get_mocked_browser(Tester)
         browser.get_log.return_value = ["logan"]
@@ -995,7 +1011,9 @@ class TestSaveConsoleLog:
         mocked_open.assert_called_once_with(test_path, "w+", encoding="utf-8")
 
     @mock.patch("builtins.open", new_callable=mock.mock_open)
-    def test_perform_save_console_log_writes_log(self, mocked_open, Tester) -> None:
+    def test_perform_save_console_log_writes_log(
+        self, mocked_open: mock.Mock, Tester: Actor
+    ) -> None:
         test_path = "ssummers/images/a_cyclops.py"
         test_log = ["shot a beam", "shot a second beam", "closed my eyes"]
         browser = get_mocked_browser(Tester)
@@ -1010,7 +1028,9 @@ class TestSaveConsoleLog:
     @mock.patch(
         "screenpy_selenium.actions.save_console_log.AttachTheFile", autospec=True
     )
-    def test_sends_kwargs_to_attach(self, mocked_atf, mocked_open, Tester) -> None:
+    def test_sends_kwargs_to_attach(
+        self, mocked_atf: mock.Mock, mocked_open: mock.Mock, Tester: Actor
+    ) -> None:
         test_path = "doppelganger.png"
         test_kwargs = {"name": "Mystique"}
         browser = get_mocked_browser(Tester)
@@ -1027,7 +1047,7 @@ class TestSaveConsoleLog:
         """test code for mypy to scan without issue"""
 
         class SubSaveConsoleLog(SaveConsoleLog):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSaveConsoleLog.as_("").new_method() is True
@@ -1061,7 +1081,9 @@ class TestSaveScreenshot:
         assert ss.filename == test_name
 
     @mock.patch("builtins.open", new_callable=mock.mock_open)
-    def test_perform_calls_open_with_path(self, mocked_open, Tester) -> None:
+    def test_perform_calls_open_with_path(
+        self, mocked_open: mock.Mock, Tester: Actor
+    ) -> None:
         test_path = "bwayne/images/a_bat.py"
 
         SaveScreenshot(test_path).perform_as(Tester)
@@ -1073,7 +1095,7 @@ class TestSaveScreenshot:
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf, mocked_open, Tester
+        self, mocked_atf: mock.Mock, mocked_open: mock.Mock, Tester: Actor
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}
@@ -1089,7 +1111,7 @@ class TestSaveScreenshot:
         """test code for mypy to scan without issue"""
 
         class SubSaveScreenshot(SaveScreenshot):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSaveScreenshot.as_("").new_method() is True
@@ -1131,7 +1153,9 @@ class TestSelectByIndex:
         assert isinstance(r, Describable)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_perform_select_by_index(self, mocked_selselect, Tester) -> None:
+    def test_perform_select_by_index(
+        self, mocked_selselect: mock.Mock, Tester: Actor
+    ) -> None:
         index = 1
         fake_target = Target.the("fake").located_by("//xpath")
 
@@ -1141,12 +1165,12 @@ class TestSelectByIndex:
             int(index)
         )
 
-    def test_perform_complains_for_no_target(self, Tester) -> None:
+    def test_perform_complains_for_no_target(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             SelectByIndex(1).perform_as(Tester)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_exception(self, mocked_selselect, Tester) -> None:
+    def test_exception(self, mocked_selselect: mock.Mock, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         mocked_selselect(element).select_by_index.side_effect = WebDriverException()
 
@@ -1165,7 +1189,7 @@ class TestSelectByIndex:
         """test code for mypy to scan without issue"""
 
         class SubSelectByIndex(SelectByIndex):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSelectByIndex(1).from_the(TARGET).new_method() is True
@@ -1184,7 +1208,9 @@ class TestSelectByText:
         assert isinstance(r, Describable)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_perform_select_by_text(self, mocked_selselect, Tester) -> None:
+    def test_perform_select_by_text(
+        self, mocked_selselect: mock.Mock, Tester: Actor
+    ) -> None:
         text = "test"
         fake_target = Target.the("fake").located_by("//xpath")
 
@@ -1194,12 +1220,12 @@ class TestSelectByText:
             text
         )
 
-    def test_perform_complains_for_no_target(self, Tester) -> None:
+    def test_perform_complains_for_no_target(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             SelectByText("text").perform_as(Tester)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_exception(self, mocked_selselect, Tester) -> None:
+    def test_exception(self, mocked_selselect: mock.Mock, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         mocked_selselect(
             element
@@ -1220,7 +1246,7 @@ class TestSelectByText:
         """test code for mypy to scan without issue"""
 
         class SubSelectByText(SelectByText):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSelectByText("").from_the(TARGET).new_method() is True
@@ -1239,7 +1265,9 @@ class TestSelectByValue:
         assert isinstance(r, Describable)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_perform_select_by_value(self, mocked_selselect, Tester) -> None:
+    def test_perform_select_by_value(
+        self, mocked_selselect: mock.Mock, Tester: Actor
+    ) -> None:
         value = 1337
         fake_target = Target.the("fake").located_by("//xpath")
         element = mock.create_autospec(WebElement, instance=True)
@@ -1248,12 +1276,12 @@ class TestSelectByValue:
 
         mocked_selselect(element).select_by_value.assert_called_once_with(str(value))
 
-    def test_perform_complains_for_no_target(self, Tester) -> None:
+    def test_perform_complains_for_no_target(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
             SelectByValue("value").perform_as(Tester)
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
-    def test_exception(self, mocked_selselect, Tester) -> None:
+    def test_exception(self, mocked_selselect: mock.Mock, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         mocked_selselect(element).select_by_value.side_effect = WebDriverException()
 
@@ -1272,7 +1300,7 @@ class TestSelectByValue:
         """test code for mypy to scan without issue"""
 
         class SubSelectByValue(SelectByValue):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSelectByValue("").from_the(TARGET).new_method() is True
@@ -1292,7 +1320,7 @@ class TestSwitchTo:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_perform_switch_to_frame(self, Tester) -> None:
+    def test_perform_switch_to_frame(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         browser = get_mocked_browser(Tester)
 
@@ -1300,7 +1328,7 @@ class TestSwitchTo:
 
         browser.switch_to.frame.assert_called_once_with(element)
 
-    def test_perform_switch_to_default(self, Tester) -> None:
+    def test_perform_switch_to_default(self, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
 
         SwitchTo.default().perform_as(Tester)
@@ -1314,7 +1342,7 @@ class TestSwitchTo:
         """test code for mypy to scan without issue"""
 
         class SubSwitchTo(SwitchTo):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubSwitchTo.the(TARGET).new_method() is True
@@ -1332,7 +1360,7 @@ class TestSwitchToTab:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_perform_switch_to_tab(self, Tester) -> None:
+    def test_perform_switch_to_tab(self, Tester: Actor) -> None:
         number = 3
         browser = get_mocked_browser(Tester)
         browser.window_handles = range(number + 1)
@@ -1402,7 +1430,9 @@ class TestWait:
 
     @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
-    def test_defaults(self, mocked_webdriverwait, mocked_ec, Tester) -> None:
+    def test_defaults(
+        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+    ) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
         mocked_browser = get_mocked_browser(Tester)
@@ -1421,7 +1451,9 @@ class TestWait:
 
     @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
-    def test_override(self, mocked_webdriverwait, mocked_ec, Tester) -> None:
+    def test_override(
+        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+    ) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
         mocked_browser = get_mocked_browser(Tester)
@@ -1438,7 +1470,7 @@ class TestWait:
         )
 
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
-    def test_custom(self, mocked_webdriverwait, Tester) -> None:
+    def test_custom(self, mocked_webdriverwait: mock.Mock, Tester: Actor) -> None:
         browser = get_mocked_browser(Tester)
         test_func = mock.Mock()
         test_func.__name__ = "foo"
@@ -1451,7 +1483,9 @@ class TestWait:
 
     @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
-    def test_exception(self, mocked_webdriverwait, mocked_ec, Tester) -> None:
+    def test_exception(
+        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+    ) -> None:
         browser = get_mocked_browser(Tester)
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
@@ -1484,7 +1518,7 @@ class TestWait:
         """test code for mypy to scan without issue"""
 
         class SubWait(Wait):
-            def new_method(self):
+            def new_method(self) -> bool:
                 return True
 
         assert SubWait.for_the(TARGET).new_method() is True

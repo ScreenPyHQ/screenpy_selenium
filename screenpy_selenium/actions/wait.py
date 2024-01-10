@@ -92,7 +92,7 @@ class Wait:
 
     to = seconds_using = using
 
-    def with_(self: SelfWait, *args: Any) -> SelfWait:
+    def with_(self: SelfWait, *args: Any) -> SelfWait:  # noqa: ANN401
         """Set the arguments to pass in to the wait condition."""
         self.args = args
         return self

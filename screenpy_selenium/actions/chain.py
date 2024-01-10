@@ -47,5 +47,5 @@ class Chain:
             action.add_to_chain(the_actor, the_chain)
         the_chain.perform()
 
-    def __init__(self, *actions: Chainable):
+    def __init__(self, *actions: Chainable) -> None:
         self.actions = actions

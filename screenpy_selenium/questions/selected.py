@@ -88,6 +88,6 @@ class Selected:
             return [e.text for e in select.all_selected_options]
         return select.first_selected_option.text
 
-    def __init__(self: SelfSelected, target: Target, multi: bool = False):
+    def __init__(self: SelfSelected, target: Target, multi: bool = False) -> None:
         self.target = target
         self.multi = multi

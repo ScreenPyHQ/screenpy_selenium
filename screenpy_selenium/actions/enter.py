@@ -84,7 +84,7 @@ class Enter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
-    def into_the_first_of_the(self: SelfEnter, target: Target):
+    def into_the_first_of_the(self: SelfEnter, target: Target) -> SelfEnter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
