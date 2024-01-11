@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple, cast
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -29,7 +29,7 @@ def get_mock_target_class() -> type:
     return FakeTarget
 
 
-def get_mocked_target_and_element() -> Tuple[mock.Mock, mock.Mock]:
+def get_mocked_target_and_element() -> tuple[mock.Mock, mock.Mock]:
     """Get a mocked target which returns a mocked element."""
     target = get_mock_target_class()()
     element = get_mocked_element()

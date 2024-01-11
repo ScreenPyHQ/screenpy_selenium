@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.pacing import beat
 
@@ -26,7 +26,7 @@ class Number:
     """
 
     @classmethod
-    def of(cls: Type[SelfNumber], target: Target) -> SelfNumber:
+    def of(cls: type[SelfNumber], target: Target) -> SelfNumber:
         """Target the element to be counted."""
         return cls(target=target)
 

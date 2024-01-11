@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
@@ -49,7 +49,7 @@ class SaveConsoleLog:
         )
     """
 
-    attach_kwargs: Optional[dict]
+    attach_kwargs: dict | None
     path: str
     filename: str
 
@@ -58,7 +58,7 @@ class SaveConsoleLog:
         return f"Save browser console log as {self.filename}"
 
     @classmethod
-    def as_(cls: Type[SelfSaveConsoleLog], path: str) -> SelfSaveConsoleLog:
+    def as_(cls: type[SelfSaveConsoleLog], path: str) -> SelfSaveConsoleLog:
         """Supply the name and/or filepath for the saved text file.
 
         If only a name is supplied, the text file will appear in the current

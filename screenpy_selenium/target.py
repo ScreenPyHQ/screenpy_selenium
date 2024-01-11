@@ -8,7 +8,7 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator, List, Optional, Tuple, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Iterator, TypeVar
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -38,11 +38,11 @@ class Target:
         Target().located_by((By.ID, "username-field"))
     """
 
-    _description: Optional[str] = None
-    locator: Optional[Tuple[str, str]] = None
+    _description: str | None = None
+    locator: tuple[str, str] | None = None
 
     @property
-    def target_name(self: SelfTarget) -> Optional[str]:
+    def target_name(self: SelfTarget) -> str | None:
         """Return the description when set or the 2nd half of the locator."""
         if self._description is not None:
             return self._description
@@ -57,16 +57,14 @@ class Target:
         del self._description
 
     @classmethod
-    def the(cls: Type[SelfTarget], desc: str) -> SelfTarget:
+    def the(cls: type[SelfTarget], desc: str) -> SelfTarget:
         """Name this Target.
 
         Beginning with a lower-case letter makes the logs look the nicest.
         """
         return cls(desc=desc)
 
-    def located_by(
-        self: SelfTarget, locator: Union[Tuple[str, str], str]
-    ) -> SelfTarget:
+    def located_by(self: SelfTarget, locator: tuple[str, str] | str) -> SelfTarget:
         """Set the locator for this Target.
 
         Possible values for locator:
@@ -93,11 +91,11 @@ class Target:
 
         return self
 
-    def located(self: SelfTarget, locator: Union[Tuple[str, str], str]) -> SelfTarget:
+    def located(self: SelfTarget, locator: tuple[str, str] | str) -> SelfTarget:
         """Alias for :meth:~screenpy_selenium.Target.located_by."""
         return self.located_by(locator)
 
-    def get_locator(self: SelfTarget) -> Tuple[str, str]:
+    def get_locator(self: SelfTarget) -> tuple[str, str]:
         """Return the stored locator.
 
         Raises:
@@ -120,7 +118,7 @@ class Target:
             msg = f"{e} raised while trying to find {self}."
             raise TargetingError(msg) from e
 
-    def all_found_by(self: SelfTarget, the_actor: Actor) -> List[WebElement]:
+    def all_found_by(self: SelfTarget, the_actor: Actor) -> list[WebElement]:
         """Retrieve a list of |WebElement| objects as viewed by the Actor."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         try:
@@ -145,8 +143,8 @@ class Target:
 
     def __init__(
         self: SelfTarget,
-        desc: Optional[str] = None,
-        locator: Optional[Tuple[str, str]] = None,
+        desc: str | None = None,
+        locator: tuple[str, str] | None = None,
     ) -> None:
         self.target_name = desc
         self.locator = locator

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
@@ -30,10 +30,10 @@ class DoubleClick:
         the_actor.attempts_to(Chain(DoubleClick()))
     """
 
-    target: Optional[Target]
+    target: Target | None
 
     @classmethod
-    def on_the(cls: Type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
+    def on_the(cls: type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
         """
         Target the element to double-click on.
 
@@ -44,13 +44,13 @@ class DoubleClick:
         return cls(target=target)
 
     @classmethod
-    def on(cls: Type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
+    def on(cls: type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
         """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
 
     @classmethod
     def on_the_first_of_the(
-        cls: Type[SelfDoubleClick], target: Target
+        cls: type[SelfDoubleClick], target: Target
     ) -> SelfDoubleClick:
         """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
@@ -85,6 +85,6 @@ class DoubleClick:
         """Add the DoubleClick Action to a Chain of Actions."""
         self._add_action_to_chain(the_actor, the_chain)
 
-    def __init__(self: SelfDoubleClick, target: Optional[Target] = None) -> None:
+    def __init__(self: SelfDoubleClick, target: Target | None = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

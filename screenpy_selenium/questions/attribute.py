@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import UnableToAnswer
 from screenpy.pacing import beat
@@ -31,16 +31,16 @@ class Attribute:
         )
     """
 
-    target: Optional[Target]
+    target: Target | None
 
-    def of_the(self, target: Target) -> "Attribute":
+    def of_the(self, target: Target) -> Attribute:
         """Target the element to get the attribute from."""
         self.target = target
         return self
 
     of = of_the_first_of_the = of_the
 
-    def of_all(self, target: Target) -> "Attribute":
+    def of_all(self, target: Target) -> Attribute:
         """Target the elements, plural, to get the attribute from."""
         self.target = target
         self.multi = True
@@ -51,7 +51,7 @@ class Attribute:
         return f'The "{self.attribute}" attribute of the {self.target}.'
 
     @beat('{} examines the "{attribute}" attribute of the {target}...')
-    def answered_by(self, the_actor: Actor) -> Union[str, List[Union[str, None]], None]:
+    def answered_by(self, the_actor: Actor) -> str | list[str | None] | None:
         """Direct the actor to investigate the attribute on the element."""
         if self.target is None:
             msg = (

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Iterable, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Iterable, TypeVar
 
 from screenpy import Actor, settings
 from screenpy.exceptions import DeliveryError
@@ -52,10 +52,10 @@ class Wait:
 
     args: Iterable[Any]
     timeout: float
-    log_detail: Optional[str]
+    log_detail: str | None
 
     @classmethod
-    def for_the(cls: Type[SelfWait], target: Target) -> SelfWait:
+    def for_the(cls: type[SelfWait], target: Target) -> SelfWait:
         """Set the Target to wait for.
 
         Aliases:
@@ -64,7 +64,7 @@ class Wait:
         return cls(seconds=settings.TIMEOUT, args=[target])
 
     @classmethod
-    def for_(cls: Type[SelfWait], target: Target) -> SelfWait:
+    def for_(cls: type[SelfWait], target: Target) -> SelfWait:
         """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
@@ -76,7 +76,7 @@ class Wait:
     second_for = second_for_the = seconds_for = seconds_for_the
 
     def using(
-        self: SelfWait, strategy: Callable[..., Any], log_detail: Optional[str] = None
+        self: SelfWait, strategy: Callable[..., Any], log_detail: str | None = None
     ) -> SelfWait:
         """Use the given strategy to wait for the Target.
 
@@ -149,8 +149,8 @@ class Wait:
 
     def __init__(
         self: SelfWait,
-        seconds: Optional[float] = None,
-        args: Optional[Iterable[Any]] = None,
+        seconds: float | None = None,
+        args: Iterable[Any] | None = None,
     ) -> None:
         self.args = args if args is not None else []
         self.timeout = seconds if seconds is not None else settings.TIMEOUT

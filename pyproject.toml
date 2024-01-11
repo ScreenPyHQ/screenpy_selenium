@@ -146,8 +146,8 @@ select = [
     "T10",  # flake8-debugger
     "T20",  # flake8-print
     "TCH",  # flake8-type-checking
-#    "TRY",  # tryceratops
-#    "UP",  # python upgrade
+    "TRY",  # tryceratops
+    "UP",  # python upgrade
     "W",  # pycodestyle warning
 #    "YTT",  # flake8-2020
 
@@ -173,6 +173,7 @@ extend-safe-fixes = [
     "D200", "D205", "D415",
     "PT003", "PT006", "PT018",
     "RET504",
+    "UP007",
 ]
 
 [tool.ruff.lint.per-file-ignores]

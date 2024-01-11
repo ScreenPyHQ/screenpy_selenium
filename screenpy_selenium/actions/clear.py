@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
@@ -28,7 +28,7 @@ class Clear:
     """
 
     @classmethod
-    def the_text_from_the(cls: Type[SelfClear], target: Target) -> SelfClear:
+    def the_text_from_the(cls: type[SelfClear], target: Target) -> SelfClear:
         """
         Specify the Target from which to clear the text.
 
@@ -39,13 +39,13 @@ class Clear:
         return cls(target=target)
 
     @classmethod
-    def the_text_from(cls: Type[SelfClear], target: Target) -> SelfClear:
+    def the_text_from(cls: type[SelfClear], target: Target) -> SelfClear:
         """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)
 
     @classmethod
     def the_text_from_the_first_of_the(
-        cls: Type[SelfClear], target: Target
+        cls: type[SelfClear], target: Target
     ) -> SelfClear:
         """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)

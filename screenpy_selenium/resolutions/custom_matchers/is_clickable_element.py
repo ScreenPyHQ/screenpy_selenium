@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class IsClickableElement(BaseMatcher[Optional[WebElement]]):
     """Matches an element which both ``is_enabled`` and ``is_displayed``."""
 
-    def _matches(self, item: Optional[WebElement]) -> bool:
+    def _matches(self, item: WebElement | None) -> bool:
         if item is None:
             return False
         return item.is_displayed() and item.is_enabled()
@@ -30,13 +30,13 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is enabled/clickable")
 
     def describe_match(
-        self, _: Optional[WebElement], match_description: Description
+        self, _: WebElement | None, match_description: Description
     ) -> None:
         """Describe the matching case."""
         match_description.append_text("it was enabled/clickable")
 
     def describe_mismatch(
-        self, item: Optional[WebElement], mismatch_description: Description
+        self, item: WebElement | None, mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
         if item is None or not item.is_displayed():

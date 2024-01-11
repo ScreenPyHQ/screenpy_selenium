@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
@@ -33,7 +33,7 @@ class Click:
     """
 
     @classmethod
-    def on_the(cls: Type[SelfClick], target: Target) -> SelfClick:
+    def on_the(cls: type[SelfClick], target: Target) -> SelfClick:
         """
         Target the element to click on.
 
@@ -44,12 +44,12 @@ class Click:
         return cls(target=target)
 
     @classmethod
-    def on(cls: Type[SelfClick], target: Target) -> SelfClick:
+    def on(cls: type[SelfClick], target: Target) -> SelfClick:
         """Alias for :meth:`~screenpy_selenium.actions.Click.on_the`."""
         return cls.on_the(target=target)
 
     @classmethod
-    def on_the_first_of_the(cls: Type[SelfClick], target: Target) -> SelfClick:
+    def on_the_first_of_the(cls: type[SelfClick], target: Target) -> SelfClick:
         """Alias for :meth:`~screenpy_selenium.actions.Click.on_the`."""
         return cls.on_the(target=target)
 
@@ -90,6 +90,6 @@ class Click:
 
         the_chain.click(on_element=the_element)
 
-    def __init__(self: SelfClick, target: Optional[Target] = None) -> None:
+    def __init__(self: SelfClick, target: Target | None = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

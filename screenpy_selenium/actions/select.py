@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, TypeVar, Union
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
@@ -44,17 +44,17 @@ class Select:
     """
 
     @staticmethod
-    def the_option_named(text: str) -> "SelectByText":
+    def the_option_named(text: str) -> SelectByText:
         """Select the option by its text."""
         return SelectByText(text)
 
     @staticmethod
-    def the_option_at_index(index: Union[int, str]) -> "SelectByIndex":
+    def the_option_at_index(index: int | str) -> SelectByIndex:
         """Select the option by its index. This index is 0-based."""
         return SelectByIndex(index)
 
     @staticmethod
-    def the_option_with_value(value: Union[int, str]) -> "SelectByValue":
+    def the_option_with_value(value: int | str) -> SelectByValue:
         """Select the option by its value."""
         return SelectByValue(value)
 
@@ -69,7 +69,7 @@ class SelectByText:
         :class:`~screenpy_selenium.abilities.BrowseTheWeb`
     """
 
-    target: Optional[Target]
+    target: Target | None
     text: str
 
     def from_the(self: SelfSelectByText, target: Target) -> SelfSelectByText:
@@ -105,7 +105,7 @@ class SelectByText:
             raise DeliveryError(msg) from e
 
     def __init__(
-        self: SelfSelectByText, text: str, target: Optional[Target] = None
+        self: SelfSelectByText, text: str, target: Target | None = None
     ) -> None:
         self.target = target
         self.text = text
@@ -121,7 +121,7 @@ class SelectByIndex:
         :class:`~screenpy_selenium.abilities.BrowseTheWeb`
     """
 
-    target: Optional[Target]
+    target: Target | None
     index: int
 
     def from_the(self: SelfSelectByIndex, target: Target) -> SelfSelectByIndex:
@@ -157,7 +157,7 @@ class SelectByIndex:
             raise DeliveryError(msg) from e
 
     def __init__(
-        self: SelfSelectByIndex, index: Union[int, str], target: Optional[Target] = None
+        self: SelfSelectByIndex, index: int | str, target: Target | None = None
     ) -> None:
         self.target = target
         self.index = int(index)
@@ -173,7 +173,7 @@ class SelectByValue:
         :class:`~screenpy_selenium.abilities.BrowseTheWeb`
     """
 
-    target: Optional[Target]
+    target: Target | None
     value: str
 
     def from_the(self: SelfSelectByValue, target: Target) -> SelfSelectByValue:
@@ -209,7 +209,7 @@ class SelectByValue:
             raise DeliveryError(msg) from e
 
     def __init__(
-        self: SelfSelectByValue, value: Union[int, str], target: Optional[Target] = None
+        self: SelfSelectByValue, value: int | str, target: Target | None = None
     ) -> None:
         self.target = target
         self.value = str(value)

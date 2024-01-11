@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import TYPE_CHECKING, List, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import aside, beat
@@ -33,13 +33,13 @@ class Enter:
         )
     """
 
-    target: Optional[Target]
-    following_keys: List[str]
+    target: Target | None
+    following_keys: list[str]
     text: str
     text_to_log: str
 
     @classmethod
-    def the_text(cls: Type[SelfEnter], text: str) -> SelfEnter:
+    def the_text(cls: type[SelfEnter], text: str) -> SelfEnter:
         """Provide the text to enter into the field.
 
         Aliases:
@@ -48,12 +48,12 @@ class Enter:
         return cls(text=text)
 
     @classmethod
-    def the_keys(cls: Type[SelfEnter], text: str) -> SelfEnter:
+    def the_keys(cls: type[SelfEnter], text: str) -> SelfEnter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.the_text`."""
         return cls.the_text(text=text)
 
     @classmethod
-    def the_secret(cls: Type[SelfEnter], text: str) -> SelfEnter:
+    def the_secret(cls: type[SelfEnter], text: str) -> SelfEnter:
         """
         Provide the text to enter into the field, but mask it in logging.
 
@@ -65,7 +65,7 @@ class Enter:
         return cls(text=text, mask=True)
 
     @classmethod
-    def the_password(cls: Type[SelfEnter], text: str) -> SelfEnter:
+    def the_password(cls: type[SelfEnter], text: str) -> SelfEnter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.the_secret`."""
         return cls.the_secret(text=text)
 

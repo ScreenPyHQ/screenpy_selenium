@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List as ListType, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.pacing import beat
 
@@ -27,7 +27,7 @@ class List:
     """
 
     @classmethod
-    def of_the(cls: Type[SelfList], target: Target) -> SelfList:
+    def of_the(cls: type[SelfList], target: Target) -> SelfList:
         """Target the element(s) to list.
 
         Aliases:
@@ -38,17 +38,17 @@ class List:
         return cls(target=target)
 
     @classmethod
-    def of_all_the(cls: Type[SelfList], target: Target) -> SelfList:
+    def of_all_the(cls: type[SelfList], target: Target) -> SelfList:
         """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
-    def of_all(cls: Type[SelfList], target: Target) -> SelfList:
+    def of_all(cls: type[SelfList], target: Target) -> SelfList:
         """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
-    def of(cls: Type[SelfList], target: Target) -> SelfList:
+    def of(cls: type[SelfList], target: Target) -> SelfList:
         """Alias for :meth:`~screenpy_selenium.actions.List.of_the`."""
         return cls.of_the(target=target)
 
@@ -57,7 +57,7 @@ class List:
         return f"The list of {self.target}."
 
     @beat("{} lists off the {target}.")
-    def answered_by(self: SelfList, the_actor: Actor) -> ListType[WebElement]:
+    def answered_by(self: SelfList, the_actor: Actor) -> list[WebElement]:
         """Direct the Actor to rattle off the specified elements."""
         return self.target.all_found_by(the_actor)
 
