@@ -112,7 +112,7 @@ class TestChain:
 
     def test_unchainable_action(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
-            Chain(AcceptAlert()).perform_as(Tester)  # type: ignore
+            Chain(AcceptAlert()).perform_as(Tester)  # type: ignore[arg-type]
 
     def test_describe(self) -> None:
         assert Chain().describe() == "Perform a thrilling chain of actions."

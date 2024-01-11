@@ -90,15 +90,15 @@ def test_can_be_indexed() -> None:
 
 def test_locator_tuple_size() -> None:
     with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID, "foo", "baz"))  # type: ignore
+        Target("test").located((By.ID, "foo", "baz"))  # type: ignore[arg-type]
     assert "locator tuple length should be 2" in f"{excinfo.value}"
 
     with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID,))  # type: ignore
+        Target("test").located((By.ID,))  # type: ignore[arg-type]
     assert "locator tuple length should be 2" in f"{excinfo.value}"
 
-    with pytest.raises(TypeError) as excinfo:  # type: ignore
-        Target("test").located_by([By.ID, "foo"])  # type: ignore
+    with pytest.raises(TypeError) as excinfo:  # type: ignore[assignment]
+        Target("test").located_by([By.ID, "foo"])  # type: ignore[arg-type]
     assert "invalid locator type" in f"{excinfo.value}"
 
 
