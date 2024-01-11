@@ -552,7 +552,8 @@ class TestHoldDown:
         assert isinstance(h, Chainable)
 
     @pytest.mark.parametrize(
-        "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
+        ("platform", "expected_key"),
+        [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """HoldDown figures out which key to use based on platform"""
@@ -826,7 +827,8 @@ class TestRelease:
         assert isinstance(r, Chainable)
 
     @pytest.mark.parametrize(
-        "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
+        ("platform", "expected_key"),
+        [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """Release figures out which key to use based on platform"""

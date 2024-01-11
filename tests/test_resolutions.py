@@ -179,7 +179,7 @@ class TestIsPresent:
         assert isinstance(ip, IsPresent)
 
     @pytest.mark.parametrize(
-        "enabled, displayed",
+        ("enabled", "displayed"),
         ((False, False), (False, True), (True, False), (True, True)),
     )
     def test_matches_a_present_element(self, enabled: bool, displayed: bool) -> None:
