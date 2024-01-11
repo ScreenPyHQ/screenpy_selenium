@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from screenpy_selenium import __version__
 
 

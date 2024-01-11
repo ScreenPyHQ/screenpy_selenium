@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from typing import Optional
 from unittest import mock
 
 import pytest
-from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer, Actor
+from screenpy import Actor, Answerable, Describable, ErrorKeeper, UnableToAnswer
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement

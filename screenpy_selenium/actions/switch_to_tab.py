@@ -1,4 +1,5 @@
 """Switch to a specific tab or window."""
+from __future__ import annotations
 
 from screenpy import Actor
 from screenpy.pacing import beat

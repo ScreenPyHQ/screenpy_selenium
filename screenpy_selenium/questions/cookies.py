@@ -1,4 +1,5 @@
 """Investigate the cookies on the Actor's web or API session."""
+from __future__ import annotations
 
 from screenpy import Actor
 from screenpy.pacing import beat

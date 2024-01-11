@@ -5,6 +5,7 @@ Provides an object to store a locator with a human-readable string. The
 human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
 """
+from __future__ import annotations
 
 from typing import Iterator, List, Optional, Tuple, Type, TypeVar, Union
 

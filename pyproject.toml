@@ -119,7 +119,7 @@ select = [
     "EM",  # flake8-errmsg
     "ERA",  # eradicate
     "F",  # Pyflakes
-#    "FA",  # flake8-future-annotations
+    "FA",  # flake8-future-annotations
 #    "FBT",  # flake8-boolean-trap
 #    "FIX",  # flake8-fixme
 #    "FLY",  # flynt

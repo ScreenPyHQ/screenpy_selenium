@@ -1,4 +1,5 @@
 """Investigate the text of an alert."""
+from __future__ import annotations
 
 from screenpy.actor import Actor
 from screenpy.pacing import beat

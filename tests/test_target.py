@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 from screenpy import Actor
 from selenium.common.exceptions import WebDriverException

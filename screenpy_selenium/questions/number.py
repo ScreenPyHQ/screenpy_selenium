@@ -1,4 +1,5 @@
 """Investigate how many of an element are present on the page."""
+from __future__ import annotations
 
 from typing import Type, TypeVar
 

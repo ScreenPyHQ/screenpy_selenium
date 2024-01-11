@@ -1,4 +1,5 @@
 """Enter text into an input field, or press keys."""
+from __future__ import annotations
 
 from functools import partial
 from typing import List, Optional, Type, TypeVar

@@ -1,4 +1,5 @@
 """Helpful tools for making good English out of ScreenPy Selenium."""
+from __future__ import annotations
 
 from selenium.webdriver.common.keys import Keys
 

@@ -1,4 +1,5 @@
 """Investigate one or more elements."""
+from __future__ import annotations
 
 from typing import List as ListType
 from typing import Type, TypeVar

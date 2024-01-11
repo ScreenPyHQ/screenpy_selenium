@@ -1,4 +1,5 @@
 """Enable the actor to browse the web."""
+from __future__ import annotations
 
 import os
 from typing import Type, TypeVar
