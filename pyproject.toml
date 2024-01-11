@@ -149,7 +149,7 @@ select = [
     "TRY",  # tryceratops
     "UP",  # python upgrade
     "W",  # pycodestyle warning
-#    "YTT",  # flake8-2020
+    "YTT",  # flake8-2020
 
     # we would like these someday, but not yet
     # "FURB",  # refurb
