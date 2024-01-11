@@ -23,7 +23,8 @@ from screenpy_selenium import (
     Text,
     TextOfTheAlert,
 )
-from useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
+
+from .useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()

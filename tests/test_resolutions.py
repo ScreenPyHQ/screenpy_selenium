@@ -8,7 +8,8 @@ from screenpy import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
-from useful_mocks import get_mocked_element
+
+from .useful_mocks import get_mocked_element
 
 
 @dataclass

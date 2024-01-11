@@ -121,9 +121,9 @@ select = [
     "F",  # Pyflakes
     "FA",  # flake8-future-annotations
 #    "FBT",  # flake8-boolean-trap
-#    "FIX",  # flake8-fixme
-#    "FLY",  # flynt
-#    "I",  # isort
+    "FIX",  # flake8-fixme
+    "FLY",  # flynt
+    "I",  # isort
 #    "ICN",  # flake8-import-conventions
 #    "ISC",  # flake8-implicit-str-concat
 #    "PGH",  # pygrep-hooks
@@ -195,3 +195,14 @@ ignore-overlong-task-comments = true
 
 [tool.ruff.pydocstyle]
 convention = "google"
+
+
+[tool.isort]
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+use_parentheses = true
+combine_as_imports = true
+
+skip = [".idea", ".tox", "docs"]
+src_paths = ["screenpy_selenium","tests"]

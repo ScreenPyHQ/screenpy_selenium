@@ -7,7 +7,8 @@ import pytest
 from screenpy import Forgettable
 
 from screenpy_selenium import BrowseTheWeb, BrowsingError
-from useful_mocks import get_mocked_webdriver
+
+from .useful_mocks import get_mocked_webdriver
 
 
 class TestBrowseTheWeb:

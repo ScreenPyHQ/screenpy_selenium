@@ -6,7 +6,8 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target, TargetingError
-from useful_mocks import get_mocked_browser
+
+from .useful_mocks import get_mocked_browser
 
 
 def test_can_be_instantiated() -> None:

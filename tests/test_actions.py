@@ -50,8 +50,9 @@ from screenpy_selenium import (
     Target,
     Wait,
 )
-from unittest_protocols import ChainableAction
-from useful_mocks import (
+
+from .unittest_protocols import ChainableAction
+from .useful_mocks import (
     get_mock_target_class,
     get_mocked_browser,
     get_mocked_chain,
