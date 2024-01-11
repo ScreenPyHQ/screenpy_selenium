@@ -163,6 +163,7 @@ exclude = [
 [tool.ruff.lint]
 extend-safe-fixes = [
     "EM101",
+    "EM102",
 #    "TCH001", "TCH002", "TCH003", "TCH004",
 #    "SIM108"
 ]
