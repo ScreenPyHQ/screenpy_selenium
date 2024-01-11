@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Optional, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfSwitchTo = TypeVar("SelfSwitchTo", bound="SwitchTo")
 

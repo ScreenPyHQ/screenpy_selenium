@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
-from screenpy import Actor
-from selenium.webdriver.common.action_chains import ActionChains
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
 
 
 @runtime_checkable

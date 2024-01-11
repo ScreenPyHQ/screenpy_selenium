@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from screenpy.resolutions.base_resolution import BaseResolution
 
 from .custom_matchers import is_clickable_element
-from .custom_matchers.is_clickable_element import IsClickableElement
+
+if TYPE_CHECKING:
+    from .custom_matchers.is_clickable_element import IsClickableElement
 
 
 class IsClickable(BaseResolution):

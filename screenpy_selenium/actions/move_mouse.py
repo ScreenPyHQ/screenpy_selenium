@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Optional, Tuple, Type, TypeVar
+from typing import TYPE_CHECKING, Optional, Tuple, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfMoveMouse = TypeVar("SelfMoveMouse", bound="MoveMouse")
 

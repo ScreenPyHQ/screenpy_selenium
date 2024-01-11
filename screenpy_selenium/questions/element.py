@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
-from screenpy import Actor
 from screenpy.pacing import beat
-from selenium.webdriver.remote.webelement import WebElement
 
 from ..exceptions import TargetingError
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.remote.webelement import WebElement
+
+    from ..target import Target
 
 
 class Element:

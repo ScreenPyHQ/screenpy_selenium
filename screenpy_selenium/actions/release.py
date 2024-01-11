@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import platform
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Optional, Type, TypeVar
 
-from screenpy import Actor
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 from ..speech_tools import KEY_NAMES
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
 
 SelfRelease = TypeVar("SelfRelease", bound="Release")
 

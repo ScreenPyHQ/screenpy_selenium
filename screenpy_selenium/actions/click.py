@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Optional, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.action_chains import ActionChains
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
+
+    from ..target import Target
 
 SelfClick = TypeVar("SelfClick", bound="Click")
 

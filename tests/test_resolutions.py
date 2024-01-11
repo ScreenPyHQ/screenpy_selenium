@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import pytest
 from hamcrest.core.string_description import StringDescription
-from screenpy import BaseResolution
-from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
 from screenpy_selenium.resolutions.custom_matchers.is_clickable_element import (
@@ -22,6 +21,10 @@ from screenpy_selenium.resolutions.custom_matchers.is_visible_element import (
 )
 
 from .useful_mocks import get_mocked_element
+
+if TYPE_CHECKING:
+    from screenpy import BaseResolution
+    from selenium.webdriver.remote.webelement import WebElement
 
 
 @dataclass

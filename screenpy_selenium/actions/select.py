@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Optional, TypeVar, Union
+from typing import TYPE_CHECKING, Optional, TypeVar, Union
 
-from screenpy import Actor
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select as SeleniumSelect
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 SelfSelectByText = TypeVar("SelfSelectByText", bound="SelectByText")
 SelfSelectByIndex = TypeVar("SelfSelectByIndex", bound="SelectByIndex")

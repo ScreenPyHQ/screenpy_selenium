@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import beat
 from screenpy_pyotp.abilities import AuthenticateWith2FA
-from selenium.webdriver.common.action_chains import ActionChains
 
-from ..target import Target
 from .enter import Enter
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
+
+    from ..target import Target
 
 SelfEnter2FAToken = TypeVar("SelfEnter2FAToken", bound="Enter2FAToken")
 

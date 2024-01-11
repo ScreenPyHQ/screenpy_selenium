@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-from typing import List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, List, Type, TypeVar, Union
 
-from screenpy import Actor
 from screenpy.pacing import beat
 from selenium.webdriver.support.ui import Select as SeleniumSelect
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 SelfSelected = TypeVar("SelfSelected", bound="Selected")
 

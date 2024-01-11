@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import os
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, Type, TypeVar
 
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
-from selenium.webdriver.remote.webdriver import WebDriver
 
 from ..exceptions import BrowsingError
+
+if TYPE_CHECKING:
+    from selenium.webdriver.remote.webdriver import WebDriver
 
 DEFAULT_APPIUM_HUB_URL = "http://localhost:4723/wd/hub"
 

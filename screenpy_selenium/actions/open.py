@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import os
-from typing import Type, TypeVar, Union
+from typing import TYPE_CHECKING, Type, TypeVar, Union
 
-from screenpy import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 SelfOpen = TypeVar("SelfOpen", bound="Open")
 

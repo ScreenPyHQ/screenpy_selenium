@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
-from screenpy.actor import Actor
+from typing import TYPE_CHECKING
+
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
 from ..protocols import Chainable
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
 
 
 class Chain:

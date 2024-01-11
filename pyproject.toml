@@ -140,12 +140,12 @@ select = [
     "PT",  # flake8-pytest-style
     "Q",  # flake8-quotes
     "RET",  # flake8-return
-#    "RSE",  # flake8-raise
-#    "RUF",  # ruff specific
-#    "SIM",  # flake8-simplify
-#    "T10",  # flake8-debugger
-#    "T20",  # flake8-print
-#    "TCH",  # flake8-type-checking
+    "RSE",  # flake8-raise
+    "RUF",  # ruff specific
+    "SIM",  # flake8-simplify
+    "T10",  # flake8-debugger
+    "T20",  # flake8-print
+    "TCH",  # flake8-type-checking
 #    "TRY",  # tryceratops
 #    "UP",  # python upgrade
     "W",  # pycodestyle warning
@@ -165,7 +165,7 @@ ignore = [
 extend-safe-fixes = [
     "EM101",
     "EM102",
-#    "TCH001", "TCH002", "TCH003", "TCH004",
+    "TCH001", "TCH002", "TCH003", "TCH004",
 #    "SIM108"
     # maybe?
 #    "F841",

@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Union
 
-from screenpy import Actor
 from screenpy.exceptions import UnableToAnswer
 from screenpy.pacing import beat
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 
 class Attribute:

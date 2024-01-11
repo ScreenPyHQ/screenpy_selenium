@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Iterable, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Optional, Type, TypeVar
 
 from screenpy import Actor, settings
 from screenpy.exceptions import DeliveryError
@@ -12,7 +12,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from ..target import Target
 
 SelfWait = TypeVar("SelfWait", bound="Wait")
 

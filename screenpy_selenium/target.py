@@ -8,15 +8,17 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import Iterator, List, Optional, Tuple, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Iterator, List, Optional, Tuple, Type, TypeVar, Union
 
-from screenpy.actor import Actor
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebElement
 
 from .abilities.browse_the_web import BrowseTheWeb
 from .exceptions import TargetingError
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+    from selenium.webdriver.remote.webdriver import WebElement
 
 SelfTarget = TypeVar("SelfTarget", bound="Target")
 

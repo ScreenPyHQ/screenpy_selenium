@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar
 
-from screenpy import Actor
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 SelfSaveConsoleLog = TypeVar("SelfSaveConsoleLog", bound="SaveConsoleLog")
 

@@ -3,16 +3,19 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import List, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, List, Optional, Type, TypeVar
 
-from screenpy import Actor
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import aside, beat
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.action_chains import ActionChains
 
 from ..speech_tools import KEY_NAMES
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
+
+    from ..target import Target
 
 SelfEnter = TypeVar("SelfEnter", bound="Enter")
 

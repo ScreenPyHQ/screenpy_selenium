@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Optional, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfDoubleClick = TypeVar("SelfDoubleClick", bound="DoubleClick")
 

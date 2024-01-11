@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, Type, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfClear = TypeVar("SelfClear", bound="Clear")
 

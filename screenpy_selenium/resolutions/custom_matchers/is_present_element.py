@@ -8,11 +8,13 @@ For example:
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from hamcrest.core.base_matcher import BaseMatcher
-from hamcrest.core.description import Description
 from selenium.webdriver.remote.webelement import WebElement
+
+if TYPE_CHECKING:
+    from hamcrest.core.description import Description
 
 
 class IsPresentElement(BaseMatcher[Optional[WebElement]]):

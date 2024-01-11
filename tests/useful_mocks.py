@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from typing import Tuple, cast
+from typing import TYPE_CHECKING, Tuple, cast
 from unittest import mock
 
-from screenpy import Actor
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import BrowseTheWeb, Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 
 def get_mocked_element() -> mock.Mock:
