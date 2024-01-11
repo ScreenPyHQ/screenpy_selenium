@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
 from unittest import mock
 
 import pytest
@@ -171,7 +170,7 @@ class TestElement:
         e = Element(TARGET)
 
         annotation = e.__annotations__["caught_exception"]
-        assert annotation == Optional[TargetingError]
+        assert annotation == "Optional[TargetingError]"
 
     def test_question_returns_none_if_no_element_found(self, Tester: Actor) -> None:
         test_target = Target.the("foo").located_by("//bar")

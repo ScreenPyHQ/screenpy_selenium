@@ -8,6 +8,18 @@ from screenpy import BaseResolution
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
+from screenpy_selenium.resolutions.custom_matchers.is_clickable_element import (
+    IsClickableElement,
+)
+from screenpy_selenium.resolutions.custom_matchers.is_invisible_element import (
+    IsInvisibleElement,
+)
+from screenpy_selenium.resolutions.custom_matchers.is_present_element import (
+    IsPresentElement,
+)
+from screenpy_selenium.resolutions.custom_matchers.is_visible_element import (
+    IsVisibleElement,
+)
 
 from .useful_mocks import get_mocked_element
 
@@ -37,10 +49,6 @@ def _assert_descriptions(
     assert describe_match.out == expected.describe_match
     assert describe_mismatch.out == expected.describe_mismatch
     assert describe_none.out == expected.describe_none
-
-
-def assert_matcher_annotation(obj: BaseResolution) -> None:
-    assert type(obj.matcher) is obj.__annotations__["matcher"]
 
 
 class TestIsClickable:
@@ -83,7 +91,10 @@ class TestIsClickable:
         _assert_descriptions(IsClickable(), element, expected)
 
     def test_type_hint(self) -> None:
-        assert_matcher_annotation(IsClickable())
+        ic = IsClickable()
+        annotation = ic.__annotations__["matcher"]
+        assert annotation == "IsClickableElement"
+        assert type(ic.matcher) == IsClickableElement
 
 
 class TestIsVisible:
@@ -119,7 +130,10 @@ class TestIsVisible:
         _assert_descriptions(IsVisible(), element, expected)
 
     def test_type_hint(self) -> None:
-        assert_matcher_annotation(IsVisible())
+        iv = IsVisible()
+        annotation = iv.__annotations__["matcher"]
+        assert annotation == "IsVisibleElement"
+        assert type(iv.matcher) == IsVisibleElement
 
 
 class TestIsInvisible:
@@ -169,7 +183,10 @@ class TestIsInvisible:
         assert describe_none.out == expected.describe_none
 
     def test_type_hint(self) -> None:
-        assert_matcher_annotation(IsInvisible())
+        ii = IsInvisible()
+        annotation = ii.__annotations__["matcher"]
+        assert annotation == "IsInvisibleElement"
+        assert type(ii.matcher) == IsInvisibleElement
 
 
 class TestIsPresent:
@@ -207,4 +224,7 @@ class TestIsPresent:
         _assert_descriptions(IsPresent(), element, expected)
 
     def test_type_hint(self) -> None:
-        assert_matcher_annotation(IsPresent())
+        ip = IsPresent()
+        annotation = ip.__annotations__["matcher"]
+        assert annotation == "IsPresentElement"
+        assert type(ip.matcher) == IsPresentElement
