@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, Tuple
+from typing import Tuple
 from unittest import mock
 
 from screenpy import Actor
