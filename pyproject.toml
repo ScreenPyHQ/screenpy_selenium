@@ -80,7 +80,6 @@ tox = {version = "*", optional = true}
 [tool.poetry.extras]
 dev = [
     "pre-commit",
-    "pylint",
     "pytest",
     "tox",
 ]
