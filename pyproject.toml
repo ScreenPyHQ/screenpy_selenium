@@ -69,11 +69,9 @@ importlib_metadata = {version = "*", python = "3.8.*"}
 # convenience packages for development of screenpy only
 black = {version = "*", optional = true}
 coverage = {version = "*", optional = true}
-flake8 = {version = "*", optional = true}
 isort = {version = "*", optional = true}
 mypy = {version = "*", optional = true}
 pre-commit = {version = "*", optional = true}
-pylint = {version = "*", optional = true}
 pytest = {version = "*", optional = true}
 ruff = {version = "*", optional = true}
 sphinx = {version = "*", optional = true}
@@ -89,11 +87,9 @@ dev = [
 dev_all = [
     "black",
     "coverage",
-    "flake8",
     "isort",
     "mypy",
     "pre-commit",
-    "pylint",
     "pytest",
     "ruff",
     "sphinx",
