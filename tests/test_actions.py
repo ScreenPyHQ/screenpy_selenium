@@ -650,7 +650,8 @@ class TestMoveMouse:
 
         assert element_name in mm1.description
         assert str(coords) in mm2.description
-        assert element_name in mm3.description and str(coords) in mm3.description
+        assert element_name in mm3.description
+        assert str(coords) in mm3.description
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
     def test_perform_move_mouse_with_target(
