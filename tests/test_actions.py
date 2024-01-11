@@ -1029,19 +1029,16 @@ class TestSaveConsoleLog:
         file_descriptor = mocked_open()
         file_descriptor.write.assert_called_once_with("\n".join(test_log))
 
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch(
         "screenpy_selenium.actions.save_console_log.AttachTheFile", autospec=True
     )
-    def test_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
-    ) -> None:
+    def test_sends_kwargs_to_attach(self, mocked_atf: mock.Mock, Tester: Actor) -> None:
         test_path = "doppelganger.png"
         test_kwargs = {"name": "Mystique"}
         browser = get_mocked_browser(Tester)
         browser.get_log.return_value = [1, 2, 3]
-
-        SaveConsoleLog(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
+        with mock.patch("builtins.open", new_callable=mock.mock_open):
+            SaveConsoleLog(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
@@ -1095,17 +1092,17 @@ class TestSaveScreenshot:
 
         mocked_open.assert_called_once_with(test_path, "wb+")
 
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch(
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
+        self, mocked_atf: mock.Mock, Tester: Actor
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}
 
-        SaveScreenshot(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
+        with mock.patch("builtins.open", new_callable=mock.mock_open):
+            SaveScreenshot(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
