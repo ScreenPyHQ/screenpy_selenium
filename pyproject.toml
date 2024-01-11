@@ -127,8 +127,8 @@ select = [
     "ICN",  # flake8-import-conventions
     "ISC",  # flake8-implicit-str-concat
     "PGH",  # pygrep-hooks
-#    "PIE",  # flake8-pie
-#    "PL",  # pylint
+    "PIE",  # flake8-pie
+    "PL",  # pylint
 #    "PT",  # flake8-pytest-style
 #    "Q",  # flake8-quotes
 #    "RET",  # flake8-return

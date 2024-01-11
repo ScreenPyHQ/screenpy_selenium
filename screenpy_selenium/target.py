@@ -79,7 +79,7 @@ class Target:
             raise TypeError(msg)
 
         if isinstance(locator, tuple):
-            if len(locator) != 2:
+            if len(locator) != 2:  # noqa: PLR2004
                 msg = "locator tuple length should be 2"
                 raise ValueError(msg)
             self.locator = locator
