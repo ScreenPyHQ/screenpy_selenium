@@ -166,6 +166,11 @@ extend-safe-fixes = [
     "EM102",
 #    "TCH001", "TCH002", "TCH003", "TCH004",
 #    "SIM108"
+    # maybe?
+#    "F841",
+    "C419",
+    "D200", "D205", "D415",
+    "PT003", "PT006", "PT018",
 ]
 
 [tool.ruff.per-file-ignores]
