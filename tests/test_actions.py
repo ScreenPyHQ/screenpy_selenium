@@ -553,7 +553,7 @@ class TestHoldDown:
 
     @pytest.mark.parametrize(
         ("platform", "expected_key"),
-        [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]],
+        [("Windows", Keys.CONTROL), ("Darwin", Keys.COMMAND)],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """HoldDown figures out which key to use based on platform"""
@@ -828,7 +828,7 @@ class TestRelease:
 
     @pytest.mark.parametrize(
         ("platform", "expected_key"),
-        [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]],
+        [("Windows", Keys.CONTROL), ("Darwin", Keys.COMMAND)],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """Release figures out which key to use based on platform"""
