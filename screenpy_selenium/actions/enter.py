@@ -112,10 +112,11 @@ class Enter:
     def perform_as(self: SelfEnter, the_actor: Actor) -> None:
         """Direct the Actor to enter the text into the element."""
         if self.target is None:
-            raise UnableToAct(
+            msg = (
                 "Target was not supplied for Enter. Provide a Target by using either "
                 "the .into(), .into_the(), or .on() method."
             )
+            raise UnableToAct(msg)
 
         element = self.target.found_by(the_actor)
 

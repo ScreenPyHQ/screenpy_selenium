@@ -80,7 +80,8 @@ class HoldDown:
         elif self.key is not None:
             the_chain.key_down(self.key)
         else:
-            raise UnableToAct("HoldDown must be told what to hold down.")
+            msg = "HoldDown must be told what to hold down."
+            raise UnableToAct(msg)
 
     def __init__(
         self: SelfHoldDown, key: Optional[str] = None, lmb: bool = False

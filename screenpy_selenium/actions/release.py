@@ -68,7 +68,8 @@ class Release:
         elif self.key is not None:
             the_chain.key_up(self.key)
         else:
-            raise UnableToAct("Release must be told what to release.")
+            msg = "Release must be told what to release."
+            raise UnableToAct(msg)
 
     def __init__(
         self: SelfRelease, key: Optional[str] = None, lmb: bool = False

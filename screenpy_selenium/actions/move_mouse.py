@@ -106,10 +106,11 @@ class MoveMouse:
         elif self.offset is not None:
             the_chain.move_by_offset(*self.offset)
         else:
-            raise UnableToAct(
-                "MoveMouse was given neither coordinates nor a Target. Supply "
-                "one of these using MoveMouse.by_offset or MoveMouse.to_the."
+            msg = (
+                "MoveMouse was given neither coordinates nor a Target. "
+                "Supply one of these using MoveMouse.by_offset or MoveMouse.to_the."
             )
+            raise UnableToAct(msg)
 
     def describe(self: SelfMoveMouse) -> str:
         """Describe the Action in present tense."""

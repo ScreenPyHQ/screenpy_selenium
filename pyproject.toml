@@ -116,7 +116,7 @@ select = [
     "C4",  # flake8-comprehensions
     "D",  # pydocstyle
     "E",  # pycodestyle error
-#    "EM",  # flake8-errmsg
+    "EM",  # flake8-errmsg
 #    "ERA",  # eradicate
 #    "F",  # Pyflakes
 #    "FA",  # flake8-future-annotations
@@ -162,6 +162,7 @@ exclude = [
 
 [tool.ruff.lint]
 extend-safe-fixes = [
+    "EM101",
 #    "TCH001", "TCH002", "TCH003", "TCH004",
 #    "SIM108"
 ]

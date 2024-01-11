@@ -73,7 +73,8 @@ class BrowseTheWeb:
             "browserName": "Safari",
         }
         if IOS_CAPABILITIES["platformVersion"] is None:
-            raise BrowsingError("IOS_DEVICE_VERSION Environment variable must be set.")
+            msg = "IOS_DEVICE_VERSION Environment variable must be set."
+            raise BrowsingError(msg)
 
         return cls.using(browser=Remote(hub_url, IOS_CAPABILITIES))
 
@@ -105,9 +106,8 @@ class BrowseTheWeb:
             "browserName": "Chrome",
         }
         if ANDROID_CAPABILITIES["platformVersion"] is None:
-            raise BrowsingError(
-                "ANDROID_DEVICE_VERSION environment variable must be set."
-            )
+            msg = "ANDROID_DEVICE_VERSION environment variable must be set."
+            raise BrowsingError(msg)
 
         return cls.using(browser=Remote(hub_url, ANDROID_CAPABILITIES))
 

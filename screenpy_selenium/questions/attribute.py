@@ -50,10 +50,11 @@ class Attribute:
     def answered_by(self, the_actor: Actor) -> Union[str, List[Union[str, None]], None]:
         """Direct the actor to investigate the attribute on the element."""
         if self.target is None:
-            raise UnableToAnswer(
+            msg = (
                 "No Target given to Attribute to investigate. Supply a Target"
                 " with the `.of()`, `.of_the()`, or `.of_all()` method."
             )
+            raise UnableToAnswer(msg)
 
         if self.multi:
             elements = self.target.all_found_by(the_actor)

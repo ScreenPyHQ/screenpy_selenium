@@ -74,11 +74,13 @@ class Target:
             * :meth:`~screenpy_selenium.Target.located`
         """
         if not isinstance(locator, (tuple, str)):
-            raise TypeError("invalid locator type")
+            msg = "invalid locator type"
+            raise TypeError(msg)
 
         if isinstance(locator, tuple):
             if len(locator) != 2:
-                raise ValueError("locator tuple length should be 2")
+                msg = "locator tuple length should be 2"
+                raise ValueError(msg)
             self.locator = locator
         elif locator[0] in ("(", "/"):
             self.locator = (By.XPATH, locator)

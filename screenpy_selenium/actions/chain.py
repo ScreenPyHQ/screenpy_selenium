@@ -35,13 +35,12 @@ class Chain:
     def perform_as(self, the_actor: Actor) -> None:
         """Choreograph the Actions and direct the Actor to perform the chain."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
-        the_chain = ActionChains(browser)  # type: ignore[arg-type]
+        the_chain = ActionChains(browser)
 
         for action in self.actions:
             if not isinstance(action, Chainable):
-                raise UnableToAct(
-                    f"The {action.__class__.__name__} Action cannot be chained."
-                )
+                msg = f"The {action.__class__.__name__} Action cannot be chained."
+                raise UnableToAct(msg)
             action.add_to_chain(the_actor, the_chain)
         the_chain.perform()
 
