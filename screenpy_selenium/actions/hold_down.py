@@ -9,6 +9,7 @@ from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.keys import Keys
 
+from ..common import pos_args_deprecated
 from ..speech_tools import KEY_NAMES
 
 if TYPE_CHECKING:
@@ -88,7 +89,12 @@ class HoldDown:
             msg = "HoldDown must be told what to hold down."
             raise UnableToAct(msg)
 
-    def __init__(self: SelfHoldDown, key: str | None = None, lmb: bool = False) -> None:
+    @pos_args_deprecated("lmb")
+    def __init__(
+        self: SelfHoldDown,
+        key: str | None = None,
+        lmb: bool = False,  # noqa: FBT001, FBT002
+    ) -> None:
         self.key = key
         self.lmb = lmb
         self.target = None

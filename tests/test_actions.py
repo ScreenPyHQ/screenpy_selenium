@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import cast
 from unittest import mock
 
@@ -435,6 +436,19 @@ class TestEnter:
 
         assert SubEnter.the_text("blah").new_method() is True
 
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Enter("", True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Enter.the_secret("")
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Enter("", mask=True)
+
 
 class TestEnter2FAToken:
     def test_can_be_instantiated(self) -> None:
@@ -618,6 +632,19 @@ class TestHoldDown:
                 return True
 
         assert SubHoldDown.left_mouse_button().new_method() is True
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            HoldDown(Keys.LEFT_ALT, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            HoldDown.left_mouse_button()
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            HoldDown(lmb=True)
 
 
 class TestMoveMouse:
@@ -883,6 +910,19 @@ class TestRelease:
                 return True
 
         assert SubRelease.left_mouse_button().new_method() is True
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Release(Keys.LEFT_ALT, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Release.left_mouse_button()
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Release(lmb=True)
 
 
 class TestRespondToThePrompt:

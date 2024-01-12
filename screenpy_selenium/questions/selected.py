@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING, TypeVar
 from screenpy.pacing import beat
 from selenium.webdriver.support.ui import Select as SeleniumSelect
 
+from ..common import pos_args_deprecated
+
 if TYPE_CHECKING:
     from screenpy import Actor
 
@@ -90,6 +92,9 @@ class Selected:
             return [e.text for e in select.all_selected_options]
         return select.first_selected_option.text
 
-    def __init__(self: SelfSelected, target: Target, multi: bool = False) -> None:
+    @pos_args_deprecated("multi")
+    def __init__(
+        self: SelfSelected, target: Target, multi: bool = False  # noqa: FBT001, FBT002
+    ) -> None:
         self.target = target
         self.multi = multi

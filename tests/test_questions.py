@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from unittest import mock
 
 import pytest
@@ -309,6 +310,19 @@ class TestSelected:
             Selected(TARGET).describe() == f"The selected option(s) from the {TARGET}."
         )
 
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Selected(TARGET, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Selected.options_from_the(TARGET)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Selected(TARGET, multi=True)
+
 
 class TestText:
     def test_can_be_instantiated(self) -> None:
@@ -379,3 +393,16 @@ class TestTextOfTheAlert:
 
     def test_describe(self) -> None:
         assert TextOfTheAlert().describe() == "The text of the alert."
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Text(TARGET, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Text.of_all(TARGET)
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Text(TARGET, multi=True)
