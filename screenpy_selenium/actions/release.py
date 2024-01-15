@@ -41,7 +41,7 @@ class Release:
     @classmethod
     def command_or_control_key(cls: Type[SelfRelease]) -> SelfRelease:
         """
-        A convenience method.
+        A convenience method for supporting multiple operating systems.
 
         Figures out what operating system the Actor is using and tells the Actor which
         execution key to release.

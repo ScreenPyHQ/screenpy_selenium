@@ -127,11 +127,11 @@ class Target:
     __str__ = __repr__
 
     def __iter__(self: SelfTarget) -> Iterator[str]:
-        """Interator."""
+        """Allow Targets to be treated as ``(By, str)`` tuples."""
         return self.get_locator().__iter__()
 
     def __getitem__(self: SelfTarget, index: int) -> str:
-        """Allow slicing of target name directly."""
+        """Allow Targets to be treated as ``(By, str)`` tuples."""
         return self.get_locator()[index]
 
     def __init__(

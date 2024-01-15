@@ -44,7 +44,7 @@ class HoldDown:
     @classmethod
     def command_or_control_key(cls: Type[SelfHoldDown]) -> SelfHoldDown:
         """
-        A convenience method.
+        A convenience method for supporting multiple operating systems.
 
         Figures out what operating system the Actor is using and directs the Actor
         which execution key to hold down.
