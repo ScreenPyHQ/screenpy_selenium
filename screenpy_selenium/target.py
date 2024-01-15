@@ -1,5 +1,5 @@
 """
-Locator object.
+A beefed up locator!
 
 Provides an object to store a locator with a human-readable string. The
 human-readable string will be used in logging and reporting; the locator
@@ -121,7 +121,7 @@ class Target:
             raise TargetingError(f"{e} raised while trying to find {self}.") from e
 
     def __repr__(self: SelfTarget) -> str:
-        """Target name represents."""
+        """A Target is represented by its name."""
         return f"{self.target_name}"
 
     __str__ = __repr__
