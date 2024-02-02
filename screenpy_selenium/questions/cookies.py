@@ -1,6 +1,4 @@
-"""
-Investigate the cookies on the Actor's web or API session.
-"""
+"""Investigate the cookies on the Actor's web or API session."""
 
 from screenpy import Actor
 from screenpy.pacing import beat

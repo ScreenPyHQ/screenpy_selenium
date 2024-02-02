@@ -2,7 +2,7 @@ from typing import Optional
 from unittest import mock
 
 import pytest
-from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer
+from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer, Actor
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
@@ -28,7 +28,7 @@ TARGET = FakeTarget()
 
 
 class TestAttribute:
-    def test_can_be_instantiated(self):
+    def test_can_be_instantiated(self) -> None:
         a1 = Attribute("")
         a2 = Attribute("").of_the(TARGET)
 
@@ -41,14 +41,14 @@ class TestAttribute:
         assert isinstance(a, Answerable)
         assert isinstance(a, Describable)
 
-    def test_raises_error_if_no_target(self, Tester) -> None:
+    def test_raises_error_if_no_target(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAnswer):
             Attribute("").answered_by(Tester)
 
     def test_of_all_sets_multi(self) -> None:
         assert Attribute("").of_all(TARGET).multi
 
-    def test_ask_for_attribute(self, Tester) -> None:
+    def test_ask_for_attribute(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//html")
         attr = "foo"
         value = "bar"
@@ -61,7 +61,7 @@ class TestAttribute:
         mocked_browser.find_element.assert_called_once_with(*fake_target)
         element.get_attribute.assert_called_once_with(attr)
 
-    def test_ask_for_attribute_multi(self, Tester) -> None:
+    def test_ask_for_attribute_multi(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//html")
         attr = "foo"
         value = "bar"
@@ -90,7 +90,7 @@ class TestBrowserTitle:
         assert isinstance(b, Answerable)
         assert isinstance(b, Describable)
 
-    def test_ask_for_browser_title(self, Tester) -> None:
+    def test_ask_for_browser_title(self, Tester: Actor) -> None:
         expected_title = "Welcome to the WORLD of TOMORROW!"
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.title = expected_title
@@ -113,7 +113,7 @@ class TestBrowserURL:
         assert isinstance(b, Answerable)
         assert isinstance(b, Describable)
 
-    def test_ask_for_browser_url(self, Tester) -> None:
+    def test_ask_for_browser_url(self, Tester: Actor) -> None:
         expected_url = "https://screenpy-docs.readthedocs.io/en/latest/"
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.current_url = expected_url
@@ -136,7 +136,7 @@ class TestCookies:
         assert isinstance(c, Answerable)
         assert isinstance(c, Describable)
 
-    def test_ask_for_cookies(self, Tester) -> None:
+    def test_ask_for_cookies(self, Tester: Actor) -> None:
         test_name = "cookie_type"
         test_value = "madeleine"
         expected_cookie = {test_name: test_value}
@@ -170,14 +170,14 @@ class TestElement:
         annotation = e.__annotations__["caught_exception"]
         assert annotation == Optional[TargetingError]
 
-    def test_question_returns_none_if_no_element_found(self, Tester) -> None:
+    def test_question_returns_none_if_no_element_found(self, Tester: Actor) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.find_element.side_effect = WebDriverException()
 
         assert Element(test_target).answered_by(Tester) is None
 
-    def test_question_captures_exception(self, Tester) -> None:
+    def test_question_captures_exception(self, Tester: Actor) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.find_element.side_effect = WebDriverException("Specific Msg")
@@ -191,7 +191,7 @@ class TestElement:
             == "Message: Specific Msg\n raised while trying to find foo."
         )
 
-    def test_ask_for_element(self, Tester) -> None:
+    def test_ask_for_element(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//html")
         mocked_browser = get_mocked_browser(Tester)
         element = get_mocked_element()
@@ -218,7 +218,7 @@ class TestList:
         assert isinstance(e, Answerable)
         assert isinstance(e, Describable)
 
-    def test_ask_for_list(self, Tester) -> None:
+    def test_ask_for_list(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = ["a", "b", "c"]
         mocked_browser = get_mocked_browser(Tester)
@@ -243,7 +243,7 @@ class TestNumber:
         assert isinstance(n, Answerable)
         assert isinstance(n, Describable)
 
-    def test_ask_for_number(self, Tester) -> None:
+    def test_ask_for_number(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = [1, 2, 3]
         mocked_browser = get_mocked_browser(Tester)
@@ -278,7 +278,9 @@ class TestSelected:
         assert Selected.options_from(TARGET).multi
 
     @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
-    def test_ask_for_selected_option(self, mocked_selenium_select, Tester) -> None:
+    def test_ask_for_selected_option(
+        self, mocked_selenium_select: mock.Mock, Tester: Actor
+    ) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = "test"
         mocked_selenium_select.return_value.first_selected_option.text = return_value
@@ -289,7 +291,7 @@ class TestSelected:
 
     @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
     def test_ask_for_selected_options_plural(
-        self, mocked_selenium_select, Tester
+        self, mocked_selenium_select: mock.Mock, Tester: Actor
     ) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         expected_value = ["test", "the", "options"]
@@ -323,7 +325,7 @@ class TestText:
     def test_of_all_sets_multi(self) -> None:
         assert Text.of_all(TARGET).multi
 
-    def test_ask_for_text(self, Tester) -> None:
+    def test_ask_for_text(self, Tester: Actor) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         mocked_browser = get_mocked_browser(Tester)
         expected_text = "spam and eggs"
@@ -335,7 +337,7 @@ class TestText:
         assert Text.of_the(fake_target).answered_by(Tester) == expected_text
         mocked_browser.find_element.assert_called_once_with(*fake_target)
 
-    def test_ask_for_all_text(self, Tester) -> None:
+    def test_ask_for_all_text(self, Tester: Actor) -> None:
         fake_target = Target.the("fakes").located_by("//xpath")
         mocked_browser = get_mocked_browser(Tester)
         expected_texts = ["spam", "eggs", "baked beans"]
@@ -364,7 +366,7 @@ class TestTextOfTheAlert:
         assert isinstance(t, Answerable)
         assert isinstance(t, Describable)
 
-    def test_ask_for_text_of_the_alert(self, Tester) -> None:
+    def test_ask_for_text_of_the_alert(self, Tester: Actor) -> None:
         expected_text = "It's got what plants crave."
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.switch_to.alert = mock.create_autospec(

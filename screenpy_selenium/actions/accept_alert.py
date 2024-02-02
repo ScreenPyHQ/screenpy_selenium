@@ -1,6 +1,4 @@
-"""
-Accept a javascript alert.
-"""
+"""Accept a javascript alert."""
 
 from screenpy.actor import Actor
 from screenpy.pacing import aside, beat

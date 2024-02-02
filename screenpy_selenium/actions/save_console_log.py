@@ -1,6 +1,4 @@
-"""
-Save the browser console log.
-"""
+"""Save the browser console log."""
 
 import os
 from typing import Any, Optional, Type, TypeVar
@@ -64,7 +62,9 @@ class SaveConsoleLog:
         """
         return cls(path=path)
 
-    def and_attach_it(self: SelfSaveConsoleLog, **kwargs: Any) -> SelfSaveConsoleLog:
+    def and_attach_it(
+        self: SelfSaveConsoleLog, **kwargs: Any  # noqa: ANN401
+    ) -> SelfSaveConsoleLog:
         """Indicate the console log file should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters

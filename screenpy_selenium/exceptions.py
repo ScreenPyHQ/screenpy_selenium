@@ -1,6 +1,4 @@
-"""
-Additional exceptions used by screenpy_selenium.
-"""
+"""Additional exceptions used by screenpy_selenium."""
 
 from screenpy.exceptions import AbilityError, ScreenPyError
 

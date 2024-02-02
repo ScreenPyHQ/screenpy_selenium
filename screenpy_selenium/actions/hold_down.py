@@ -1,6 +1,4 @@
-"""
-Hold down a specific key or the left mouse button, optionally on an element.
-"""
+"""Hold down a specific key or the left mouse button, optionally on an element."""
 
 import platform
 from typing import Optional, Type, TypeVar
@@ -46,8 +44,10 @@ class HoldDown:
     @classmethod
     def command_or_control_key(cls: Type[SelfHoldDown]) -> SelfHoldDown:
         """
-        A convenience method that figures out what operating system the Actor
-        is using and directs the Actor which execution key to hold down.
+        A convenience method for supporting multiple operating systems.
+
+        Figures out what operating system the Actor is using and directs the Actor
+        which execution key to hold down.
         """
         if platform.system() == "Darwin":
             return cls(Keys.COMMAND)

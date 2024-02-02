@@ -1,6 +1,4 @@
-"""
-Clear text from an input.
-"""
+"""Clear text from an input."""
 from typing import Type, TypeVar
 
 from screenpy.actor import Actor
@@ -37,14 +35,14 @@ class Clear:
 
     @classmethod
     def the_text_from(cls: Type[SelfClear], target: Target) -> SelfClear:
-        """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)
 
     @classmethod
     def the_text_from_the_first_of_the(
         cls: Type[SelfClear], target: Target
     ) -> SelfClear:
-        """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)
 
     def describe(self: SelfClear) -> str:

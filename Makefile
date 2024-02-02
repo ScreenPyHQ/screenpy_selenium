@@ -19,3 +19,28 @@ local_screenpy:
 	pip install -e ~/projects/screenpy
 
 .PHONY: sync update trunk_screenpy local_screenpy
+
+black-check:
+	black --check .
+
+black:
+	black .
+
+ruff:
+	ruff check .
+
+ruff-fix:
+	ruff check . --fix --show-fixes
+
+mypy:
+	mypy .
+
+lint: ruff mypy
+
+.PHONY: black-check black ruff ruff-fix mypy lint
+
+pre-check-in: black-check lint
+
+pre-check-in-fix: black ruff-fix mypy
+
+.PHONY: pre-check-in pre-check-in-fix

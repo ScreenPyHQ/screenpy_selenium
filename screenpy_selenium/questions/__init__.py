@@ -1,6 +1,4 @@
-"""
-Questions an Actor can ask about the state of a web application.
-"""
+"""Questions an Actor can ask about the state of a web application."""
 
 from .attribute import Attribute
 from .browser_title import BrowserTitle

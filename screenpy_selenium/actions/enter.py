@@ -1,6 +1,4 @@
-"""
-Enter text into an input field, or press keys.
-"""
+"""Enter text into an input field, or press keys."""
 
 from functools import partial
 from typing import List, Optional, Type, TypeVar
@@ -52,8 +50,9 @@ class Enter:
     @classmethod
     def the_secret(cls: Type[SelfEnter], text: str) -> SelfEnter:
         """
-        Provide the text to enter into the field, but mark that the text
-        should be masked in the log. The text will appear as "[CENSORED]".
+        Provide the text to enter into the field, but mask it in logging.
+
+        The text will appear as "[CENSORED]".
 
         Aliases:
             * :meth:`~screenpy_selenium.actions.Enter.the_password`
@@ -84,7 +83,7 @@ class Enter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
-    def into_the_first_of_the(self: SelfEnter, target: Target):
+    def into_the_first_of_the(self: SelfEnter, target: Target) -> SelfEnter:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 

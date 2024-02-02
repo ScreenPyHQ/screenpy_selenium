@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [ubuntu-latest]
 
     steps:
@@ -32,15 +32,11 @@ jobs:
       - name: Lint with black
         run: |
           black --check --diff screenpy_selenium
-      - name: Lint with isort
+          black --check --diff tests
+      - name: Lint with ruff
         run: |
-          isort --check-only --diff screenpy_selenium
-      - name: Lint with flake8
-        run: |
-          flake8 --exit-zero screenpy_selenium
+          ruff check .
       - name: Lint with mypy
         run: |
           mypy screenpy_selenium
-      - name: Lint with pylint
-        run: |
-          pylint screenpy_selenium
+          mypy tests

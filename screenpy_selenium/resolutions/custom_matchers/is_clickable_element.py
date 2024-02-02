@@ -1,5 +1,7 @@
 """
-A matcher that matches a clickable element. For example:
+A matcher that matches a clickable element.
+
+For example:
 
     assert_that(driver.find_element_by_id("search"), is_clickable_element())
 """
@@ -24,8 +26,9 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is enabled/clickable")
 
     def describe_match(
-        self, item: Optional[WebElement], match_description: Description
+        self, _: Optional[WebElement], match_description: Description
     ) -> None:
+        """Describe the matching case."""
         match_description.append_text("it was enabled/clickable")
 
     def describe_mismatch(

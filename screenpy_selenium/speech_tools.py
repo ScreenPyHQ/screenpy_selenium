@@ -1,6 +1,4 @@
-"""
-Helpful tools for making good English out of ScreenPy Selenium.
-"""
+"""Helpful tools for making good English out of ScreenPy Selenium."""
 
 from selenium.webdriver.common.keys import Keys
 

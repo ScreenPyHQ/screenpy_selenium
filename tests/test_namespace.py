@@ -1,7 +1,7 @@
 import screenpy_selenium
 
 
-def test_screenpy_selenium():
+def test_screenpy_selenium() -> None:
     expected = (
         "AcceptAlert",
         "AcceptsAlert",
@@ -124,12 +124,12 @@ def test_screenpy_selenium():
     return
 
 
-def test_abilities():
+def test_abilities() -> None:
     expected = ("BrowseTheWeb",)
     assert sorted(screenpy_selenium.abilities.__all__) == sorted(expected)
 
 
-def test_actions():
+def test_actions() -> None:
     expected = (
         "AcceptAlert",
         "AcceptsAlert",
@@ -209,7 +209,7 @@ def test_actions():
     assert sorted(screenpy_selenium.actions.__all__) == sorted(expected)
 
 
-def test_questions():
+def test_questions() -> None:
     expected = [
         "Attribute",
         "BrowserTitle",
@@ -235,7 +235,7 @@ def test_questions():
     assert all(item in screenpy_selenium.questions.__all__ for item in expected)
 
 
-def test_resolutions():
+def test_resolutions() -> None:
     expected = [
         "Clickable",
         "Displayed",

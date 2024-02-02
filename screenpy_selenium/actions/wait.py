@@ -1,6 +1,4 @@
-"""
-Wait for the application to fulfill a given condition.
-"""
+"""Wait for the application to fulfill a given condition."""
 
 from typing import Any, Callable, Iterable, Optional, Type, TypeVar
 
@@ -63,7 +61,7 @@ class Wait:
 
     @classmethod
     def for_(cls: Type[SelfWait], target: Target) -> SelfWait:
-        """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`"""
+        """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
     def seconds_for_the(self: SelfWait, target: Target) -> SelfWait:
@@ -92,7 +90,7 @@ class Wait:
 
     to = seconds_using = using
 
-    def with_(self: SelfWait, *args: Any) -> SelfWait:
+    def with_(self: SelfWait, *args: Any) -> SelfWait:  # noqa: ANN401
         """Set the arguments to pass in to the wait condition."""
         self.args = args
         return self

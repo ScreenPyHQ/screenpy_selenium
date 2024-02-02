@@ -179,7 +179,7 @@ class TestIsPresent:
         "enabled, displayed",
         ((False, False), (False, True), (True, False), (True, True)),
     )
-    def test_matches_a_present_element(self, enabled, displayed) -> None:
+    def test_matches_a_present_element(self, enabled: bool, displayed: bool) -> None:
         element = get_mocked_element()
         ic = IsPresent()
 

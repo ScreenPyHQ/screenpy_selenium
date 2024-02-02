@@ -1,6 +1,4 @@
-"""
-Matches a clickable WebElement.
-"""
+"""Matches a clickable WebElement."""
 
 from screenpy.resolutions.base_resolution import BaseResolution
 

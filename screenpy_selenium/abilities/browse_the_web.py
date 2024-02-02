@@ -1,6 +1,4 @@
-"""
-Enable the actor to browse the web.
-"""
+"""Enable the actor to browse the web."""
 
 import os
 from typing import Type, TypeVar
@@ -50,8 +48,9 @@ class BrowseTheWeb:
     @classmethod
     def using_ios(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
-        Create and use a default Remote driver instance to connect to a
-        running Appium server and open Safari on iOS.
+        Create and use a default Remote driver instance.
+
+        Connects to a running Appium server and open Safari on iOS.
 
         Note that Appium requires non-trivial setup to be able to connect
         to iPhone simulators. See the Appium documentation to get started:
@@ -81,8 +80,9 @@ class BrowseTheWeb:
     @classmethod
     def using_android(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
-        Create and use a default Remote driver instance to connect to a
-        running Appium server and open Chrome on Android.
+        Create and use a default Remote driver instance.
+
+        Connects to a running Appium server and open Chrome on Android.
 
         Note that Appium requires non-trivial setup to be able to connect
         to Android emulators. See the Appium documentation to get started:
@@ -121,6 +121,7 @@ class BrowseTheWeb:
         self.browser.quit()
 
     def __repr__(self: SelfBrowseTheWeb) -> str:
+        """Repr."""
         return "Browse the Web"
 
     __str__ = __repr__

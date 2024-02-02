@@ -1,6 +1,4 @@
-"""
-Respond to a prompt.
-"""
+"""Respond to a prompt."""
 from typing import Type, TypeVar
 
 from screenpy.actor import Actor

@@ -1,6 +1,4 @@
-"""
-Investigate the title of an Actor's active browser window.
-"""
+"""Investigate the title of an Actor's active browser window."""
 
 from screenpy import Actor
 from screenpy.pacing import beat

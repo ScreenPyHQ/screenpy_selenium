@@ -1,6 +1,4 @@
-"""
-Additional Resolutions to provide expected answers for Selenium tests.
-"""
+"""Additional Resolutions to provide expected answers for Selenium tests."""
 
 from .is_clickable import IsClickable
 from .is_invisible import IsInvisible

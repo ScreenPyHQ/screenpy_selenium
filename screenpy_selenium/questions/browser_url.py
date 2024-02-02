@@ -1,6 +1,4 @@
-"""
-Investigate the current url of an Actor's browser.
-"""
+"""Investigate the current url of an Actor's browser."""
 
 from screenpy import Actor
 from screenpy.pacing import beat

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any, Tuple
 from unittest import mock
 
@@ -17,9 +18,9 @@ def get_mocked_chain() -> mock.Mock:
     return mock.create_autospec(ActionChains, instance=True)
 
 
-def get_mock_target_class() -> Any:
+def get_mock_target_class() -> type:
     class FakeTarget(Target):
-        def __new__(cls, *args, **kwargs):
+        def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:  # noqa: ARG003
             rt = mock.create_autospec(FakeTarget, instance=True)
             return rt
 

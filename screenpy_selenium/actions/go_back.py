@@ -1,6 +1,4 @@
-"""
-Press the browser back button.
-"""
+"""Press the browser back button."""
 
 from screenpy.actor import Actor
 from screenpy.pacing import beat

@@ -1,6 +1,4 @@
-"""
-Investigate an element on the browser page.
-"""
+"""Investigate an element on the browser page."""
 
 from typing import Optional
 

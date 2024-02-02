@@ -1,5 +1,7 @@
 """
-A matcher that matches a visible element. For example:
+A matcher that matches a visible element.
+
+For example:
 
     assert_that(driver.find_element_by_id("search"), is_visible_element())
 """
@@ -12,9 +14,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 class IsVisibleElement(BaseMatcher[Optional[WebElement]]):
-    """
-    Matches an element whose ``is_displayed`` method returns True.
-    """
+    """Matches an element whose ``is_displayed`` method returns True."""
 
     def _matches(self, item: Optional[WebElement]) -> bool:
         if item is None:
@@ -26,8 +26,9 @@ class IsVisibleElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is visible")
 
     def describe_match(
-        self, item: Optional[WebElement], match_description: Description
+        self, _: Optional[WebElement], match_description: Description
     ) -> None:
+        """Describe the matching case."""
         match_description.append_text("it was visible")
 
     def describe_mismatch(

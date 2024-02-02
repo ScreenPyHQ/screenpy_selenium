@@ -1,6 +1,4 @@
-"""
-Release the left mouse button or a held modifier key.
-"""
+"""Release the left mouse button or a held modifier key."""
 
 import platform
 from typing import Optional, Type, TypeVar
@@ -43,8 +41,10 @@ class Release:
     @classmethod
     def command_or_control_key(cls: Type[SelfRelease]) -> SelfRelease:
         """
-        A convenience method that figures out what operating system the Actor
-        is using and tells the Actor which execution key to release.
+        A convenience method for supporting multiple operating systems.
+
+        Figures out what operating system the Actor is using and tells the Actor which
+        execution key to release.
         """
         if platform.system() == "Darwin":
             return cls(key=Keys.COMMAND)

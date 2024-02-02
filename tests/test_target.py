@@ -1,4 +1,5 @@
 import pytest
+from screenpy import Actor
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
@@ -98,7 +99,7 @@ def test_locator_tuple_size() -> None:
     assert "invalid locator type" in f"{excinfo.value}"
 
 
-def test_found_by(Tester) -> None:
+def test_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "eggs")
     Target.the("test").located(test_locator).found_by(Tester)
 
@@ -106,7 +107,7 @@ def test_found_by(Tester) -> None:
     mocked_browser.find_element.assert_called_once_with(*test_locator)
 
 
-def test_found_by_raises(Tester) -> None:
+def test_found_by_raises(Tester: Actor) -> None:
     test_name = "frobnosticator"
     mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_element.side_effect = WebDriverException
@@ -116,7 +117,7 @@ def test_found_by_raises(Tester) -> None:
     assert test_name in str(excinfo.value)
 
 
-def test_all_found_by(Tester) -> None:
+def test_all_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "baked beans")
     Target.the("test").located(test_locator).all_found_by(Tester)
 
@@ -124,7 +125,7 @@ def test_all_found_by(Tester) -> None:
     mocked_browser.find_elements.assert_called_once_with(*test_locator)
 
 
-def test_all_found_by_raises(Tester) -> None:
+def test_all_found_by_raises(Tester: Actor) -> None:
     test_name = "transmogrifier"
     mocked_browser = get_mocked_browser(Tester)
     mocked_browser.find_elements.side_effect = WebDriverException
