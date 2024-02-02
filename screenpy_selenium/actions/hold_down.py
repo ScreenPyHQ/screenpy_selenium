@@ -1,4 +1,5 @@
 """Hold down a specific key or the left mouse button, optionally on an element."""
+
 from __future__ import annotations
 
 import platform

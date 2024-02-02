@@ -1,4 +1,5 @@
 """Matches against a visible WebElement."""
+
 from __future__ import annotations
 
 from screenpy.resolutions.base_resolution import BaseResolution

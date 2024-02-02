@@ -1,4 +1,5 @@
 """Select an item from a multi-selection field or dropdown."""
+
 from __future__ import annotations
 
 from typing import Optional, TypeVar, Union

@@ -1,4 +1,5 @@
 """Switch the driver's frame of reference."""
+
 from __future__ import annotations
 
 from typing import Optional, Type, TypeVar

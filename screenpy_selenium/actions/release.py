@@ -1,4 +1,5 @@
 """Release the left mouse button or a held modifier key."""
+
 from __future__ import annotations
 
 import platform

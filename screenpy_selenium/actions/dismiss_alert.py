@@ -1,4 +1,5 @@
 """Dismiss a javascript alert."""
+
 from __future__ import annotations
 
 from screenpy.actor import Actor

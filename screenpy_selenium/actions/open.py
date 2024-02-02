@@ -1,4 +1,5 @@
 """Open a browser on a URL."""
+
 from __future__ import annotations
 
 import os

@@ -1,4 +1,5 @@
 """Investigate the current url of an Actor's browser."""
+
 from __future__ import annotations
 
 from screenpy import Actor

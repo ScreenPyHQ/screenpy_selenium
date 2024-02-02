@@ -1,4 +1,5 @@
 """Matches a clickable WebElement."""
+
 from __future__ import annotations
 
 from screenpy.resolutions.base_resolution import BaseResolution

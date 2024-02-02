@@ -1,4 +1,5 @@
 """Save the browser console log."""
+
 from __future__ import annotations
 
 import os

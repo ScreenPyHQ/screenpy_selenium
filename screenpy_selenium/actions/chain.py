@@ -1,4 +1,5 @@
 """A meta-Action to group a series of chainable Actions together."""
+
 from __future__ import annotations
 
 from screenpy.actor import Actor

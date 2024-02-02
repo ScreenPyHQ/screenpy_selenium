@@ -1229,9 +1229,9 @@ class TestSelectByText:
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
     def test_exception(self, mocked_selselect: mock.Mock, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
-        mocked_selselect(
-            element
-        ).select_by_visible_text.side_effect = WebDriverException()
+        mocked_selselect(element).select_by_visible_text.side_effect = (
+            WebDriverException()
+        )
 
         with pytest.raises(DeliveryError) as excinfo:
             SelectByText("blah").from_(target).perform_as(Tester)
@@ -1491,9 +1491,9 @@ class TestWait:
         browser = get_mocked_browser(Tester)
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
-        mocked_webdriverwait(
-            browser, settings.TIMEOUT
-        ).until.side_effect = WebDriverException
+        mocked_webdriverwait(browser, settings.TIMEOUT).until.side_effect = (
+            WebDriverException
+        )
 
         with pytest.raises(DeliveryError) as excinfo:
             Wait.for_the(test_target).perform_as(Tester)
