@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
+from typing_extensions import Self
 
 from ..exceptions import BrowsingError
 
@@ -13,9 +14,6 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
 
 DEFAULT_APPIUM_HUB_URL = "http://localhost:4723/wd/hub"
-
-
-SelfBrowseTheWeb = TypeVar("SelfBrowseTheWeb", bound="BrowseTheWeb")
 
 
 class BrowseTheWeb:
@@ -35,22 +33,22 @@ class BrowseTheWeb:
     browser: WebDriver
 
     @classmethod
-    def using_chrome(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_chrome(cls) -> Self:
         """Create and use a default Chrome Selenium webdriver instance."""
         return cls.using(browser=Chrome())
 
     @classmethod
-    def using_firefox(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_firefox(cls) -> Self:
         """Create and use a default Firefox Selenium webdriver instance."""
         return cls.using(browser=Firefox())
 
     @classmethod
-    def using_safari(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_safari(cls) -> Self:
         """Create and use a default Safari Selenium webdriver instance."""
         return cls.using(browser=Safari())
 
     @classmethod
-    def using_ios(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_ios(cls) -> Self:
         """
         Create and use a default Remote driver instance.
 
@@ -83,7 +81,7 @@ class BrowseTheWeb:
         return cls.using(browser=Remote(hub_url, IOS_CAPABILITIES))
 
     @classmethod
-    def using_android(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_android(cls) -> Self:
         """
         Create and use a default Remote driver instance.
 
@@ -116,19 +114,19 @@ class BrowseTheWeb:
         return cls.using(browser=Remote(hub_url, ANDROID_CAPABILITIES))
 
     @classmethod
-    def using(cls: type[SelfBrowseTheWeb], browser: WebDriver) -> SelfBrowseTheWeb:
+    def using(cls, browser: WebDriver) -> Self:
         """Provide an already-set-up WebDriver to use to browse the web."""
         return cls(browser=browser)
 
-    def forget(self: SelfBrowseTheWeb) -> None:
+    def forget(self) -> None:
         """Quit the attached browser."""
         self.browser.quit()
 
-    def __repr__(self: SelfBrowseTheWeb) -> str:
+    def __repr__(self) -> str:
         """Repr."""
         return "Browse the Web"
 
     __str__ = __repr__
 
-    def __init__(self: SelfBrowseTheWeb, browser: WebDriver) -> None:
+    def __init__(self, browser: WebDriver) -> None:
         self.browser = browser

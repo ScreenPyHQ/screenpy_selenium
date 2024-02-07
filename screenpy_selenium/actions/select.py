@@ -2,21 +2,18 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select as SeleniumSelect
+from typing_extensions import Self
 
 if TYPE_CHECKING:
     from screenpy import Actor
 
     from ..target import Target
-
-SelfSelectByText = TypeVar("SelfSelectByText", bound="SelectByText")
-SelfSelectByIndex = TypeVar("SelfSelectByIndex", bound="SelectByIndex")
-SelfSelectByValue = TypeVar("SelfSelectByValue", bound="SelectByValue")
 
 
 class Select:
@@ -72,19 +69,19 @@ class SelectByText:
     target: Target | None
     text: str
 
-    def from_the(self: SelfSelectByText, target: Target) -> SelfSelectByText:
+    def from_the(self, target: Target) -> Self:
         """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self: SelfSelectByText) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f'Select the option "{self.text}" from the {self.target}.'
 
     @beat('{} selects the option "{text}" from the {target}.')
-    def perform_as(self: SelfSelectByText, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its text."""
         if self.target is None:
             msg = (
@@ -104,9 +101,7 @@ class SelectByText:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(
-        self: SelfSelectByText, text: str, target: Target | None = None
-    ) -> None:
+    def __init__(self, text: str, target: Target | None = None) -> None:
         self.target = target
         self.text = text
 
@@ -124,19 +119,19 @@ class SelectByIndex:
     target: Target | None
     index: int
 
-    def from_the(self: SelfSelectByIndex, target: Target) -> SelfSelectByIndex:
+    def from_the(self, target: Target) -> Self:
         """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self: SelfSelectByIndex) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Select the option at index {self.index} from the {self.target}."
 
     @beat("{} selects the option at index {index} from the {target}.")
-    def perform_as(self: SelfSelectByIndex, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to select the option using its index."""
         if self.target is None:
             msg = (
@@ -156,9 +151,7 @@ class SelectByIndex:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(
-        self: SelfSelectByIndex, index: int | str, target: Target | None = None
-    ) -> None:
+    def __init__(self, index: int | str, target: Target | None = None) -> None:
         self.target = target
         self.index = int(index)
 
@@ -176,19 +169,19 @@ class SelectByValue:
     target: Target | None
     value: str
 
-    def from_the(self: SelfSelectByValue, target: Target) -> SelfSelectByValue:
+    def from_the(self, target: Target) -> Self:
         """Target the dropdown or multi-select field to select the option from."""
         self.target = target
         return self
 
     from_ = from_the_first_of_the = from_the
 
-    def describe(self: SelfSelectByValue) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f'Select the option with value "{self.value}" from the {self.target}.'
 
     @beat('{} selects the option with value "{value}" from the {target}.')
-    def perform_as(self: SelfSelectByValue, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its value."""
         if self.target is None:
             msg = (
@@ -208,8 +201,6 @@ class SelectByValue:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(
-        self: SelfSelectByValue, value: int | str, target: Target | None = None
-    ) -> None:
+    def __init__(self, value: int | str, target: Target | None = None) -> None:
         self.target = target
         self.value = str(value)

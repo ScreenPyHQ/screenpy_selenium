@@ -3,17 +3,16 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any
 
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
+from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
-
-SelfSaveScreenshot = TypeVar("SelfSaveScreenshot", bound="SaveScreenshot")
 
 
 class SaveScreenshot:
@@ -49,12 +48,12 @@ class SaveScreenshot:
     path: str
     filename: str
 
-    def describe(self: SelfSaveScreenshot) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Save screenshot as {self.filename}"
 
     @classmethod
-    def as_(cls: type[SelfSaveScreenshot], path: str) -> SelfSaveScreenshot:
+    def as_(cls, path: str) -> Self:
         """Supply the name and/or filepath for the screenshot.
 
         If only a name is supplied, the screenshot will appear in the current
@@ -62,9 +61,7 @@ class SaveScreenshot:
         """
         return cls(path=path)
 
-    def and_attach_it(
-        self: SelfSaveScreenshot, **kwargs: Any  # noqa: ANN401
-    ) -> SelfSaveScreenshot:
+    def and_attach_it(self, **kwargs: Any) -> Self:  # noqa: ANN401
         """Indicate the screenshot should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters
@@ -76,7 +73,7 @@ class SaveScreenshot:
     and_attach_it_with = and_attach_it
 
     @beat("{} saves a screenshot as {filename}")
-    def perform_as(self: SelfSaveScreenshot, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the actor to save a screenshot."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         screenshot = browser.get_screenshot_as_png()
@@ -87,7 +84,7 @@ class SaveScreenshot:
         if self.attach_kwargs is not None:
             the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
-    def __init__(self: SelfSaveScreenshot, path: str) -> None:
+    def __init__(self, path: str) -> None:
         self.path = path
         self.filename = path.split(os.path.sep)[-1]
         self.attach_kwargs = None

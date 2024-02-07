@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
+from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
@@ -13,8 +14,6 @@ if TYPE_CHECKING:
     from screenpy.actor import Actor
 
     from ..target import Target
-
-SelfDoubleClick = TypeVar("SelfDoubleClick", bound="DoubleClick")
 
 
 class DoubleClick:
@@ -33,7 +32,7 @@ class DoubleClick:
     target: Target | None
 
     @classmethod
-    def on_the(cls: type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
+    def on_the(cls, target: Target) -> Self:
         """
         Target the element to double-click on.
 
@@ -44,20 +43,16 @@ class DoubleClick:
         return cls(target=target)
 
     @classmethod
-    def on(cls: type[SelfDoubleClick], target: Target) -> SelfDoubleClick:
+    def on(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
 
     @classmethod
-    def on_the_first_of_the(
-        cls: type[SelfDoubleClick], target: Target
-    ) -> SelfDoubleClick:
+    def on_the_first_of_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.DoubleClick.on_the`."""
         return cls.on_the(target=target)
 
-    def _add_action_to_chain(
-        self: SelfDoubleClick, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def _add_action_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Private method to add this Action to the chain."""
         if self.target is not None:
             the_element = self.target.found_by(the_actor)
@@ -66,12 +61,12 @@ class DoubleClick:
 
         the_chain.double_click(on_element=the_element)
 
-    def describe(self: SelfDoubleClick) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Double-click{self.description}."
 
     @beat("{} double-clicks{description}.")
-    def perform_as(self: SelfDoubleClick, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to double-click on the element."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         the_chain = ActionChains(browser)  # type: ignore[arg-type]
@@ -79,12 +74,10 @@ class DoubleClick:
         the_chain.perform()
 
     @beat("Double-click{description}!")
-    def add_to_chain(
-        self: SelfDoubleClick, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Add the DoubleClick Action to a Chain of Actions."""
         self._add_action_to_chain(the_actor, the_chain)
 
-    def __init__(self: SelfDoubleClick, target: Target | None = None) -> None:
+    def __init__(self, target: Target | None = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import platform
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.keys import Keys
+from typing_extensions import Self
 
 from ..common import pos_args_deprecated
 from ..speech_tools import KEY_NAMES
@@ -15,8 +16,6 @@ from ..speech_tools import KEY_NAMES
 if TYPE_CHECKING:
     from screenpy import Actor
     from selenium.webdriver.common.action_chains import ActionChains
-
-SelfRelease = TypeVar("SelfRelease", bound="Release")
 
 
 class Release:
@@ -44,7 +43,7 @@ class Release:
     the_kraken: str
 
     @classmethod
-    def command_or_control_key(cls: type[SelfRelease]) -> SelfRelease:
+    def command_or_control_key(cls) -> Self:
         """
         A convenience method for supporting multiple operating systems.
 
@@ -56,17 +55,17 @@ class Release:
         return cls(key=Keys.CONTROL)
 
     @classmethod
-    def left_mouse_button(cls: type[SelfRelease]) -> SelfRelease:
+    def left_mouse_button(cls) -> Self:
         """Release the left mouse button."""
         return cls(lmb=True)
 
-    def describe(self: SelfRelease) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         # darn, it doesn't work quite as well here. :P
         return f"Release {self.the_kraken}."
 
     @beat("Release {the_kraken}!")
-    def add_to_chain(self: SelfRelease, _: Actor, the_chain: ActionChains) -> None:
+    def add_to_chain(self, _: Actor, the_chain: ActionChains) -> None:
         """Add the Release Action to a Chain of Actions."""
         if self.lmb:
             the_chain.release()
@@ -78,7 +77,7 @@ class Release:
 
     @pos_args_deprecated("lmb")
     def __init__(
-        self: SelfRelease,
+        self,
         key: str | None = None,
         lmb: bool = False,  # noqa: FBT001, FBT002
     ) -> None:

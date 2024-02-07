@@ -8,10 +8,11 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator, TypeVar
+from typing import TYPE_CHECKING, Iterator
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
+from typing_extensions import Self
 
 from .abilities.browse_the_web import BrowseTheWeb
 from .exceptions import TargetingError
@@ -19,8 +20,6 @@ from .exceptions import TargetingError
 if TYPE_CHECKING:
     from screenpy.actor import Actor
     from selenium.webdriver.remote.webdriver import WebElement
-
-SelfTarget = TypeVar("SelfTarget", bound="Target")
 
 
 class Target:
@@ -42,29 +41,29 @@ class Target:
     locator: tuple[str, str] | None = None
 
     @property
-    def target_name(self: SelfTarget) -> str | None:
+    def target_name(self) -> str | None:
         """Return the description when set or the 2nd half of the locator."""
         if self._description is not None:
             return self._description
         return self.locator[1] if self.locator else None
 
     @target_name.setter
-    def target_name(self: SelfTarget, value: str) -> None:
+    def target_name(self, value: str) -> None:
         self._description = value
 
     @target_name.deleter
-    def target_name(self: SelfTarget) -> None:
+    def target_name(self) -> None:
         del self._description
 
     @classmethod
-    def the(cls: type[SelfTarget], desc: str) -> SelfTarget:
+    def the(cls, desc: str) -> Self:
         """Name this Target.
 
         Beginning with a lower-case letter makes the logs look the nicest.
         """
         return cls(desc=desc)
 
-    def located_by(self: SelfTarget, locator: tuple[str, str] | str) -> SelfTarget:
+    def located_by(self, locator: tuple[str, str] | str) -> Self:
         """Set the locator for this Target.
 
         Possible values for locator:
@@ -91,11 +90,11 @@ class Target:
 
         return self
 
-    def located(self: SelfTarget, locator: tuple[str, str] | str) -> SelfTarget:
+    def located(self, locator: tuple[str, str] | str) -> Self:
         """Alias for :meth:~screenpy_selenium.Target.located_by."""
         return self.located_by(locator)
 
-    def get_locator(self: SelfTarget) -> tuple[str, str]:
+    def get_locator(self) -> tuple[str, str]:
         """Return the stored locator.
 
         Raises:
@@ -109,7 +108,7 @@ class Target:
             raise TargetingError(msg)
         return self.locator
 
-    def found_by(self: SelfTarget, the_actor: Actor) -> WebElement:
+    def found_by(self, the_actor: Actor) -> WebElement:
         """Retrieve the |WebElement| as viewed by the Actor."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         try:
@@ -118,7 +117,7 @@ class Target:
             msg = f"{e} raised while trying to find {self}."
             raise TargetingError(msg) from e
 
-    def all_found_by(self: SelfTarget, the_actor: Actor) -> list[WebElement]:
+    def all_found_by(self, the_actor: Actor) -> list[WebElement]:
         """Retrieve a list of |WebElement| objects as viewed by the Actor."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         try:
@@ -127,24 +126,22 @@ class Target:
             msg = f"{e} raised while trying to find {self}."
             raise TargetingError(msg) from e
 
-    def __repr__(self: SelfTarget) -> str:
+    def __repr__(self) -> str:
         """A Target is represented by its name."""
         return f"{self.target_name}"
 
     __str__ = __repr__
 
-    def __iter__(self: SelfTarget) -> Iterator[str]:
+    def __iter__(self) -> Iterator[str]:
         """Allow Targets to be treated as ``(By, str)`` tuples."""
         return self.get_locator().__iter__()
 
-    def __getitem__(self: SelfTarget, index: int) -> str:
+    def __getitem__(self, index: int) -> str:
         """Allow Targets to be treated as ``(By, str)`` tuples."""
         return self.get_locator()[index]
 
     def __init__(
-        self: SelfTarget,
-        desc: str | None = None,
-        locator: tuple[str, str] | None = None,
+        self, desc: str | None = None, locator: tuple[str, str] | None = None
     ) -> None:
         self.target_name = desc
         self.locator = locator

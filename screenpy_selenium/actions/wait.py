@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Iterable, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Iterable
 
 from screenpy import Actor, settings
 from screenpy.exceptions import DeliveryError
@@ -10,13 +10,12 @@ from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from ..target import Target
-
-SelfWait = TypeVar("SelfWait", bound="Wait")
 
 
 class Wait:
@@ -55,7 +54,7 @@ class Wait:
     log_detail: str | None
 
     @classmethod
-    def for_the(cls: type[SelfWait], target: Target) -> SelfWait:
+    def for_the(cls, target: Target) -> Self:
         """Set the Target to wait for.
 
         Aliases:
@@ -64,11 +63,11 @@ class Wait:
         return cls(seconds=settings.TIMEOUT, args=[target])
 
     @classmethod
-    def for_(cls: type[SelfWait], target: Target) -> SelfWait:
+    def for_(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
-    def seconds_for_the(self: SelfWait, target: Target) -> SelfWait:
+    def seconds_for_the(self, target: Target) -> Self:
         """Set the Target to wait for, after changing the default timeout."""
         self.args = [target]
         return self
@@ -76,8 +75,8 @@ class Wait:
     second_for = second_for_the = seconds_for = seconds_for_the
 
     def using(
-        self: SelfWait, strategy: Callable[..., Any], log_detail: str | None = None
-    ) -> SelfWait:
+        self, strategy: Callable[..., Any], log_detail: str | None = None
+    ) -> Self:
         """Use the given strategy to wait for the Target.
 
         Args:
@@ -94,45 +93,45 @@ class Wait:
 
     to = seconds_using = using
 
-    def with_(self: SelfWait, *args: Any) -> SelfWait:  # noqa: ANN401
+    def with_(self, *args: Any) -> Self:  # noqa: ANN401
         """Set the arguments to pass in to the wait condition."""
         self.args = args
         return self
 
-    def to_appear(self: SelfWait) -> SelfWait:
+    def to_appear(self) -> Self:
         """Use Selenium's "visibility of element located" strategy."""
         return self.using(EC.visibility_of_element_located, "for the {0} to appear...")
 
-    def to_be_clickable(self: SelfWait) -> SelfWait:
+    def to_be_clickable(self) -> Self:
         """Use Selenium's "to be clickable" strategy."""
         return self.using(EC.element_to_be_clickable, "for the {0} to be clickable...")
 
-    def to_disappear(self: SelfWait) -> SelfWait:
+    def to_disappear(self) -> Self:
         """Use Selenium's "invisibility of element located" strategy."""
         return self.using(
             EC.invisibility_of_element_located, "for the {0} to disappear..."
         )
 
-    def to_contain_text(self: SelfWait, text: str) -> SelfWait:
+    def to_contain_text(self, text: str) -> Self:
         """Use Selenium's "text to be present in element" strategy."""
         return self.using(
             EC.text_to_be_present_in_element, 'for "{1}" to appear in the {0}...'
         ).with_(*self.args, text)
 
     @property
-    def log_message(self: SelfWait) -> str:
+    def log_message(self) -> str:
         """Format the nice log message, or give back the default."""
         if self.log_detail is None:
             return f"using {self.condition.__name__} with {self.args}"
 
         return self.log_detail.format(*self.args)
 
-    def describe(self: SelfWait) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Wait {self.timeout} seconds {self.log_message}."
 
     @beat("{} waits up to {timeout} seconds {log_message}")
-    def perform_as(self: SelfWait, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to wait for the condition to be satisfied."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
 
@@ -148,9 +147,7 @@ class Wait:
             raise DeliveryError(msg) from e
 
     def __init__(
-        self: SelfWait,
-        seconds: float | None = None,
-        args: Iterable[Any] | None = None,
+        self, seconds: float | None = None, args: Iterable[Any] | None = None
     ) -> None:
         self.args = args if args is not None else []
         self.timeout = seconds if seconds is not None else settings.TIMEOUT
