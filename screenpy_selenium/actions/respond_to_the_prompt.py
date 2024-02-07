@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import aside, beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
 
 SelfRespondToThePrompt = TypeVar("SelfRespondToThePrompt", bound="RespondToThePrompt")
 
@@ -26,7 +28,7 @@ class RespondToThePrompt:
     """
 
     @classmethod
-    def with_(cls: Type[SelfRespondToThePrompt], text: str) -> SelfRespondToThePrompt:
+    def with_(cls: type[SelfRespondToThePrompt], text: str) -> SelfRespondToThePrompt:
         """Provide the text to enter into the prompt."""
         return cls(text)
 

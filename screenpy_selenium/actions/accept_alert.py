@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
-from screenpy.actor import Actor
+from typing import TYPE_CHECKING
+
 from screenpy.pacing import aside, beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
 
 
 class AcceptAlert:

@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
-from screenpy import Actor
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target, TargetingError
 
 from .useful_mocks import get_mocked_browser
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 
 def test_can_be_instantiated() -> None:

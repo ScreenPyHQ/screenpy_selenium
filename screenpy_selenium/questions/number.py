@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.pacing import beat
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 SelfNumber = TypeVar("SelfNumber", bound="Number")
 
@@ -24,7 +26,7 @@ class Number:
     """
 
     @classmethod
-    def of(cls: Type[SelfNumber], target: Target) -> SelfNumber:
+    def of(cls: type[SelfNumber], target: Target) -> SelfNumber:
         """Target the element to be counted."""
         return cls(target=target)
 

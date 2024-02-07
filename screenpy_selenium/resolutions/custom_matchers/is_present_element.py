@@ -8,17 +8,19 @@ For example:
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from hamcrest.core.base_matcher import BaseMatcher
-from hamcrest.core.description import Description
 from selenium.webdriver.remote.webelement import WebElement
+
+if TYPE_CHECKING:
+    from hamcrest.core.description import Description
 
 
 class IsPresentElement(BaseMatcher[Optional[WebElement]]):
     """Matches an element to be a present WebElement."""
 
-    def _matches(self, item: Optional[WebElement]) -> bool:
+    def _matches(self, item: WebElement | None) -> bool:
         if item is None:
             return False
         return isinstance(item, WebElement)
@@ -28,13 +30,13 @@ class IsPresentElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is present")
 
     def describe_match(
-        self, _: Optional[WebElement], match_description: Description
+        self, _: WebElement | None, match_description: Description
     ) -> None:
         """Describe the matching case."""
         match_description.append_text("it was present")
 
     def describe_mismatch(
-        self, _: Optional[WebElement], mismatch_description: Description
+        self, _: WebElement | None, mismatch_description: Description
     ) -> None:
         """Describe the failing case."""
         mismatch_description.append_text("was not present")

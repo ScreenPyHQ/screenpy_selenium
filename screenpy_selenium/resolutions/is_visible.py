@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from screenpy.resolutions.base_resolution import BaseResolution
 
 from .custom_matchers import is_visible_element
-from .custom_matchers.is_visible_element import IsVisibleElement
+
+if TYPE_CHECKING:
+    from .custom_matchers.is_visible_element import IsVisibleElement
 
 
 class IsVisible(BaseResolution):

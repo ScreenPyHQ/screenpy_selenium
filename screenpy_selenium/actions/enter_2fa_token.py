@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import beat
 from screenpy_pyotp.abilities import AuthenticateWith2FA
-from selenium.webdriver.common.action_chains import ActionChains
 
-from ..target import Target
 from .enter import Enter
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
+
+    from ..target import Target
 
 SelfEnter2FAToken = TypeVar("SelfEnter2FAToken", bound="Enter2FAToken")
 
@@ -28,7 +31,7 @@ class Enter2FAToken:
     """
 
     @classmethod
-    def into_the(cls: Type[SelfEnter2FAToken], target: Target) -> SelfEnter2FAToken:
+    def into_the(cls: type[SelfEnter2FAToken], target: Target) -> SelfEnter2FAToken:
         """
         Target the element into which to enter the 2FA token.
 
@@ -38,7 +41,7 @@ class Enter2FAToken:
         return cls(target)
 
     @classmethod
-    def into(cls: Type[SelfEnter2FAToken], target: Target) -> SelfEnter2FAToken:
+    def into(cls: type[SelfEnter2FAToken], target: Target) -> SelfEnter2FAToken:
         """Alias for :meth:`~screenpy_selenium.actions.Enter2FAToken.into_the`."""
         return cls.into_the(target=target)
 

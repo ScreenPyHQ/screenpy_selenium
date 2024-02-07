@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import os
-from typing import Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
-from selenium.webdriver.remote.webdriver import WebDriver
 
 from ..exceptions import BrowsingError
+
+if TYPE_CHECKING:
+    from selenium.webdriver.remote.webdriver import WebDriver
 
 DEFAULT_APPIUM_HUB_URL = "http://localhost:4723/wd/hub"
 
@@ -33,22 +35,22 @@ class BrowseTheWeb:
     browser: WebDriver
 
     @classmethod
-    def using_chrome(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_chrome(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Chrome Selenium webdriver instance."""
         return cls.using(browser=Chrome())
 
     @classmethod
-    def using_firefox(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_firefox(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Firefox Selenium webdriver instance."""
         return cls.using(browser=Firefox())
 
     @classmethod
-    def using_safari(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_safari(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """Create and use a default Safari Selenium webdriver instance."""
         return cls.using(browser=Safari())
 
     @classmethod
-    def using_ios(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_ios(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
         Create and use a default Remote driver instance.
 
@@ -81,7 +83,7 @@ class BrowseTheWeb:
         return cls.using(browser=Remote(hub_url, IOS_CAPABILITIES))
 
     @classmethod
-    def using_android(cls: Type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
+    def using_android(cls: type[SelfBrowseTheWeb]) -> SelfBrowseTheWeb:
         """
         Create and use a default Remote driver instance.
 
@@ -114,7 +116,7 @@ class BrowseTheWeb:
         return cls.using(browser=Remote(hub_url, ANDROID_CAPABILITIES))
 
     @classmethod
-    def using(cls: Type[SelfBrowseTheWeb], browser: WebDriver) -> SelfBrowseTheWeb:
+    def using(cls: type[SelfBrowseTheWeb], browser: WebDriver) -> SelfBrowseTheWeb:
         """Provide an already-set-up WebDriver to use to browse the web."""
         return cls(browser=browser)
 

@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfSwitchTo = TypeVar("SelfSwitchTo", bound="SwitchTo")
 
@@ -29,12 +32,12 @@ class SwitchTo:
     """
 
     @classmethod
-    def the(cls: Type[SelfSwitchTo], target: Target) -> SelfSwitchTo:
+    def the(cls: type[SelfSwitchTo], target: Target) -> SelfSwitchTo:
         """Target an element, probably an iframe, to switch to."""
         return cls(target=target, frame_to_log=str(target))
 
     @classmethod
-    def default(cls: Type[SelfSwitchTo]) -> SelfSwitchTo:
+    def default(cls: type[SelfSwitchTo]) -> SelfSwitchTo:
         """Switch back to the default frame, the browser window."""
         return cls(target=None, frame_to_log="default frame")
 
@@ -51,8 +54,6 @@ class SwitchTo:
         else:
             browser.switch_to.frame(self.target.found_by(the_actor))
 
-    def __init__(
-        self: SelfSwitchTo, target: Optional[Target], frame_to_log: str
-    ) -> None:
+    def __init__(self: SelfSwitchTo, target: Target | None, frame_to_log: str) -> None:
         self.target = target
         self.frame_to_log = frame_to_log

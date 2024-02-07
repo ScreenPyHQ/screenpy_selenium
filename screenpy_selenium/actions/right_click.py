@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 SelfRightClick = TypeVar("SelfRightClick", bound="RightClick")
 
@@ -32,10 +35,10 @@ class RightClick:
     context menu made of web elements to be able to interact with it.
     """
 
-    target: Optional[Target]
+    target: Target | None
 
     @classmethod
-    def on_the(cls: Type[SelfRightClick], target: Target) -> SelfRightClick:
+    def on_the(cls: type[SelfRightClick], target: Target) -> SelfRightClick:
         """Target an element to right-click on.
 
         Aliases:
@@ -45,13 +48,13 @@ class RightClick:
         return cls(target=target)
 
     @classmethod
-    def on(cls: Type[SelfRightClick], target: Target) -> SelfRightClick:
+    def on(cls: type[SelfRightClick], target: Target) -> SelfRightClick:
         """Alias for :meth:`~screenpy_selenium.actions.RightClick.on_the`."""
         return cls.on_the(target=target)
 
     @classmethod
     def on_the_first_of_the(
-        cls: Type[SelfRightClick], target: Target
+        cls: type[SelfRightClick], target: Target
     ) -> SelfRightClick:
         """Alias for :meth:`~screenpy_selenium.actions.RightClick.on_the`."""
         return cls.on_the(target=target)
@@ -86,6 +89,6 @@ class RightClick:
         """Add the RightClick Action to a Chain of Actions."""
         self._add_action_to_chain(the_actor, the_chain)
 
-    def __init__(self: SelfRightClick, target: Optional[Target] = None) -> None:
+    def __init__(self: SelfRightClick, target: Target | None = None) -> None:
         self.target = target
         self.description = f" on the {target}" if target is not None else ""

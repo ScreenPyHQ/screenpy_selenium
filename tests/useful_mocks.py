@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from typing import Tuple, cast
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
-from screenpy import Actor
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from screenpy_selenium import BrowseTheWeb, Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 
 def get_mocked_element() -> mock.Mock:
@@ -22,13 +24,12 @@ def get_mocked_chain() -> mock.Mock:
 def get_mock_target_class() -> type:
     class FakeTarget(Target):
         def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:  # noqa: ARG003
-            rt = mock.create_autospec(FakeTarget, instance=True)
-            return rt
+            return mock.create_autospec(FakeTarget, instance=True)
 
     return FakeTarget
 
 
-def get_mocked_target_and_element() -> Tuple[mock.Mock, mock.Mock]:
+def get_mocked_target_and_element() -> tuple[mock.Mock, mock.Mock]:
     """Get a mocked target which returns a mocked element."""
     target = get_mock_target_class()()
     element = get_mocked_element()
@@ -38,8 +39,7 @@ def get_mocked_target_and_element() -> Tuple[mock.Mock, mock.Mock]:
 
 
 def get_mocked_browser(actor: Actor) -> mock.Mock:
-    browser = cast(mock.Mock, actor.ability_to(BrowseTheWeb).browser)
-    return browser
+    return cast(mock.Mock, actor.ability_to(BrowseTheWeb).browser)
 
 
 def get_mocked_webdriver() -> mock.Mock:

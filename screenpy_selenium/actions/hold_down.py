@@ -3,16 +3,19 @@
 from __future__ import annotations
 
 import platform
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 from ..speech_tools import KEY_NAMES
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
+
+    from ..target import Target
 
 SelfHoldDown = TypeVar("SelfHoldDown", bound="HoldDown")
 
@@ -38,13 +41,13 @@ class HoldDown:
         )
     """
 
-    target: Optional[Target]
-    key: Optional[str]
+    target: Target | None
+    key: str | None
     lmb: bool
     description: str
 
     @classmethod
-    def command_or_control_key(cls: Type[SelfHoldDown]) -> SelfHoldDown:
+    def command_or_control_key(cls: type[SelfHoldDown]) -> SelfHoldDown:
         """
         A convenience method for supporting multiple operating systems.
 
@@ -56,7 +59,7 @@ class HoldDown:
         return cls(Keys.CONTROL)
 
     @classmethod
-    def left_mouse_button(cls: Type[SelfHoldDown]) -> SelfHoldDown:
+    def left_mouse_button(cls: type[SelfHoldDown]) -> SelfHoldDown:
         """Hold down the left mouse button."""
         return cls(lmb=True)
 
@@ -85,9 +88,7 @@ class HoldDown:
             msg = "HoldDown must be told what to hold down."
             raise UnableToAct(msg)
 
-    def __init__(
-        self: SelfHoldDown, key: Optional[str] = None, lmb: bool = False
-    ) -> None:
+    def __init__(self: SelfHoldDown, key: str | None = None, lmb: bool = False) -> None:
         self.key = key
         self.lmb = lmb
         self.target = None

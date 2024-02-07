@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Optional, Tuple, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy.actor import Actor
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
 from ..abilities import BrowseTheWeb
-from ..target import Target
+
+if TYPE_CHECKING:
+    from screenpy.actor import Actor
+
+    from ..target import Target
 
 SelfMoveMouse = TypeVar("SelfMoveMouse", bound="MoveMouse")
 
@@ -40,12 +43,12 @@ class MoveMouse:
         )
     """
 
-    offset: Optional[Tuple[int, int]]
-    target: Optional[Target]
+    offset: tuple[int, int] | None
+    target: Target | None
     description: str
 
     @classmethod
-    def to_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def to_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
         """
         Target an element to move the mouse to.
 
@@ -58,30 +61,30 @@ class MoveMouse:
         return cls(target=target, description=f"to the {target}")
 
     @classmethod
-    def on_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def on_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def over_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def over_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
     def over_the_first_of_the(
-        cls: Type[SelfMoveMouse], target: Target
+        cls: type[SelfMoveMouse], target: Target
     ) -> SelfMoveMouse:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def to_the_first_of_the(cls: Type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def to_the_first_of_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
     def by_offset(
-        cls: Type[SelfMoveMouse], x_offset: int, y_offset: int
+        cls: type[SelfMoveMouse], x_offset: int, y_offset: int
     ) -> SelfMoveMouse:
         """Specify the offset by which to move the mouse."""
         return cls(
@@ -135,8 +138,8 @@ class MoveMouse:
 
     def __init__(
         self: SelfMoveMouse,
-        offset: Optional[Tuple[int, int]] = None,
-        target: Optional[Target] = None,
+        offset: tuple[int, int] | None = None,
+        target: Target | None = None,
         description: str = "",
     ) -> None:
         self.offset = offset

@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
-from screenpy import Actor
+from typing import TYPE_CHECKING
+
 from screenpy.actions import Pause as BasePause
 from screenpy.pacing import beat
-from selenium.webdriver.common.action_chains import ActionChains
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
 
 
 class Pause(BasePause):

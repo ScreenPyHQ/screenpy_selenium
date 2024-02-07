@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from typing import List, Type, TypeVar, Union
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.pacing import beat
 
-from ..target import Target
+if TYPE_CHECKING:
+    from screenpy import Actor
+
+    from ..target import Target
 
 SelfText = TypeVar("SelfText", bound="Text")
 
@@ -33,7 +35,7 @@ class Text:
     multi: bool
 
     @classmethod
-    def of_the(cls: Type[SelfText], target: Target) -> SelfText:
+    def of_the(cls: type[SelfText], target: Target) -> SelfText:
         """Target the element to extract the text from.
 
         Aliases:
@@ -43,17 +45,17 @@ class Text:
         return cls(target=target)
 
     @classmethod
-    def of(cls: Type[SelfText], target: Target) -> SelfText:
+    def of(cls: type[SelfText], target: Target) -> SelfText:
         """Alias of :meth:`~screenpy_selenium.actions.Text.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
-    def of_the_first_of_the(cls: Type[SelfText], target: Target) -> SelfText:
+    def of_the_first_of_the(cls: type[SelfText], target: Target) -> SelfText:
         """Alias of :meth:`~screenpy_selenium.actions.Text.of_the`."""
         return cls.of_the(target=target)
 
     @classmethod
-    def of_all(cls: Type[SelfText], multi_target: Target) -> SelfText:
+    def of_all(cls: type[SelfText], multi_target: Target) -> SelfText:
         """Target the elements, plural, to extract the text from."""
         return cls(target=multi_target, multi=True)
 
@@ -62,7 +64,7 @@ class Text:
         return f"The text from the {self.target}."
 
     @beat("{} reads the text from the {target}.")
-    def answered_by(self: SelfText, the_actor: Actor) -> Union[str, List[str]]:
+    def answered_by(self: SelfText, the_actor: Actor) -> str | list[str]:
         """Direct the Actor to read off the text of the element(s)."""
         if self.multi:
             return [e.text for e in self.target.all_found_by(the_actor)]

@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 import platform
-from typing import Optional, Type, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 from ..speech_tools import KEY_NAMES
+
+if TYPE_CHECKING:
+    from screenpy import Actor
+    from selenium.webdriver.common.action_chains import ActionChains
 
 SelfRelease = TypeVar("SelfRelease", bound="Release")
 
@@ -35,13 +37,13 @@ class Release:
         the_actor.attempts_to(Release.command_or_control_key())
     """
 
-    key: Optional[str]
+    key: str | None
     lmb: bool
     description: str
     the_kraken: str
 
     @classmethod
-    def command_or_control_key(cls: Type[SelfRelease]) -> SelfRelease:
+    def command_or_control_key(cls: type[SelfRelease]) -> SelfRelease:
         """
         A convenience method for supporting multiple operating systems.
 
@@ -53,7 +55,7 @@ class Release:
         return cls(key=Keys.CONTROL)
 
     @classmethod
-    def left_mouse_button(cls: Type[SelfRelease]) -> SelfRelease:
+    def left_mouse_button(cls: type[SelfRelease]) -> SelfRelease:
         """Release the left mouse button."""
         return cls(lmb=True)
 
@@ -73,9 +75,7 @@ class Release:
             msg = "Release must be told what to release."
             raise UnableToAct(msg)
 
-    def __init__(
-        self: SelfRelease, key: Optional[str] = None, lmb: bool = False
-    ) -> None:
+    def __init__(self: SelfRelease, key: str | None = None, lmb: bool = False) -> None:
         self.key = key
         self.lmb = lmb
         self.description = "LEFT MOUSE BUTTON" if lmb else KEY_NAMES[key]

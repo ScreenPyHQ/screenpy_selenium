@@ -11,10 +11,10 @@ requires = [
 
 repo_dir = path.abspath(path.dirname(__file__))
 about = {}
-with open(path.join(repo_dir, "screenpy_selenium", "__version__.py"), "r") as f:
+with open(path.join(repo_dir, "screenpy_selenium", "__version__.py")) as f:
     exec(f.read(), about)
 
-with open("README.md", "r") as f:
+with open("README.md") as f:
     readme = f.read()
 
 setup(

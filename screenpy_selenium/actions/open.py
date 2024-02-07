@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import os
-from typing import Type, TypeVar, Union
+from typing import TYPE_CHECKING, TypeVar
 
-from screenpy import Actor
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 SelfOpen = TypeVar("SelfOpen", bound="Open")
 
@@ -40,7 +42,7 @@ class Open:
     """
 
     @classmethod
-    def their_browser_on(cls: Type[SelfOpen], location: Union[str, object]) -> SelfOpen:
+    def their_browser_on(cls: type[SelfOpen], location: str | object) -> SelfOpen:
         """
         Provide a URL to visit.
 
@@ -50,7 +52,7 @@ class Open:
         return cls(location=location)
 
     @classmethod
-    def browser_on(cls: Type[SelfOpen], location: Union[str, object]) -> SelfOpen:
+    def browser_on(cls: type[SelfOpen], location: str | object) -> SelfOpen:
         """Alias for :meth:`~screenpy_selenium.actions.Open.their_browser_on`."""
         return cls.their_browser_on(location=location)
 
@@ -64,7 +66,7 @@ class Open:
         browser = the_actor.ability_to(BrowseTheWeb).browser
         browser.get(self.url)
 
-    def __init__(self: SelfOpen, location: Union[str, object]) -> None:
+    def __init__(self: SelfOpen, location: str | object) -> None:
         url = getattr(location, "url", location)
         url = f'{os.getenv("BASE_URL", "")}{url}'
         self.url = url

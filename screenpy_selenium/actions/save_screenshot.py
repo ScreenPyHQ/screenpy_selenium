@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Optional, Type, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
-from screenpy import Actor
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
 
 from ..abilities import BrowseTheWeb
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 SelfSaveScreenshot = TypeVar("SelfSaveScreenshot", bound="SaveScreenshot")
 
@@ -43,7 +45,7 @@ class SaveScreenshot:
         )
     """
 
-    attach_kwargs: Optional[dict]
+    attach_kwargs: dict | None
     path: str
     filename: str
 
@@ -52,7 +54,7 @@ class SaveScreenshot:
         return f"Save screenshot as {self.filename}"
 
     @classmethod
-    def as_(cls: Type[SelfSaveScreenshot], path: str) -> SelfSaveScreenshot:
+    def as_(cls: type[SelfSaveScreenshot], path: str) -> SelfSaveScreenshot:
         """Supply the name and/or filepath for the screenshot.
 
         If only a name is supplied, the screenshot will appear in the current
