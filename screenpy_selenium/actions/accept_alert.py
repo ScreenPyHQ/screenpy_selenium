@@ -1,5 +1,7 @@
 """Accept a javascript alert."""
 
+from __future__ import annotations
+
 from screenpy.actor import Actor
 from screenpy.pacing import aside, beat
 

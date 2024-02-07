@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 import pytest
 from screenpy import Actor
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target, TargetingError
-from useful_mocks import get_mocked_browser
+
+from .useful_mocks import get_mocked_browser
 
 
 def test_can_be_instantiated() -> None:
@@ -86,17 +89,14 @@ def test_can_be_indexed() -> None:
 
 
 def test_locator_tuple_size() -> None:
-    with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID, "foo", "baz"))  # type: ignore
-    assert "locator tuple length should be 2" in f"{excinfo.value}"
+    with pytest.raises(ValueError, match="locator tuple length should be 2"):
+        Target("test").located((By.ID, "foo", "baz"))  # type: ignore[arg-type]
 
-    with pytest.raises(ValueError) as excinfo:
-        Target("test").located((By.ID,))  # type: ignore
-    assert "locator tuple length should be 2" in f"{excinfo.value}"
+    with pytest.raises(ValueError, match="locator tuple length should be 2"):
+        Target("test").located((By.ID,))  # type: ignore[arg-type]
 
-    with pytest.raises(TypeError) as excinfo:  # type: ignore
-        Target("test").located_by([By.ID, "foo"])  # type: ignore
-    assert "invalid locator type" in f"{excinfo.value}"
+    with pytest.raises(TypeError, match="invalid locator type"):  # type: ignore[assignment]
+        Target("test").located_by([By.ID, "foo"])  # type: ignore[arg-type]
 
 
 def test_found_by(Tester: Actor) -> None:

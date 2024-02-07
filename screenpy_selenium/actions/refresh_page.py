@@ -1,5 +1,7 @@
 """Refresh the browser page."""
 
+from __future__ import annotations
+
 from screenpy import Actor
 from screenpy.pacing import beat
 

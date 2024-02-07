@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from unittest import mock
 
@@ -5,7 +7,8 @@ import pytest
 from screenpy import Forgettable
 
 from screenpy_selenium import BrowseTheWeb, BrowsingError
-from useful_mocks import get_mocked_webdriver
+
+from .useful_mocks import get_mocked_webdriver
 
 
 class TestBrowseTheWeb:
@@ -77,4 +80,4 @@ class TestBrowseTheWeb:
             def new_method(self) -> bool:
                 return True
 
-        assert SubBrowseTheWeb.using(get_mocked_webdriver()).new_method() == True
+        assert SubBrowseTheWeb.using(get_mocked_webdriver()).new_method() is True

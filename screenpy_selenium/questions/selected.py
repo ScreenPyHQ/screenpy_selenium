@@ -1,5 +1,7 @@
 """Investigate the selected option or options from a dropdown or multi-select field."""
 
+from __future__ import annotations
+
 from typing import List, Type, TypeVar, Union
 
 from screenpy import Actor

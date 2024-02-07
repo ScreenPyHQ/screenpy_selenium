@@ -1,5 +1,7 @@
 """Wait for the application to fulfill a given condition."""
 
+from __future__ import annotations
+
 from typing import Any, Callable, Iterable, Optional, Type, TypeVar
 
 from screenpy import Actor, settings

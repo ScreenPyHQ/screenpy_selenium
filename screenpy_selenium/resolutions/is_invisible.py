@@ -1,5 +1,7 @@
 """Matches against an invisible WebElement."""
 
+from __future__ import annotations
+
 from screenpy.resolutions.base_resolution import BaseResolution
 
 from .custom_matchers import is_invisible_element

@@ -1,5 +1,7 @@
 """Investigate the title of an Actor's active browser window."""
 
+from __future__ import annotations
+
 from screenpy import Actor
 from screenpy.pacing import beat
 

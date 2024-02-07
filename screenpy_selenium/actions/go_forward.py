@@ -1,5 +1,7 @@
 """Press the browser forward button."""
 
+from __future__ import annotations
+
 from screenpy.actor import Actor
 from screenpy.pacing import beat
 

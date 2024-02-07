@@ -1,5 +1,7 @@
 """Click on an element."""
 
+from __future__ import annotations
+
 from typing import Optional, Type, TypeVar
 
 from screenpy.actor import Actor
@@ -57,10 +59,11 @@ class Click:
     def perform_as(self: SelfClick, the_actor: Actor) -> None:
         """Direct the Actor to click on the element."""
         if self.target is None:
-            raise UnableToAct(
-                "Target was not supplied for Click. Provide a Target by using the "
-                ".on() or .on_the() method."
+            msg = (
+                "Target was not supplied for Click. "
+                "Provide a Target by using the .on() or .on_the() method."
             )
+            raise UnableToAct(msg)
 
         element = self.target.found_by(the_actor)
 

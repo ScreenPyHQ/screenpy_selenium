@@ -6,6 +6,8 @@ human-readable string will be used in logging and reporting; the locator
 will be used by Actors to find elements.
 """
 
+from __future__ import annotations
+
 from typing import Iterator, List, Optional, Tuple, Type, TypeVar, Union
 
 from screenpy.actor import Actor
@@ -74,11 +76,13 @@ class Target:
             * :meth:`~screenpy_selenium.Target.located`
         """
         if not isinstance(locator, (tuple, str)):
-            raise TypeError("invalid locator type")
+            msg = "invalid locator type"
+            raise TypeError(msg)
 
         if isinstance(locator, tuple):
-            if len(locator) != 2:
-                raise ValueError("locator tuple length should be 2")
+            if len(locator) != 2:  # noqa: PLR2004
+                msg = "locator tuple length should be 2"
+                raise ValueError(msg)
             self.locator = locator
         elif locator[0] in ("(", "/"):
             self.locator = (By.XPATH, locator)
@@ -98,10 +102,11 @@ class Target:
             TargetingError: if no locator was set.
         """
         if self.locator is None:
-            raise TargetingError(
+            msg = (
                 f"Locator was not supplied to the {self} target. Make sure to use "
                 "either .located() or .located_by() to supply a locator."
             )
+            raise TargetingError(msg)
         return self.locator
 
     def found_by(self: SelfTarget, the_actor: Actor) -> WebElement:
@@ -110,7 +115,8 @@ class Target:
         try:
             return browser.find_element(*self)
         except WebDriverException as e:
-            raise TargetingError(f"{e} raised while trying to find {self}.") from e
+            msg = f"{e} raised while trying to find {self}."
+            raise TargetingError(msg) from e
 
     def all_found_by(self: SelfTarget, the_actor: Actor) -> List[WebElement]:
         """Retrieve a list of |WebElement| objects as viewed by the Actor."""
@@ -118,7 +124,8 @@ class Target:
         try:
             return browser.find_elements(*self)
         except WebDriverException as e:
-            raise TargetingError(f"{e} raised while trying to find {self}.") from e
+            msg = f"{e} raised while trying to find {self}."
+            raise TargetingError(msg) from e
 
     def __repr__(self: SelfTarget) -> str:
         """A Target is represented by its name."""

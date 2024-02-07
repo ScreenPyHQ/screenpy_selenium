@@ -1,5 +1,7 @@
 """Investigate the text of an element or many elements."""
 
+from __future__ import annotations
+
 from typing import List, Type, TypeVar, Union
 
 from screenpy import Actor

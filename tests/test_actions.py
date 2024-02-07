@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import cast
 from unittest import mock
 
@@ -49,8 +50,9 @@ from screenpy_selenium import (
     Target,
     Wait,
 )
-from unittest_protocols import ChainableAction
-from useful_mocks import (
+
+from .unittest_protocols import ChainableAction
+from .useful_mocks import (
     get_mock_target_class,
     get_mocked_browser,
     get_mocked_chain,
@@ -110,7 +112,7 @@ class TestChain:
 
     def test_unchainable_action(self, Tester: Actor) -> None:
         with pytest.raises(UnableToAct):
-            Chain(AcceptAlert()).perform_as(Tester)  # type: ignore
+            Chain(AcceptAlert()).perform_as(Tester)  # type: ignore[arg-type]
 
     def test_describe(self) -> None:
         assert Chain().describe() == "Perform a thrilling chain of actions."
@@ -550,7 +552,8 @@ class TestHoldDown:
         assert isinstance(h, Chainable)
 
     @pytest.mark.parametrize(
-        "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
+        ("platform", "expected_key"),
+        [("Windows", Keys.CONTROL), ("Darwin", Keys.COMMAND)],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """HoldDown figures out which key to use based on platform"""
@@ -647,7 +650,8 @@ class TestMoveMouse:
 
         assert element_name in mm1.description
         assert str(coords) in mm2.description
-        assert element_name in mm3.description and str(coords) in mm3.description
+        assert element_name in mm3.description
+        assert str(coords) in mm3.description
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
     def test_perform_move_mouse_with_target(
@@ -824,7 +828,8 @@ class TestRelease:
         assert isinstance(r, Chainable)
 
     @pytest.mark.parametrize(
-        "platform,expected_key", [["Windows", Keys.CONTROL], ["Darwin", Keys.COMMAND]]
+        ("platform", "expected_key"),
+        [("Windows", Keys.CONTROL), ("Darwin", Keys.COMMAND)],
     )
     def test_command_or_control_key(self, platform: str, expected_key: str) -> None:
         """Release figures out which key to use based on platform"""
@@ -1024,19 +1029,16 @@ class TestSaveConsoleLog:
         file_descriptor = mocked_open()
         file_descriptor.write.assert_called_once_with("\n".join(test_log))
 
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch(
         "screenpy_selenium.actions.save_console_log.AttachTheFile", autospec=True
     )
-    def test_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
-    ) -> None:
+    def test_sends_kwargs_to_attach(self, mocked_atf: mock.Mock, Tester: Actor) -> None:
         test_path = "doppelganger.png"
         test_kwargs = {"name": "Mystique"}
         browser = get_mocked_browser(Tester)
         browser.get_log.return_value = [1, 2, 3]
-
-        SaveConsoleLog(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
+        with mock.patch("builtins.open", new_callable=mock.mock_open):
+            SaveConsoleLog(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
@@ -1090,17 +1092,17 @@ class TestSaveScreenshot:
 
         mocked_open.assert_called_once_with(test_path, "wb+")
 
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
     @mock.patch(
         "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, _: mock.Mock, Tester: Actor
+        self, mocked_atf: mock.Mock, Tester: Actor
     ) -> None:
         test_path = "souiiie.png"
         test_kwargs = {"color": "Red", "weather": "Tornado"}
 
-        SaveScreenshot(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
+        with mock.patch("builtins.open", new_callable=mock.mock_open):
+            SaveScreenshot(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
 
@@ -1227,9 +1229,9 @@ class TestSelectByText:
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
     def test_exception(self, mocked_selselect: mock.Mock, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
-        mocked_selselect(
-            element
-        ).select_by_visible_text.side_effect = WebDriverException()
+        mocked_selselect(element).select_by_visible_text.side_effect = (
+            WebDriverException()
+        )
 
         with pytest.raises(DeliveryError) as excinfo:
             SelectByText("blah").from_(target).perform_as(Tester)
@@ -1489,9 +1491,9 @@ class TestWait:
         browser = get_mocked_browser(Tester)
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
-        mocked_webdriverwait(
-            browser, settings.TIMEOUT
-        ).until.side_effect = WebDriverException
+        mocked_webdriverwait(browser, settings.TIMEOUT).until.side_effect = (
+            WebDriverException
+        )
 
         with pytest.raises(DeliveryError) as excinfo:
             Wait.for_the(test_target).perform_as(Tester)

@@ -1,4 +1,7 @@
 """Clear text from an input."""
+
+from __future__ import annotations
+
 from typing import Type, TypeVar
 
 from screenpy.actor import Actor

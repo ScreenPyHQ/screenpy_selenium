@@ -1,8 +1,9 @@
-from typing import Optional
+from __future__ import annotations
+
 from unittest import mock
 
 import pytest
-from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer, Actor
+from screenpy import Actor, Answerable, Describable, ErrorKeeper, UnableToAnswer
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
@@ -21,7 +22,8 @@ from screenpy_selenium import (
     Text,
     TextOfTheAlert,
 )
-from useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
+
+from .useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()
@@ -168,7 +170,7 @@ class TestElement:
         e = Element(TARGET)
 
         annotation = e.__annotations__["caught_exception"]
-        assert annotation == Optional[TargetingError]
+        assert annotation == "Optional[TargetingError]"
 
     def test_question_returns_none_if_no_element_found(self, Tester: Actor) -> None:
         test_target = Target.the("foo").located_by("//bar")

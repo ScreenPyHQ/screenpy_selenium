@@ -1,4 +1,7 @@
 """Enter a 2-factor authentication code into a text field."""
+
+from __future__ import annotations
+
 from typing import Type, TypeVar
 
 from screenpy.actor import Actor

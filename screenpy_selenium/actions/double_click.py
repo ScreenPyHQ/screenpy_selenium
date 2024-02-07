@@ -1,5 +1,7 @@
 """Double-click on an element, or wherever the cursor currently is."""
 
+from __future__ import annotations
+
 from typing import Optional, Type, TypeVar
 
 from screenpy.actor import Actor

@@ -1,5 +1,7 @@
 """Select an item from a multi-selection field or dropdown."""
 
+from __future__ import annotations
+
 from typing import Optional, TypeVar, Union
 
 from screenpy import Actor
@@ -83,10 +85,11 @@ class SelectByText:
     def perform_as(self: SelfSelectByText, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its text."""
         if self.target is None:
-            raise UnableToAct(
+            msg = (
                 "Target was not provided for SelectByText. Provide a Target using the "
                 ".from_() or .from_the() methods."
             )
+            raise UnableToAct(msg)
 
         element = self.target.found_by(the_actor)
         select = SeleniumSelect(element)
@@ -134,10 +137,11 @@ class SelectByIndex:
     def perform_as(self: SelfSelectByIndex, the_actor: Actor) -> None:
         """Direct the Actor to select the option using its index."""
         if self.target is None:
-            raise UnableToAct(
+            msg = (
                 "Target was not provided for SelectByIndex. Provide a Target using the "
                 ".from_() or .from_the() methods."
             )
+            raise UnableToAct(msg)
 
         element = self.target.found_by(the_actor)
         select = SeleniumSelect(element)
@@ -185,10 +189,11 @@ class SelectByValue:
     def perform_as(self: SelfSelectByValue, the_actor: Actor) -> None:
         """Direct the Actor to select the option by its value."""
         if self.target is None:
-            raise UnableToAct(
+            msg = (
                 "Target was not provided for SelectByValue. Provide a Target using the "
                 ".from_() or .from_the() methods."
             )
+            raise UnableToAct(msg)
 
         element = self.target.found_by(the_actor)
         select = SeleniumSelect(element)

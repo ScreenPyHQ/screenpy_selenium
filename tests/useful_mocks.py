@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Any, Tuple
+
+from typing import Tuple, cast
 from unittest import mock
 
 from screenpy import Actor
@@ -37,8 +38,8 @@ def get_mocked_target_and_element() -> Tuple[mock.Mock, mock.Mock]:
 
 
 def get_mocked_browser(actor: Actor) -> mock.Mock:
-    browser = actor.ability_to(BrowseTheWeb).browser
-    return browser  # type: ignore
+    browser = cast(mock.Mock, actor.ability_to(BrowseTheWeb).browser)
+    return browser
 
 
 def get_mocked_webdriver() -> mock.Mock:
