@@ -1,9 +1,12 @@
 """module to hold shared objects."""
+
 from __future__ import annotations
 
 import warnings
 from functools import wraps
-from typing import TYPE_CHECKING, Callable, ParamSpec, TypeVar
+from typing import TYPE_CHECKING, Callable, TypeVar
+
+from typing_extensions import ParamSpec
 
 if TYPE_CHECKING:
     P = ParamSpec("P")
