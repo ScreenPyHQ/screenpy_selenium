@@ -650,7 +650,7 @@ class TestHoldDown:
 
     def test_positional_arg_warns(self) -> None:
         with pytest.warns(DeprecationWarning):
-            HoldDown(None, True)
+            HoldDown(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
         with not_raises(DeprecationWarning), warnings.catch_warnings():
