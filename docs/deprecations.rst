@@ -21,6 +21,13 @@ Starting with version 5.0.0
 you will be required to provide keywords 
 for the following boolean arguments.
 
+While our documentation does not explicitly outline using these Actions in this way,
+it's still possible to do so. 
+If you are using Actions directly from their constructors 
+like the below examples, 
+here are the fixes you'll need to implement.
+
+
 :class:`~screenpy_selenium.actions.enter.Enter`
 
 Before:
