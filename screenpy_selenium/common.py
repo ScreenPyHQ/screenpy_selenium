@@ -33,7 +33,8 @@ def pos_args_deprecated(*keywords: str) -> Function:
 
                 msg = (
                     f"Warning: positional arguments `{posargnames}` for "
-                    f"`{func.__qualname__}` are deprecated.  "
+                    f"`{func.__qualname__}` are deprecated "
+                    f"and will be removed in version 5. "
                     f"Please use keyword arguments instead."
                 )
                 warnings.warn(msg, DeprecationWarning, stacklevel=2)
