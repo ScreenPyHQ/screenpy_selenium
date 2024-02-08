@@ -23,22 +23,30 @@ for the following boolean arguments.
 
 :class:`~screenpy_selenium.actions.enter.Enter`
 
-Before::
+Before:
+
+.. code-block:: python
 
     the_actor.will(Enter("foo", True).into_the(PASSWORD))
 
-After::
+After:
+
+.. code-block:: python
 
     the_actor.will(Enter("foo", mask=True).into_the(PASSWORD))
 
 
 :class:`~screenpy_selenium.actions.hold_down.HoldDown`
 
-Before::
+Before:
+
+.. code-block:: python
 
     the_actor.will(Chain(HoldDown(None, True))
 
-After::
+After:
+
+.. code-block:: python
 
     the_actor.will(Chain(HoldDown(None, lmb=True))
     the_actor.will(Chain(HoldDown(lmb=True))
@@ -46,11 +54,15 @@ After::
 
 :class:`~screenpy_selenium.actions.release.Release`
 
-Before::
+Before:
+
+.. code-block:: python
 
     the_actor.will(Release(None, True))
 
-After::
+After:
+
+.. code-block:: python
 
     the_actor.will(Release(None, lmb=True))
     the_actor.will(Release(lmb=True))
@@ -58,22 +70,30 @@ After::
 
 :class:`~screenpy_selenium.questions.selected.Selected`
 
-Before::
+Before:
+
+.. code-block:: python
 
     the_actor.shall(See.the(Selected(TARGET, True), IsEmpty()))
 
-After::
+After:
+
+.. code-block:: python
 
     the_actor.shall(See.the(Selected(TARGET, multi=True), IsEmpty()))
 
 
 :class:`~screenpy_selenium.questions.text.Text`
 
-Before::
+Before:
+
+.. code-block:: python
 
     the_actor.shall(See.the(Text(TARGET, True), IsEqual("foo"))
 
-After::
+After:
+
+.. code-block:: python
 
     the_actor.shall(See.the(Text(TARGET, multi=True), IsEqual("foo")
 
