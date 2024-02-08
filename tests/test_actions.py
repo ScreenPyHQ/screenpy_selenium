@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import warnings
-from typing import cast
+from contextlib import contextmanager
+from typing import Generator, cast
 from unittest import mock
 
 import pytest
@@ -62,6 +63,20 @@ from .useful_mocks import (
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()
+
+
+@contextmanager
+def not_raises(ExpectedException: type[Exception]) -> Generator:
+    try:
+        yield
+
+    except ExpectedException as error:
+        msg = f"Incorrectly Raised {error}"
+        raise AssertionError(msg) from error
+
+    except Exception as error:  # noqa: BLE001
+        msg = f"Unexpected exception {error}"
+        raise AssertionError(msg) from error
 
 
 class TestAcceptAlert:
@@ -441,11 +456,11 @@ class TestEnter:
             Enter("", True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             Enter.the_secret("")
 
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             Enter("", mask=True)
 
@@ -638,11 +653,11 @@ class TestHoldDown:
             HoldDown(None, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             HoldDown.left_mouse_button()
 
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             HoldDown(lmb=True)
 
@@ -916,11 +931,11 @@ class TestRelease:
             Release(None, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             Release.left_mouse_button()
 
-        with warnings.catch_warnings():
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
             warnings.simplefilter("error")
             Release(lmb=True)
 
