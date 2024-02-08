@@ -1,4 +1,4 @@
-"""module to hold shared objects."""
+"""Module to hold shared objects."""
 
 from __future__ import annotations
 
