@@ -928,7 +928,7 @@ class TestRelease:
 
     def test_positional_arg_warns(self) -> None:
         with pytest.warns(DeprecationWarning):
-            Release(None, True)
+            Release(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
         with not_raises(DeprecationWarning), warnings.catch_warnings():
