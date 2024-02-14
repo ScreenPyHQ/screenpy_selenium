@@ -31,12 +31,10 @@ jobs:
           pip install -e .[dev]
       - name: Lint with black
         run: |
-          black --check --diff screenpy_selenium
-          black --check --diff tests
+          black --check --diff .
       - name: Lint with ruff
         run: |
           ruff check .
       - name: Lint with mypy
         run: |
-          mypy screenpy_selenium
-          mypy tests
+          mypy .
