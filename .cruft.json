@@ -1,0 +1,18 @@
+{
+  "template": "https://github.com/ScreenPyHQ/cookiecutter_screenpy/",
+  "commit": "2b69298215c08160678dd749884c426a55828dce",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "screenpy_selenium",
+      "readable_name": "ScreenPy Selenium",
+      "copyright_start": "2022",
+      "is_sub_package": true,
+      "author": "Perry Goy",
+      "author_email": "perry.goy@gmail.com",
+      "github_username": "ScreenPyHQ",
+      "_template": "https://github.com/ScreenPyHQ/cookiecutter_screenpy/"
+    }
+  },
+  "directory": null
+}
