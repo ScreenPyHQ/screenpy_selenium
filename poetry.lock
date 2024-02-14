@@ -1529,11 +1529,10 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-dev = ["pre-commit", "pytest", "tox"]
-dev-all = ["black", "coverage", "mypy", "pre-commit", "pytest", "ruff", "sphinx", "tox"]
+dev = ["black", "coverage", "mypy", "pre-commit", "pytest", "ruff", "sphinx", "tox"]
 test = ["coverage", "pytest"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "58d914781efe541f9a8b6411a11276d3bcc2817e464a000da361624ff28d5034"
+content-hash = "11e295386bfc306fbbc02b2612fa571eaa6e30fdee1f2c5b6f403d34c3fb3b9e"
