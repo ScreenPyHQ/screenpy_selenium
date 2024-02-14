@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING, Any
 
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
-from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
+    from typing_extensions import Self
 
 
 class SaveConsoleLog:

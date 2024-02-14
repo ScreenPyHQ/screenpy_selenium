@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
-from typing_extensions import Self
 
 if TYPE_CHECKING:
     from screenpy import Actor
+    from typing_extensions import Self
 
     from ..target import Target
 

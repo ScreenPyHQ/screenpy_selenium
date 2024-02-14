@@ -12,7 +12,6 @@ from typing import TYPE_CHECKING, Iterator
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-from typing_extensions import Self
 
 from .abilities.browse_the_web import BrowseTheWeb
 from .exceptions import TargetingError
@@ -20,6 +19,7 @@ from .exceptions import TargetingError
 if TYPE_CHECKING:
     from screenpy.actor import Actor
     from selenium.webdriver.remote.webdriver import WebElement
+    from typing_extensions import Self
 
 
 class Target:

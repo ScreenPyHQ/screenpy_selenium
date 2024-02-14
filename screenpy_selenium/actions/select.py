@@ -8,10 +8,10 @@ from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import Select as SeleniumSelect
-from typing_extensions import Self
 
 if TYPE_CHECKING:
     from screenpy import Actor
+    from typing_extensions import Self
 
     from ..target import Target
 

@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.keys import Keys
-from typing_extensions import Self
 
 from ..common import pos_args_deprecated
 from ..speech_tools import KEY_NAMES
@@ -16,6 +15,7 @@ from ..speech_tools import KEY_NAMES
 if TYPE_CHECKING:
     from screenpy import Actor
     from selenium.webdriver.common.action_chains import ActionChains
+    from typing_extensions import Self
 
     from ..target import Target
 

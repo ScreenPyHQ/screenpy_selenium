@@ -4,17 +4,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Iterable
 
-from screenpy import Actor, settings
+from screenpy import settings
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
+    from screenpy import Actor
+    from typing_extensions import Self
+
     from ..target import Target
 
 

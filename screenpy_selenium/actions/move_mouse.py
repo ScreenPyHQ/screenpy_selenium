@@ -7,12 +7,12 @@ from typing import TYPE_CHECKING
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
-from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
+    from typing_extensions import Self
 
     from ..target import Target
 

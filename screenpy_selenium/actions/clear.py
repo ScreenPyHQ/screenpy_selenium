@@ -7,10 +7,10 @@ from typing import TYPE_CHECKING
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
-from typing_extensions import Self
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
+    from typing_extensions import Self
 
     from ..target import Target
 

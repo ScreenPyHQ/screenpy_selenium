@@ -5,12 +5,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from screenpy.pacing import aside, beat
-from typing_extensions import Self
 
 from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
+    from typing_extensions import Self
 
 
 class RespondToThePrompt:

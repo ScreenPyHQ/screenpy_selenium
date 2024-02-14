@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import warnings
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
-from screenpy import Actor, Answerable, Describable, ErrorKeeper, UnableToAnswer
+from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
@@ -25,6 +26,9 @@ from screenpy_selenium import (
 )
 
 from .useful_mocks import get_mock_target_class, get_mocked_browser, get_mocked_element
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()

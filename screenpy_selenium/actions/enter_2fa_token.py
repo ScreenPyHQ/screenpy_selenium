@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
 from screenpy_pyotp.abilities import AuthenticateWith2FA
-from typing_extensions import Self
 
 from .enter import Enter
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
     from selenium.webdriver.common.action_chains import ActionChains
+    from typing_extensions import Self
 
     from ..target import Target
 
