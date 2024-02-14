@@ -9,6 +9,7 @@ from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import aside, beat
 from selenium.common.exceptions import WebDriverException
 
+from ..common import pos_args_deprecated
 from ..speech_tools import KEY_NAMES
 
 if TYPE_CHECKING:
@@ -152,7 +153,10 @@ class Enter:
         for key in self.following_keys:
             send_keys(key)
 
-    def __init__(self: SelfEnter, text: str, mask: bool = False) -> None:
+    @pos_args_deprecated("mask")
+    def __init__(
+        self: SelfEnter, text: str, mask: bool = False  # noqa: FBT001, FBT002
+    ) -> None:
         self.text = text
         self.target = None
         self.following_keys = []

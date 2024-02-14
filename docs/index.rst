@@ -28,3 +28,4 @@ to :class:`~screenpy_selenium.abilities.BrowseTheWeb`!
    extended_api
    targets
    cookbook
+   deprecations

@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, TypeVar
 
 from screenpy.pacing import beat
 
+from ..common import pos_args_deprecated
+
 if TYPE_CHECKING:
     from screenpy import Actor
 
@@ -70,6 +72,9 @@ class Text:
             return [e.text for e in self.target.all_found_by(the_actor)]
         return self.target.found_by(the_actor).text
 
-    def __init__(self: SelfText, target: Target, multi: bool = False) -> None:
+    @pos_args_deprecated("multi")
+    def __init__(
+        self: SelfText, target: Target, multi: bool = False  # noqa: FBT001, FBT002
+    ) -> None:
         self.target = target
         self.multi = multi

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import cast
+import warnings
+from contextlib import contextmanager
+from typing import Generator, cast
 from unittest import mock
 
 import pytest
@@ -61,6 +63,20 @@ from .useful_mocks import (
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()
+
+
+@contextmanager
+def not_raises(ExpectedException: type[Exception]) -> Generator:
+    try:
+        yield
+
+    except ExpectedException as error:
+        msg = f"Incorrectly Raised {error}"
+        raise AssertionError(msg) from error
+
+    except Exception as error:  # noqa: BLE001
+        msg = f"Unexpected exception {error}"
+        raise AssertionError(msg) from error
 
 
 class TestAcceptAlert:
@@ -435,6 +451,19 @@ class TestEnter:
 
         assert SubEnter.the_text("blah").new_method() is True
 
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Enter("", True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Enter.the_secret("")
+
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Enter("", mask=True)
+
 
 class TestEnter2FAToken:
     def test_can_be_instantiated(self) -> None:
@@ -618,6 +647,19 @@ class TestHoldDown:
                 return True
 
         assert SubHoldDown.left_mouse_button().new_method() is True
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            HoldDown(Keys.LEFT_ALT, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            HoldDown.left_mouse_button()
+
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            HoldDown(lmb=True)
 
 
 class TestMoveMouse:
@@ -883,6 +925,19 @@ class TestRelease:
                 return True
 
         assert SubRelease.left_mouse_button().new_method() is True
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(DeprecationWarning):
+            Release(Keys.LEFT_ALT, True)
+
+    def test_keyword_arg_does_not_warn(self) -> None:
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Release.left_mouse_button()
+
+        with not_raises(DeprecationWarning), warnings.catch_warnings():
+            warnings.simplefilter("error")
+            Release(lmb=True)
 
 
 class TestRespondToThePrompt:
