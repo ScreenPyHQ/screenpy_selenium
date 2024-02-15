@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import platform
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
@@ -15,10 +15,9 @@ from ..speech_tools import KEY_NAMES
 if TYPE_CHECKING:
     from screenpy import Actor
     from selenium.webdriver.common.action_chains import ActionChains
+    from typing_extensions import Self
 
     from ..target import Target
-
-SelfHoldDown = TypeVar("SelfHoldDown", bound="HoldDown")
 
 
 class HoldDown:
@@ -48,7 +47,7 @@ class HoldDown:
     description: str
 
     @classmethod
-    def command_or_control_key(cls: type[SelfHoldDown]) -> SelfHoldDown:
+    def command_or_control_key(cls) -> Self:
         """
         A convenience method for supporting multiple operating systems.
 
@@ -60,25 +59,23 @@ class HoldDown:
         return cls(Keys.CONTROL)
 
     @classmethod
-    def left_mouse_button(cls: type[SelfHoldDown]) -> SelfHoldDown:
+    def left_mouse_button(cls) -> Self:
         """Hold down the left mouse button."""
         return cls(lmb=True)
 
-    def on_the(self: SelfHoldDown, target: Target) -> SelfHoldDown:
+    def on_the(self, target: Target) -> Self:
         """Target an element to hold down left click on."""
         self.target = target
         return self
 
     on = on_the
 
-    def describe(self: SelfHoldDown) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Hold down {self.description}."
 
     @beat("Hold down {description}!")
-    def add_to_chain(
-        self: SelfHoldDown, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Add the HoldDown Action to a Chain of Actions."""
         if self.lmb:
             element = self.target.found_by(the_actor) if self.target else None
@@ -91,7 +88,7 @@ class HoldDown:
 
     @pos_args_deprecated("lmb")
     def __init__(
-        self: SelfHoldDown,
+        self,
         key: str | None = None,
         lmb: bool = False,  # noqa: FBT001, FBT002
     ) -> None:

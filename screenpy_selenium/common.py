@@ -6,9 +6,9 @@ import warnings
 from functools import wraps
 from typing import TYPE_CHECKING, Callable, TypeVar
 
-from typing_extensions import ParamSpec
-
 if TYPE_CHECKING:
+    from typing_extensions import ParamSpec
+
     P = ParamSpec("P")
     T = TypeVar("T")
     Function = Callable[P, T]

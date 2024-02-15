@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import DeliveryError, UnableToAct
 from screenpy.pacing import aside, beat
@@ -15,10 +15,9 @@ from ..speech_tools import KEY_NAMES
 if TYPE_CHECKING:
     from screenpy import Actor
     from selenium.webdriver.common.action_chains import ActionChains
+    from typing_extensions import Self
 
     from ..target import Target
-
-SelfEnter = TypeVar("SelfEnter", bound="Enter")
 
 
 class Enter:
@@ -40,7 +39,7 @@ class Enter:
     text_to_log: str
 
     @classmethod
-    def the_text(cls: type[SelfEnter], text: str) -> SelfEnter:
+    def the_text(cls, text: str) -> Self:
         """Provide the text to enter into the field.
 
         Aliases:
@@ -49,12 +48,12 @@ class Enter:
         return cls(text=text)
 
     @classmethod
-    def the_keys(cls: type[SelfEnter], text: str) -> SelfEnter:
+    def the_keys(cls, text: str) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.the_text`."""
         return cls.the_text(text=text)
 
     @classmethod
-    def the_secret(cls: type[SelfEnter], text: str) -> SelfEnter:
+    def the_secret(cls, text: str) -> Self:
         """
         Provide the text to enter into the field, but mask it in logging.
 
@@ -66,11 +65,11 @@ class Enter:
         return cls(text=text, mask=True)
 
     @classmethod
-    def the_password(cls: type[SelfEnter], text: str) -> SelfEnter:
+    def the_password(cls, text: str) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.the_secret`."""
         return cls.the_secret(text=text)
 
-    def into_the(self: SelfEnter, target: Target) -> SelfEnter:
+    def into_the(self, target: Target) -> Self:
         """Target the element to enter text into.
 
         Aliases:
@@ -81,19 +80,19 @@ class Enter:
         self.target = target
         return self
 
-    def into(self: SelfEnter, target: Target) -> SelfEnter:
+    def into(self, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
-    def on(self: SelfEnter, target: Target) -> SelfEnter:
+    def on(self, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
-    def into_the_first_of_the(self: SelfEnter, target: Target) -> SelfEnter:
+    def into_the_first_of_the(self, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.into_the`."""
         return self.into_the(target)
 
-    def then_hit(self: SelfEnter, *keys: str) -> SelfEnter:
+    def then_hit(self, *keys: str) -> Self:
         """Supply additional keys to hit after entering the text.
 
         Args:
@@ -106,16 +105,16 @@ class Enter:
         self.following_keys.extend(keys)
         return self
 
-    def then_press(self: SelfEnter, *keys: str) -> SelfEnter:
+    def then_press(self, *keys: str) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Enter.then_hit`."""
         return self.then_hit(*keys)
 
-    def describe(self: SelfEnter) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f'Enter "{self.text_to_log}" into the {self.target}.'
 
     @beat('{} enters "{text_to_log}" into the {target}.')
-    def perform_as(self: SelfEnter, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to enter the text into the element."""
         if self.target is None:
             msg = (
@@ -139,9 +138,7 @@ class Enter:
             raise DeliveryError(msg) from e
 
     @beat('  Enter "{text_to_log}" into the {target}!')
-    def add_to_chain(
-        self: SelfEnter, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Add the Enter Action to a Chain of Actions."""
         if self.target is None:
             send_keys = the_chain.send_keys
@@ -154,9 +151,7 @@ class Enter:
             send_keys(key)
 
     @pos_args_deprecated("mask")
-    def __init__(
-        self: SelfEnter, text: str, mask: bool = False  # noqa: FBT001, FBT002
-    ) -> None:
+    def __init__(self, text: str, mask: bool = False) -> None:  # noqa: FBT001, FBT002
         self.text = text
         self.target = None
         self.following_keys = []

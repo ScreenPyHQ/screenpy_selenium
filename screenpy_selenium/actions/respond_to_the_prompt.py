@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.pacing import aside, beat
 
@@ -10,8 +10,7 @@ from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
-
-SelfRespondToThePrompt = TypeVar("SelfRespondToThePrompt", bound="RespondToThePrompt")
+    from typing_extensions import Self
 
 
 class RespondToThePrompt:
@@ -28,16 +27,16 @@ class RespondToThePrompt:
     """
 
     @classmethod
-    def with_(cls: type[SelfRespondToThePrompt], text: str) -> SelfRespondToThePrompt:
+    def with_(cls, text: str) -> Self:
         """Provide the text to enter into the prompt."""
         return cls(text)
 
-    def describe(self: SelfRespondToThePrompt) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f'Respond to the prompt with "{self.text}".'
 
     @beat('{} responds to the prompt with "{text}".')
-    def perform_as(self: SelfRespondToThePrompt, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to respond to the prompt using the given text."""
         browser = the_actor.uses_ability_to(BrowseTheWeb).browser
         alert = browser.switch_to.alert
@@ -45,5 +44,5 @@ class RespondToThePrompt:
         alert.send_keys(self.text)
         alert.accept()
 
-    def __init__(self: SelfRespondToThePrompt, text: str) -> None:
+    def __init__(self, text: str) -> None:
         self.text = text

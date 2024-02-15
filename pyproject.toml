@@ -69,7 +69,6 @@ importlib_metadata = {version = "*", python = "3.8.*"}
 # convenience packages for development of screenpy only
 black = {version = "*", optional = true}
 coverage = {version = "*", optional = true}
-isort = {version = "*", optional = true}
 mypy = {version = "*", optional = true}
 pre-commit = {version = "*", optional = true}
 pytest = {version = "*", optional = true}
@@ -86,7 +85,6 @@ dev = [
 dev_all = [
     "black",
     "coverage",
-    "isort",
     "mypy",
     "pre-commit",
     "pytest",
@@ -166,14 +164,11 @@ extend-safe-fixes = [
     "EM101",
     "EM102",
     "TCH001", "TCH002", "TCH003", "TCH004",
-#    "SIM108"
-    # maybe?
-#    "F841",
     "C419",
     "D200", "D205", "D415",
     "PT003", "PT006", "PT018",
     "RET504",
-    "UP007",
+    "UP006", "UP007",
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -182,13 +177,10 @@ extend-safe-fixes = [
     "FBT",  # using a boolean as a test object is useful!
     "PLR",  # likewise using specific numbers and strings in tests.
 ]
-"tests/test_pacing.py" = [
-    "FA100",  # we are purposely testing pacing without future annotations.
-]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-split-on-trailing-comma = true
+split-on-trailing-comma = false
 known-first-party = ["screenpy_selenium", "tests"]
 
 
@@ -204,12 +196,5 @@ ignore-overlong-task-comments = true
 convention = "google"
 
 
-[tool.isort]
-line_length = 88
-multi_line_output = 3
-include_trailing_comma = true
-use_parentheses = true
-combine_as_imports = true
-
-skip = [".idea", ".tox", "docs"]
-src_paths = ["screenpy_selenium","tests"]
+[tool.ruff.lint.flake8-type-checking]
+strict = true

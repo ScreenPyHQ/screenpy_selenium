@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any
 
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
@@ -12,8 +12,7 @@ from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
-
-SelfSaveConsoleLog = TypeVar("SelfSaveConsoleLog", bound="SaveConsoleLog")
+    from typing_extensions import Self
 
 
 class SaveConsoleLog:
@@ -53,12 +52,12 @@ class SaveConsoleLog:
     path: str
     filename: str
 
-    def describe(self: SelfSaveConsoleLog) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Save browser console log as {self.filename}"
 
     @classmethod
-    def as_(cls: type[SelfSaveConsoleLog], path: str) -> SelfSaveConsoleLog:
+    def as_(cls, path: str) -> Self:
         """Supply the name and/or filepath for the saved text file.
 
         If only a name is supplied, the text file will appear in the current
@@ -66,9 +65,7 @@ class SaveConsoleLog:
         """
         return cls(path=path)
 
-    def and_attach_it(
-        self: SelfSaveConsoleLog, **kwargs: Any  # noqa: ANN401
-    ) -> SelfSaveConsoleLog:
+    def and_attach_it(self, **kwargs: Any) -> Self:  # noqa: ANN401
         """Indicate the console log file should be attached to any reports.
 
         This method accepts any additional keywords needed by any adapters
@@ -80,7 +77,7 @@ class SaveConsoleLog:
     and_attach_it_with = and_attach_it
 
     @beat("{} saves their browser's console log as {filename}")
-    def perform_as(self: SelfSaveConsoleLog, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the actor to save their browser's console log."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         js_log = "\n".join([str(entry) for entry in browser.get_log("browser")])
@@ -91,7 +88,7 @@ class SaveConsoleLog:
         if self.attach_kwargs is not None:
             the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
-    def __init__(self: SelfSaveConsoleLog, path: str) -> None:
+    def __init__(self, path: str) -> None:
         self.path = path
         self.filename = path.split(os.path.sep)[-1]
         self.attach_kwargs = None

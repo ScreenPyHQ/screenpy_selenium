@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
 
@@ -11,8 +11,7 @@ from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
-
-SelfOpen = TypeVar("SelfOpen", bound="Open")
+    from typing_extensions import Self
 
 
 class Open:
@@ -42,7 +41,7 @@ class Open:
     """
 
     @classmethod
-    def their_browser_on(cls: type[SelfOpen], location: str | object) -> SelfOpen:
+    def their_browser_on(cls, location: str | object) -> Self:
         """
         Provide a URL to visit.
 
@@ -52,21 +51,21 @@ class Open:
         return cls(location=location)
 
     @classmethod
-    def browser_on(cls: type[SelfOpen], location: str | object) -> SelfOpen:
+    def browser_on(cls, location: str | object) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Open.their_browser_on`."""
         return cls.their_browser_on(location=location)
 
-    def describe(self: SelfOpen) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Visit {self.url}."
 
     @beat("{} visits {url}")
-    def perform_as(self: SelfOpen, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to visit the specified URL."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         browser.get(self.url)
 
-    def __init__(self: SelfOpen, location: str | object) -> None:
+    def __init__(self, location: str | object) -> None:
         url = getattr(location, "url", location)
         url = f'{os.getenv("BASE_URL", "")}{url}'
         self.url = url

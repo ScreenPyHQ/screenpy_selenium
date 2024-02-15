@@ -2,18 +2,11 @@ from __future__ import annotations
 
 import warnings
 from contextlib import contextmanager
-from typing import Generator, cast
+from typing import TYPE_CHECKING, Generator, cast
 from unittest import mock
 
 import pytest
-from screenpy import (
-    Actor,
-    DeliveryError,
-    Describable,
-    Performable,
-    UnableToAct,
-    settings,
-)
+from screenpy import DeliveryError, Describable, Performable, UnableToAct, settings
 from screenpy.configuration import ScreenPySettings
 from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
@@ -60,6 +53,9 @@ from .useful_mocks import (
     get_mocked_chain,
     get_mocked_target_and_element,
 )
+
+if TYPE_CHECKING:
+    from screenpy import Actor
 
 FakeTarget = get_mock_target_class()
 TARGET = FakeTarget()

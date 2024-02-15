@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
@@ -10,10 +10,9 @@ from selenium.common.exceptions import WebDriverException
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
+    from typing_extensions import Self
 
     from ..target import Target
-
-SelfClear = TypeVar("SelfClear", bound="Clear")
 
 
 class Clear:
@@ -28,7 +27,7 @@ class Clear:
     """
 
     @classmethod
-    def the_text_from_the(cls: type[SelfClear], target: Target) -> SelfClear:
+    def the_text_from_the(cls, target: Target) -> Self:
         """
         Specify the Target from which to clear the text.
 
@@ -39,23 +38,21 @@ class Clear:
         return cls(target=target)
 
     @classmethod
-    def the_text_from(cls: type[SelfClear], target: Target) -> SelfClear:
+    def the_text_from(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)
 
     @classmethod
-    def the_text_from_the_first_of_the(
-        cls: type[SelfClear], target: Target
-    ) -> SelfClear:
+    def the_text_from_the_first_of_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Clear.the_text_from_the`."""
         return cls.the_text_from_the(target=target)
 
-    def describe(self: SelfClear) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Clear the text from the {self.target}."
 
     @beat("{} clears text from the {target}.")
-    def perform_as(self: SelfClear, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to clear the text from the input field."""
         element = self.target.found_by(the_actor)
 
@@ -68,5 +65,5 @@ class Clear:
             )
             raise DeliveryError(msg) from e
 
-    def __init__(self: SelfClear, target: Target) -> None:
+    def __init__(self, target: Target) -> None:
         self.target = target

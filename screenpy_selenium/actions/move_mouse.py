@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
@@ -12,10 +12,9 @@ from ..abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
+    from typing_extensions import Self
 
     from ..target import Target
-
-SelfMoveMouse = TypeVar("SelfMoveMouse", bound="MoveMouse")
 
 
 class MoveMouse:
@@ -48,7 +47,7 @@ class MoveMouse:
     description: str
 
     @classmethod
-    def to_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def to_the(cls, target: Target) -> Self:
         """
         Target an element to move the mouse to.
 
@@ -61,46 +60,40 @@ class MoveMouse:
         return cls(target=target, description=f"to the {target}")
 
     @classmethod
-    def on_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def on_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def over_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def over_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def over_the_first_of_the(
-        cls: type[SelfMoveMouse], target: Target
-    ) -> SelfMoveMouse:
+    def over_the_first_of_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def to_the_first_of_the(cls: type[SelfMoveMouse], target: Target) -> SelfMoveMouse:
+    def to_the_first_of_the(cls, target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.MoveMouse.to_the`."""
         return cls.to_the(target=target)
 
     @classmethod
-    def by_offset(
-        cls: type[SelfMoveMouse], x_offset: int, y_offset: int
-    ) -> SelfMoveMouse:
+    def by_offset(cls, x_offset: int, y_offset: int) -> Self:
         """Specify the offset by which to move the mouse."""
         return cls(
             offset=(x_offset, y_offset),
             description=f"by an offset of ({x_offset}, {y_offset})",
         )
 
-    def with_offset(self: SelfMoveMouse, x_offset: int, y_offset: int) -> SelfMoveMouse:
+    def with_offset(self, x_offset: int, y_offset: int) -> Self:
         """Specify the mouse should be moved to the element with an offset."""
         self.offset = (x_offset, y_offset)
         self.description += f" offset by ({x_offset}, {y_offset})"
         return self
 
-    def _add_action_to_chain(
-        self: SelfMoveMouse, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def _add_action_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Private method to add this Action to the chain."""
         if self.target is not None and self.offset is not None:
             the_chain.move_to_element_with_offset(
@@ -117,12 +110,12 @@ class MoveMouse:
             )
             raise UnableToAct(msg)
 
-    def describe(self: SelfMoveMouse) -> str:
+    def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Move the mouse {self.description}."
 
     @beat("{} moves the mouse {description}.")
-    def perform_as(self: SelfMoveMouse, the_actor: Actor) -> None:
+    def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to move the mouse."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
         the_chain = ActionChains(browser)  # type: ignore[arg-type]
@@ -130,14 +123,12 @@ class MoveMouse:
         the_chain.perform()
 
     @beat("Move the mouse {description}!")
-    def add_to_chain(
-        self: SelfMoveMouse, the_actor: Actor, the_chain: ActionChains
-    ) -> None:
+    def add_to_chain(self, the_actor: Actor, the_chain: ActionChains) -> None:
         """Add the MoveMouse Action to a Chain of Actions."""
         self._add_action_to_chain(the_actor, the_chain)
 
     def __init__(
-        self: SelfMoveMouse,
+        self,
         offset: tuple[int, int] | None = None,
         target: Target | None = None,
         description: str = "",

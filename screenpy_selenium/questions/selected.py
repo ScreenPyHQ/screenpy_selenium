@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
 from selenium.webdriver.support.ui import Select as SeleniumSelect
@@ -11,10 +11,9 @@ from ..common import pos_args_deprecated
 
 if TYPE_CHECKING:
     from screenpy import Actor
+    from typing_extensions import Self
 
     from ..target import Target
-
-SelfSelected = TypeVar("SelfSelected", bound="Selected")
 
 
 class Selected:
@@ -36,7 +35,7 @@ class Selected:
     multi: bool
 
     @classmethod
-    def option_from_the(cls: type[SelfSelected], target: Target) -> SelfSelected:
+    def option_from_the(cls, target: Target) -> Self:
         """
         Get the option.
 
@@ -52,14 +51,12 @@ class Selected:
         return cls(target=target)
 
     @classmethod
-    def option_from(cls: type[SelfSelected], target: Target) -> SelfSelected:
+    def option_from(cls, target: Target) -> Self:
         """Alias of :meth:`~screenpy_selenium.actions.Selected.option_from_the`."""
         return cls.option_from_the(target=target)
 
     @classmethod
-    def options_from_the(
-        cls: type[SelfSelected], multiselect_target: Target
-    ) -> SelfSelected:
+    def options_from_the(cls, multiselect_target: Target) -> Self:
         """
         Get all the options that are currently selected in a multi-select field.
 
@@ -73,18 +70,16 @@ class Selected:
         return cls(target=multiselect_target, multi=True)
 
     @classmethod
-    def options_from(
-        cls: type[SelfSelected], multiselect_target: Target
-    ) -> SelfSelected:
+    def options_from(cls, multiselect_target: Target) -> Self:
         """Alias of :meth:`~screenpy_selenium.actions.Selected.options_from_the`."""
         return cls.options_from_the(multiselect_target=multiselect_target)
 
-    def describe(self: SelfSelected) -> str:
+    def describe(self) -> str:
         """Describe the Question."""
         return f"The selected option(s) from the {self.target}."
 
     @beat("{} checks the selected option(s) from the {target}.")
-    def answered_by(self: SelfSelected, the_actor: Actor) -> str | list[str]:
+    def answered_by(self, the_actor: Actor) -> str | list[str]:
         """Direct the Actor to name the selected option(s)."""
         select = SeleniumSelect(self.target.found_by(the_actor))
 
@@ -94,7 +89,7 @@ class Selected:
 
     @pos_args_deprecated("multi")
     def __init__(
-        self: SelfSelected, target: Target, multi: bool = False  # noqa: FBT001, FBT002
+        self, target: Target, multi: bool = False  # noqa: FBT001, FBT002
     ) -> None:
         self.target = target
         self.multi = multi
