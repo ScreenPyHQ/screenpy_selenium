@@ -13,18 +13,21 @@
 import os
 import sys
 
-
 sys.path.insert(0, os.path.abspath("./ext"))
 sys.path.insert(0, os.path.abspath("../"))
 
-from screenpy_selenium.__version__ import __version__, __author__, __copyright__  # noqa: need the path first
+from screenpy_selenium.__version__ import (
+    __version__,
+    __author__,
+    __copyright__,
+)  # noqa: need the path first
 
 autodoc_mock_imports = ["selenium", "screenpy", "screenpy_pyotp"]
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'screenpy_selenium'
+project = "screenpy_selenium"
 copyright = __copyright__
 author = __author__
 
@@ -62,10 +65,16 @@ rst_prolog = """.. Substitutions
 .. |ActionChains| replace:: :external+selenium:class:`~selenium.webdriver.common.action_chains.ActionChains`
 """
 
+
+
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+
+
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -73,12 +82,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'default'
+html_theme = "default"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # Other HTML settings
 autodoc_member_order = "bysource"
