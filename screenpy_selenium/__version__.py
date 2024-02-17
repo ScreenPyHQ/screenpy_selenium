@@ -4,9 +4,9 @@
      ░█▄▄▄█ ▀▀▀ ▀ ▀▀ ▀▀▀ ▀▀▀ ▀  ▀ ░█    ▄▄▄█   ░█▄▄▄█ ▀▀▀ ▀▀▀ ▀▀▀ ▀  ▀ ▀▀▀  ▀▀▀ ▀   ▀
 """
 
-import importlib.metadata as importlib_metadata
+import importlib.metadata
 
-metadata = importlib_metadata.metadata("screenpy_selenium")
+metadata = importlib.metadata.metadata("screenpy_selenium")
 
 __title__ = metadata["Name"]
 __description__ = metadata["Summary"]
