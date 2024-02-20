@@ -1,6 +1,25 @@
+# This pyproject.toml is setup so it can be used with or without poetry and also
+# supports editable installs (PEP 660) without breaking IDE and linter inspection.
+
+# DEVELOPER INSTALL INSTRUCTIONS (assuming current directory is at the top of the project) :
+# Poetry:
+#   poetry install --extras dev
+# PIP:
+#   pip install -e .[dev]
+
+# everything in the boilerplate *SHOULD* match between the ScreenPyHQ packages.
+################################################################################
+#                START OF BOILERPLATE ScreenPyHQ CONFIGURATIONS                #
+################################################################################
+
+
+[build-system]
+requires = ["poetry-core>=1.6.1"]
+build-backend = "poetry.core.masonry.api"
+
+
 [tool.black]
 target-version = ['py312']
-
 extend-exclude = '''
 # A regex preceded with ^/ will apply only to files and directories
 # in the root of the project.
@@ -15,107 +34,18 @@ extend-exclude = '''
 
 '''
 
-# This pyproject.toml is setup so it can be used with or without poetry and also
-# supports editable installs (PEP 660) without breaking IDE and linter inspection.
-
-# DEVELOPER INSTALL INSTRUCTIONS (assuming current directory is at the top of the project) :
-# Poetry:
-#   poetry install --extras dev
-# PIP:
-#   pip install -e .[dev]
-
-[tool.poetry]
-name = "screenpy_selenium"
-version = "4.0.4"
-description = "ScreenPy extension to enable interacting with Selenium."
-authors = ["Perry Goy <perry.goy@gmail.com>"]
-maintainers = ["Gabe Langton", "Marcel Wilson"]
-license = "MIT"
-repository = "https://github.com/ScreenPyHQ/screenpy_selenium"
-documentation = "https://screenpy-selenium-docs.readthedocs.io"
-readme = "README.md"
-classifiers = [
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Quality Assurance",
-    "Topic :: Software Development :: Testing",
-    "Topic :: Software Development :: Testing :: BDD",
-    "Natural Language :: English",
-    "License :: OSI Approved :: MIT License",
-]
-
-# It's possible to add optional dependencies with the poetry CLI tool using:
-#   poetry add --optional some_dev_pkg
-# This will set `optional = true` flag in [tool.poetry.dependencies], as seen below
-# But then you need to remember to manually edit the [tool.poetry.extras] dev section
-# and declare the package. This allows `pip install .[dev]` to work as expected
-# Poetry users will need to use the `--extras dev` option rather than the `--with dev`
-# so we dont have two different sets of package versions to update.
-
-[tool.poetry.dependencies]
-python = "^3.8"
-screenpy = ">=4.0.2"
-screenpy_pyotp = ">=4.0.0"
-selenium = ">=4.1.0"
-importlib_metadata = {version = "*", python = "3.8.*"}
-
-# convenience packages for development of screenpy only
-black = {version = "*", optional = true}
-coverage = {version = "*", optional = true}
-mypy = {version = "*", optional = true}
-pre-commit = {version = "*", optional = true}
-pytest = {version = "*", optional = true}
-ruff = {version = ">=0.2.0", optional = true}
-sphinx = {version = "*", optional = true}
-tox = {version = "*", optional = true}
-
-[tool.poetry.extras]
-dev = [
-    "pre-commit",
-    "pytest",
-    "tox",
-]
-dev_all = [
-    "black",
-    "coverage",
-    "mypy",
-    "pre-commit",
-    "pytest",
-    "ruff",
-    "sphinx",
-    "tox",
-]
-test = [
-    "coverage",
-    "pytest",
-]
-
-[build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
-
 
 [tool.ruff]
 target-version = "py38"  # minimum supported version
 line-length = 88  # same as Black.
-
 extend-exclude = [
-    "screenpy_selenium/__init__.py",
-    "screenpy_selenium/__version__.py",
     "docs",
 ]
 
 [tool.ruff.lint]
 select = [
     "A",  # flake8-builtins
-    "ANN",  # flake8-annotations  # coming back to this one later to compare against mypy
+    "ANN",  # flake8-annotations
     "ARG",  # flake8-unused-arguments
     "B",  # flake8-bugbear
     "BLE",  # flake8-blind-except
@@ -161,8 +91,7 @@ ignore = [
 ]
 
 extend-safe-fixes = [
-    "EM101",
-    "EM102",
+    "EM101", "EM102",
     "TCH001", "TCH002", "TCH003", "TCH004",
     "C419",
     "D200", "D205", "D415",
@@ -171,30 +100,106 @@ extend-safe-fixes = [
     "UP006", "UP007",
 ]
 
+[tool.ruff.lint.flake8-pytest-style]
+mark-parentheses = false
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+split-on-trailing-comma = false
+
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = [
     "D",  # we don't need public-API-polished docstrings in tests.
     "FBT",  # using a boolean as a test object is useful!
     "PLR",  # likewise using specific numbers and strings in tests.
 ]
-
-[tool.ruff.lint.isort]
-combine-as-imports = true
-split-on-trailing-comma = false
-known-first-party = ["screenpy_selenium", "tests"]
+"__version__.py" = ["D"]
 
 
-[tool.ruff.lint.flake8-pytest-style]
-mark-parentheses = false
+################################################################################
+#                 END OF BOILERPLATE ScreenPyHQ CONFIGURATIONS                 #
+################################################################################
 
+[tool.poetry]
+name = "screenpy_selenium"
+version = "4.0.4"
+description = "ScreenPy extension to enable interacting with Selenium."
+authors = ["Perry Goy <perry.goy@gmail.com>"]
+maintainers = ["Gabe Langton", "Marcel Wilson"]
+license = "MIT"
+repository = "https://github.com/ScreenPyHQ/screenpy_selenium"
+documentation = "https://screenpy-selenium-docs.readthedocs.io"
+readme = "README.md"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Testing :: BDD",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+]
 
-[tool.ruff.lint.pycodestyle]
-ignore-overlong-task-comments = true
+# It's possible to add optional dependencies with the poetry CLI tool using:
+#   poetry add --optional some_dev_pkg
+# This will set `optional = true` flag in [tool.poetry.dependencies], as seen below
+# But then you need to remember to manually edit the [tool.poetry.extras] dev section
+# and declare the package. This allows `pip install .[dev]` to work as expected
+# Poetry users will need to use the `--extras dev` option rather than the `--with dev`
+# so we dont have two different sets of package versions to update.
 
+[tool.poetry.dependencies]
+python = "^3.8"
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+screenpy = ">=4.0.2"
+screenpy_pyotp = ">=4.0.0"
+selenium = ">=4.1.0"
+importlib_metadata = {version = "*", python = "3.8.*"}
 
+# convenience packages for development
+black = {version = "*", optional = true}
+coverage = {version = "*", optional = true}
+mypy = {version = "*", optional = true}
+pre-commit = {version = "*", optional = true}
+pytest = {version = "*", optional = true}
+ruff = {version = ">=0.2.0", optional = true}
+sphinx = {version = "*", optional = true}
+sphinx-rtd-theme = {version = "*", optional = true}
+tox = {version = "*", optional = true}
 
-[tool.ruff.lint.flake8-type-checking]
-strict = true
+[tool.poetry.extras]
+dev = [
+    "black",
+    "coverage",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "ruff",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "tox",
+]
+test = [
+    "coverage",
+    "pytest",
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
