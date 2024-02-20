@@ -1,15 +1,13 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from hamcrest.core.string_description import StringDescription
 
 from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
-from screenpy_selenium.resolutions.custom_matchers.is_clickable_element import (
-    IsClickableElement,
-)
 from screenpy_selenium.resolutions.custom_matchers.is_invisible_element import (
     IsInvisibleElement,
 )
@@ -23,7 +21,7 @@ from screenpy_selenium.resolutions.custom_matchers.is_visible_element import (
 from .useful_mocks import get_mocked_element
 
 if TYPE_CHECKING:
-    from screenpy import BaseResolution
+    from hamcrest.core.matcher import Matcher
     from selenium.webdriver.remote.webelement import WebElement
 
 
@@ -36,7 +34,7 @@ class ExpectedDescriptions:
 
 
 def _assert_descriptions(
-    obj: BaseResolution, element: WebElement, expected: ExpectedDescriptions
+    obj: Matcher[Any], element: WebElement, expected: ExpectedDescriptions
 ) -> None:
     describe_to = StringDescription()
     describe_match = StringDescription()
@@ -64,9 +62,9 @@ class TestIsClickable:
         element = get_mocked_element()
         element.is_enabled.return_value = True
         element.is_displayed.return_value = True
-        ic = IsClickable()
+        ic = IsClickable().resolve()
 
-        assert ic._matches(element)
+        assert ic.matches(element)
 
     def test_does_not_match_unclickable_element(self) -> None:
         invisible_element = get_mocked_element()
@@ -76,7 +74,7 @@ class TestIsClickable:
         invisible_element.is_enabled.return_value = True
         inactive_element.is_displayed.return_value = True
         inactive_element.is_enabled.return_value = False
-        ic = IsClickable()
+        ic = IsClickable().resolve()
 
         assert not ic._matches(None)  # element was not found by Element()
         assert not ic._matches(invisible_element)
@@ -90,14 +88,19 @@ class TestIsClickable:
             describe_mismatch="was not enabled/clickable",
             describe_none="was not even present",
         )
-
-        _assert_descriptions(IsClickable(), element, expected)
-
-    def test_type_hint(self) -> None:
         ic = IsClickable()
-        annotation = ic.__annotations__["matcher"]
-        assert annotation == "IsClickableElement"
-        assert type(ic.matcher) == IsClickableElement
+
+        assert ic.describe() == "clickable"
+        _assert_descriptions(ic.resolve(), element, expected)
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsClickable().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's clickable",
+            "    => the element is enabled/clickable",
+        ]
 
 
 class TestIsVisible:
