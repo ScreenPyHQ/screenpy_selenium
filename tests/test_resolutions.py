@@ -8,6 +8,9 @@ import pytest
 from hamcrest.core.string_description import StringDescription
 
 from screenpy_selenium import IsClickable, IsInvisible, IsPresent, IsVisible
+from screenpy_selenium.resolutions.custom_matchers.is_clickable_element import (
+    IsClickableElement,
+)
 from screenpy_selenium.resolutions.custom_matchers.is_invisible_element import (
     IsInvisibleElement,
 )
@@ -93,6 +96,12 @@ class TestIsClickable:
         assert ic.describe() == "clickable"
         _assert_descriptions(ic.resolve(), element, expected)
 
+    def test_type_hint(self) -> None:
+        ic = IsClickable()
+        annotation = ic.resolve.__annotations__["return"]
+        assert annotation == "IsClickableElement"
+        assert type(ic.resolve()) == IsClickableElement
+
     def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
         caplog.set_level(logging.INFO)
         IsClickable().resolve()
@@ -151,17 +160,17 @@ class TestIsInvisible:
     def test_matches_an_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
-        ii = IsInvisible()
+        ii = IsInvisible().resolve()
 
-        assert ii._matches(element)
-        assert ii._matches(None)  # element was not found by Element()
+        assert ii.matches(element)
+        assert ii.matches(None)  # element was not found by Element()
 
     def test_does_not_match_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
-        ii = IsInvisible()
+        ii = IsInvisible().resolve()
 
-        assert not ii._matches(element)
+        assert not ii.matches(element)
 
     def test_descriptions(self) -> None:
         element = get_mocked_element()
@@ -172,7 +181,7 @@ class TestIsInvisible:
             describe_none="it was invisible",
         )
 
-        obj = IsInvisible()
+        obj = IsInvisible().resolve()
         describe_to = StringDescription()
         describe_match = StringDescription()
         describe_mismatch = StringDescription()
@@ -190,9 +199,18 @@ class TestIsInvisible:
 
     def test_type_hint(self) -> None:
         ii = IsInvisible()
-        annotation = ii.__annotations__["matcher"]
+        annotation = ii.resolve.__annotations__["return"]
         assert annotation == "IsInvisibleElement"
-        assert type(ii.matcher) == IsInvisibleElement
+        assert type(ii.resolve()) == IsInvisibleElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsInvisible().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's invisible",
+            "    => the element is invisible",
+        ]
 
 
 class TestIsPresent:
