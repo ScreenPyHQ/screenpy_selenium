@@ -67,7 +67,7 @@ class TestIsClickable:
         element.is_displayed.return_value = True
         ic = IsClickable().resolve()
 
-        assert ic.matches(element)
+        assert ic._matches(element)
 
     def test_does_not_match_unclickable_element(self) -> None:
         invisible_element = get_mocked_element()
@@ -121,14 +121,14 @@ class TestIsVisible:
     def test_matches_a_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
-        iv = IsVisible()
+        iv: IsVisibleElement = IsVisible().resolve()
 
         assert iv._matches(element)
 
     def test_does_not_match_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
-        iv = IsVisible()
+        iv = IsVisible().resolve()
 
         assert not iv._matches(None)  # element was not found by Element()
         assert not iv._matches(element)
@@ -141,14 +141,16 @@ class TestIsVisible:
             describe_mismatch="was not visible",
             describe_none="was not even present",
         )
+        iv = IsVisible()
 
-        _assert_descriptions(IsVisible(), element, expected)
+        assert iv.describe() == "visible"
+        _assert_descriptions(iv.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
         iv = IsVisible()
-        annotation = iv.__annotations__["matcher"]
+        annotation = iv.resolve.__annotations__["return"]
         assert annotation == "IsVisibleElement"
-        assert type(iv.matcher) == IsVisibleElement
+        assert type(iv.resolve()) == IsVisibleElement
 
 
 class TestIsInvisible:
@@ -196,6 +198,10 @@ class TestIsInvisible:
         assert describe_match.out == expected.describe_match
         assert describe_mismatch.out == expected.describe_mismatch
         assert describe_none.out == expected.describe_none
+
+        ii = IsInvisible()
+
+        assert ii.describe() == "invisible"
 
     def test_type_hint(self) -> None:
         ii = IsInvisible()

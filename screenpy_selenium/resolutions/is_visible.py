@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from screenpy.resolutions.base_resolution import BaseResolution
+from screenpy import beat
 
 from .custom_matchers import is_visible_element
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .custom_matchers.is_visible_element import IsVisibleElement
 
 
-class IsVisible(BaseResolution):
+class IsVisible:
     """Match on a visible element.
 
     Examples::
@@ -20,9 +20,11 @@ class IsVisible(BaseResolution):
         the_actor.should(See.the(Element(WELCOME_BANNER), IsVisible()))
     """
 
-    matcher: IsVisibleElement
-    line = "visible"
-    matcher_function = is_visible_element
+    def describe(self) -> str:
+        """Describe the Resolution's expectation."""
+        return "visible"
 
-    def __init__(self) -> None:  # pylint: disable=useless-super-delegation
-        super().__init__()
+    @beat("... hoping it's visible")
+    def resolve(self) -> IsVisibleElement:
+        """Produce the Matcher to make the assertion."""
+        return is_visible_element()
