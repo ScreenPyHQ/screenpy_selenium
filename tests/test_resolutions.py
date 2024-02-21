@@ -121,7 +121,7 @@ class TestIsVisible:
     def test_matches_a_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
-        iv: IsVisibleElement = IsVisible().resolve()
+        iv = IsVisible().resolve()
 
         assert iv._matches(element)
 
@@ -231,14 +231,14 @@ class TestIsPresent:
     )
     def test_matches_a_present_element(self, enabled: bool, displayed: bool) -> None:
         element = get_mocked_element()
-        ic = IsPresent()
-
         element.is_enabled.return_value = enabled
         element.is_displayed.return_value = displayed
+        ic = IsPresent().resolve()
+
         assert ic._matches(element)
 
     def test_does_not_match_missing_element(self) -> None:
-        ic = IsPresent()
+        ic = IsPresent().resolve()
 
         assert not ic._matches(None)
 
@@ -250,11 +250,13 @@ class TestIsPresent:
             describe_mismatch="was not present",
             describe_none="was not present",
         )
+        ip = IsPresent()
 
-        _assert_descriptions(IsPresent(), element, expected)
+        assert ip.describe() == "present"
+        _assert_descriptions(ip.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
         ip = IsPresent()
-        annotation = ip.__annotations__["matcher"]
+        annotation = ip.resolve.__annotations__["return"]
         assert annotation == "IsPresentElement"
-        assert type(ip.matcher) == IsPresentElement
+        assert type(ip.resolve()) == IsPresentElement
