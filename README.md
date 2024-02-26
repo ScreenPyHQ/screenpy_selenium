@@ -4,7 +4,7 @@ ScreenPy Selenium
 [![Build Status](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
 [![Build Status](../../actions/workflows/lint.yml/badge.svg)](../../actions/workflows/lint.yml)
 
-[![Supported Versions](https://img.shields.io/pypi/pyversions/screenpy-selenium.svg)](https://pypi.org/project/screenpy)
+[![Supported Versions](https://img.shields.io/pypi/pyversions/screenpy_selenium.svg)](https://pypi.org/project/screenpy_selenium)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
@@ -12,7 +12,7 @@ ScreenPy Selenium
 
 ```
 TITLE CARD:
-                               "ScreenPy Selenium"
+                              "ScreenPy Selenium"                               
 TITLE DISAPPEARS.
                                                                       FADE IN:
 EXT. DOCUMENTATION - AFTERNOON, CLOUDY
@@ -57,7 +57,7 @@ or
 
 
 Documentation
-----------
+-------------
 Please check out the [Read The Docs documentation](https://screenpy-selenium-docs.readthedocs.io/en/latest/) for the latest information about this module!
 
 You can also read the [ScreenPy Docs](https://screenpy-docs.readthedocs.io/en/latest/) for more information about ScreenPy in general.
