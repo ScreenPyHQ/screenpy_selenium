@@ -13,11 +13,11 @@ class ScreenPySeleniumSettings(ScreenPySettings):
         SCREENPY_SELENIUM_CHAIN_DURATION=50  # sets the indent char to 50
     """
 
-    _tool_path = "screenpy_selenium"
+    _tool_path = "screenpy.selenium"
     model_config = SettingsConfigDict(env_prefix="SCREENPY_SELENIUM_")
 
     CHAIN_DURATION: int = 10
-    """Whether or not to use indentation in logging."""
+    """Default duration of ActionChains in milleseconds"""
 
 
 # initialized instance
