@@ -24,7 +24,7 @@ class IsClickable:
         """Describe the Resolution's expectation."""
         return "clickable"
 
-    @beat("... hoping it's clickable")
+    @beat("... hoping it's clickable.")
     def resolve(self) -> IsClickableElement:
         """Produce the Matcher to make the assertion."""
         return is_clickable_element()

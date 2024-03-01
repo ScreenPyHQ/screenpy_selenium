@@ -107,7 +107,7 @@ class TestIsClickable:
         IsClickable().resolve()
 
         assert [r.msg for r in caplog.records] == [
-            "... hoping it's clickable",
+            "... hoping it's clickable.",
             "    => the element is enabled/clickable",
         ]
 
@@ -151,6 +151,15 @@ class TestIsVisible:
         annotation = iv.resolve.__annotations__["return"]
         assert annotation == "IsVisibleElement"
         assert type(iv.resolve()) == IsVisibleElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsVisible().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's visible.",
+            "    => the element is visible",
+        ]
 
 
 class TestIsInvisible:
@@ -214,7 +223,7 @@ class TestIsInvisible:
         IsInvisible().resolve()
 
         assert [r.msg for r in caplog.records] == [
-            "... hoping it's invisible",
+            "... hoping it's invisible.",
             "    => the element is invisible",
         ]
 
@@ -260,3 +269,12 @@ class TestIsPresent:
         annotation = ip.resolve.__annotations__["return"]
         assert annotation == "IsPresentElement"
         assert type(ip.resolve()) == IsPresentElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsPresent().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's present.",
+            "    => the element is present",
+        ]

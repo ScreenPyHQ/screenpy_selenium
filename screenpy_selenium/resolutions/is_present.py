@@ -26,7 +26,7 @@ class IsPresent:
         """Describe the Resolution's expectation."""
         return "present"
 
-    @beat("... hoping it's present")
+    @beat("... hoping it's present.")
     def resolve(self) -> IsPresentElement:
         """Produce the Matcher to make the assertion."""
         return is_present_element()

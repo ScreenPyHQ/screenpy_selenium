@@ -24,7 +24,7 @@ class IsInvisible:
         """Describe the Resolution's expectation."""
         return "invisible"
 
-    @beat("... hoping it's invisible")
+    @beat("... hoping it's invisible.")
     def resolve(self) -> IsInvisibleElement:
         """Produce the Matcher to make the assertion."""
         return is_invisible_element()
