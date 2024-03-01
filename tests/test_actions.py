@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import warnings
 from contextlib import contextmanager
 from typing import TYPE_CHECKING, Generator, cast
@@ -358,7 +359,7 @@ class TestEnter:
         e = Enter.the_secret(text)
 
         assert e.text == text
-        assert e.text_to_log == "[CENSORED]"
+        assert e.text_to_log == "'[CENSORED]'"
 
     def test_text_to_log_humanizes_keys(self) -> None:
         """unicode key values are turned into human-readable text"""
@@ -431,11 +432,16 @@ class TestEnter:
 
     def test_describe(self) -> None:
         assert (
-            Enter("blah").into(TARGET).describe() == f'Enter "blah" into the {TARGET}.'
+            Enter("blah").into(TARGET).describe() == f"Enter 'blah' into the {TARGET}."
         )
         assert (
             Enter.the_secret("blah").into(TARGET).describe()
-            == f'Enter "[CENSORED]" into the {TARGET}.'
+            == f"Enter '[CENSORED]' into the {TARGET}."
+        )
+
+        assert (
+            Enter("\ue008 \ue004 \ue007").into(TARGET).describe()
+            == f"Enter 'SHIFT TAB ENTER' into the {TARGET}."
         )
 
     def test_subclass(self) -> None:
@@ -446,6 +452,32 @@ class TestEnter:
                 return True
 
         assert SubEnter.the_text("blah").new_method() is True
+
+    def test_beat_logging(
+        self, Tester: Actor, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        target, element = get_mocked_target_and_element()
+        text = 'Speak "Friend" and Enter'
+        caplog.set_level(logging.INFO)
+        Enter.the_text(text).into_the(target).perform_as(Tester)
+
+        assert [r.msg for r in caplog.records] == [
+            f"Tester enters 'Speak \"Friend\" and Enter' into the {target}."
+        ]
+
+    def test_beat_logging_chain(
+        self, Tester: Actor, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        chain = get_mocked_chain()
+        target, element = get_mocked_target_and_element()
+        text = "Hello, Champion City."
+
+        caplog.set_level(logging.INFO)
+        Enter.the_text(text).into_the(target).add_to_chain(Tester, chain)
+
+        assert [r.msg for r in caplog.records] == [
+            f"  Enter 'Hello, Champion City.' into the {target}!"
+        ]
 
     def test_positional_arg_warns(self) -> None:
         with pytest.warns(DeprecationWarning):
