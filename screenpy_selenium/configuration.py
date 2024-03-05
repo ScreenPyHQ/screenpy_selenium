@@ -10,7 +10,7 @@ class ScreenPySeleniumSettings(ScreenPySettings):
     To change these settings using environment variables, use the prefix
     ``SCREENPY_SELENIUM_``, like so::
 
-        SCREENPY_SELENIUM_CHAIN_DURATION=50  # sets the indent char to 50
+        SCREENPY_SELENIUM_CHAIN_DURATION=50  # sets the actionchain duration to 50ms
     """
 
     _tool_path = "screenpy.selenium"
