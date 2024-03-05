@@ -48,8 +48,8 @@ Default Settings
 
 These are the default settings included in ScreenPy Selenium.
 
-ScreenPy Default Settings
-+++++++++++++++++++++++++
+ScreenPy Selenium Default Settings
+++++++++++++++++++++++++++++++++++
 
 .. autopydantic_settings:: screenpy_selenium.configuration.ScreenPySeleniumSettings
 
