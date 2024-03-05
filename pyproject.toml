@@ -171,6 +171,8 @@ python = "^3.8"
 screenpy = ">=4.0.2"
 screenpy_pyotp = ">=4.0.0"
 selenium = ">=4.1.0"
+pydantic = "*"
+pydantic-settings = "*"
 importlib_metadata = {version = "*", python = "3.8.*"}
 
 # convenience packages for development
@@ -186,8 +188,11 @@ sphinx = {version = "*", optional = true}
 sphinx-rtd-theme = {version = "*", optional = true}
 tox = {version = "*", optional = true}
 
+autodoc-pydantic = {version = "*", optional = true}
+
 [tool.poetry.extras]
 dev = [
+    "autodoc-pydantic",
     "black",
     "coverage",
     "cruft",
@@ -206,6 +211,7 @@ test = [
     "pytest-mock",
 ]
 docs = [
+    "autodoc-pydantic",
     "sphinx",
     "sphinx-rtd-theme",
 ]
