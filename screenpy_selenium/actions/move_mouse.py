@@ -119,7 +119,7 @@ class MoveMouse:
     def perform_as(self, the_actor: Actor) -> None:
         """Direct the Actor to move the mouse."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
-        the_chain = ActionChains(browser, settings.CHAIN_DURATION)
+        the_chain = ActionChains(browser, duration=settings.CHAIN_DURATION)
         self._add_action_to_chain(the_actor, the_chain)
         the_chain.perform()
 
