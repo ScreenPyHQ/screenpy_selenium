@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from screenpy.resolutions.base_resolution import BaseResolution
+from screenpy import beat
 
 from .custom_matchers import is_present_element
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .custom_matchers.is_present_element import IsPresentElement
 
 
-class IsPresent(BaseResolution):
+class IsPresent:
     """Match on a present element.
 
     Examples::
@@ -22,9 +22,11 @@ class IsPresent(BaseResolution):
         the_actor.should(See.the(Element(BUTTON), DoesNot(Exist())))
     """
 
-    matcher: IsPresentElement
-    line = "present"
-    matcher_function = is_present_element
+    def describe(self) -> str:
+        """Describe the Resolution's expectation."""
+        return "present"
 
-    def __init__(self) -> None:  # pylint: disable=useless-super-delegation
-        super().__init__()
+    @beat("... hoping it's present.")
+    def resolve(self) -> IsPresentElement:
+        """Produce the Matcher to make the assertion."""
+        return is_present_element()

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from hamcrest.core.string_description import StringDescription
@@ -23,7 +24,7 @@ from screenpy_selenium.resolutions.custom_matchers.is_visible_element import (
 from .useful_mocks import get_mocked_element
 
 if TYPE_CHECKING:
-    from screenpy import BaseResolution
+    from hamcrest.core.matcher import Matcher
     from selenium.webdriver.remote.webelement import WebElement
 
 
@@ -36,7 +37,7 @@ class ExpectedDescriptions:
 
 
 def _assert_descriptions(
-    obj: BaseResolution, element: WebElement, expected: ExpectedDescriptions
+    obj: Matcher[Any], element: WebElement, expected: ExpectedDescriptions
 ) -> None:
     describe_to = StringDescription()
     describe_match = StringDescription()
@@ -64,7 +65,7 @@ class TestIsClickable:
         element = get_mocked_element()
         element.is_enabled.return_value = True
         element.is_displayed.return_value = True
-        ic = IsClickable()
+        ic = IsClickable().resolve()
 
         assert ic._matches(element)
 
@@ -76,7 +77,7 @@ class TestIsClickable:
         invisible_element.is_enabled.return_value = True
         inactive_element.is_displayed.return_value = True
         inactive_element.is_enabled.return_value = False
-        ic = IsClickable()
+        ic = IsClickable().resolve()
 
         assert not ic._matches(None)  # element was not found by Element()
         assert not ic._matches(invisible_element)
@@ -90,14 +91,25 @@ class TestIsClickable:
             describe_mismatch="was not enabled/clickable",
             describe_none="was not even present",
         )
+        ic = IsClickable()
 
-        _assert_descriptions(IsClickable(), element, expected)
+        assert ic.describe() == "clickable"
+        _assert_descriptions(ic.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
         ic = IsClickable()
-        annotation = ic.__annotations__["matcher"]
+        annotation = ic.resolve.__annotations__["return"]
         assert annotation == "IsClickableElement"
-        assert type(ic.matcher) == IsClickableElement
+        assert type(ic.resolve()) == IsClickableElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsClickable().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's clickable.",
+            "    => the element is enabled/clickable",
+        ]
 
 
 class TestIsVisible:
@@ -109,14 +121,14 @@ class TestIsVisible:
     def test_matches_a_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
-        iv = IsVisible()
+        iv = IsVisible().resolve()
 
         assert iv._matches(element)
 
     def test_does_not_match_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
-        iv = IsVisible()
+        iv = IsVisible().resolve()
 
         assert not iv._matches(None)  # element was not found by Element()
         assert not iv._matches(element)
@@ -129,14 +141,25 @@ class TestIsVisible:
             describe_mismatch="was not visible",
             describe_none="was not even present",
         )
+        iv = IsVisible()
 
-        _assert_descriptions(IsVisible(), element, expected)
+        assert iv.describe() == "visible"
+        _assert_descriptions(iv.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
         iv = IsVisible()
-        annotation = iv.__annotations__["matcher"]
+        annotation = iv.resolve.__annotations__["return"]
         assert annotation == "IsVisibleElement"
-        assert type(iv.matcher) == IsVisibleElement
+        assert type(iv.resolve()) == IsVisibleElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsVisible().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's visible.",
+            "    => the element is visible",
+        ]
 
 
 class TestIsInvisible:
@@ -148,17 +171,17 @@ class TestIsInvisible:
     def test_matches_an_invisible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = False
-        ii = IsInvisible()
+        ii = IsInvisible().resolve()
 
-        assert ii._matches(element)
-        assert ii._matches(None)  # element was not found by Element()
+        assert ii.matches(element)
+        assert ii.matches(None)  # element was not found by Element()
 
     def test_does_not_match_visible_element(self) -> None:
         element = get_mocked_element()
         element.is_displayed.return_value = True
-        ii = IsInvisible()
+        ii = IsInvisible().resolve()
 
-        assert not ii._matches(element)
+        assert not ii.matches(element)
 
     def test_descriptions(self) -> None:
         element = get_mocked_element()
@@ -169,7 +192,7 @@ class TestIsInvisible:
             describe_none="it was invisible",
         )
 
-        obj = IsInvisible()
+        obj = IsInvisible().resolve()
         describe_to = StringDescription()
         describe_match = StringDescription()
         describe_mismatch = StringDescription()
@@ -185,11 +208,24 @@ class TestIsInvisible:
         assert describe_mismatch.out == expected.describe_mismatch
         assert describe_none.out == expected.describe_none
 
+        ii = IsInvisible()
+
+        assert ii.describe() == "invisible"
+
     def test_type_hint(self) -> None:
         ii = IsInvisible()
-        annotation = ii.__annotations__["matcher"]
+        annotation = ii.resolve.__annotations__["return"]
         assert annotation == "IsInvisibleElement"
-        assert type(ii.matcher) == IsInvisibleElement
+        assert type(ii.resolve()) == IsInvisibleElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsInvisible().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's invisible.",
+            "    => the element is invisible",
+        ]
 
 
 class TestIsPresent:
@@ -204,14 +240,14 @@ class TestIsPresent:
     )
     def test_matches_a_present_element(self, enabled: bool, displayed: bool) -> None:
         element = get_mocked_element()
-        ic = IsPresent()
-
         element.is_enabled.return_value = enabled
         element.is_displayed.return_value = displayed
+        ic = IsPresent().resolve()
+
         assert ic._matches(element)
 
     def test_does_not_match_missing_element(self) -> None:
-        ic = IsPresent()
+        ic = IsPresent().resolve()
 
         assert not ic._matches(None)
 
@@ -223,11 +259,22 @@ class TestIsPresent:
             describe_mismatch="was not present",
             describe_none="was not present",
         )
+        ip = IsPresent()
 
-        _assert_descriptions(IsPresent(), element, expected)
+        assert ip.describe() == "present"
+        _assert_descriptions(ip.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
         ip = IsPresent()
-        annotation = ip.__annotations__["matcher"]
+        annotation = ip.resolve.__annotations__["return"]
         assert annotation == "IsPresentElement"
-        assert type(ip.matcher) == IsPresentElement
+        assert type(ip.resolve()) == IsPresentElement
+
+    def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
+        caplog.set_level(logging.INFO)
+        IsPresent().resolve()
+
+        assert [r.msg for r in caplog.records] == [
+            "... hoping it's present.",
+            "    => the element is present",
+        ]
