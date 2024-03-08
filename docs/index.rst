@@ -29,3 +29,4 @@ to :class:`~screenpy_selenium.abilities.BrowseTheWeb`!
    targets
    cookbook
    deprecations
+   settings

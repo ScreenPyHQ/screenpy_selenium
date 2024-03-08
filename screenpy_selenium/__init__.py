@@ -19,6 +19,7 @@ Selenium.
 from . import abilities, actions, questions, resolutions
 from .abilities import *  # noqa: F403
 from .actions import *  # noqa: F403
+from .configuration import settings
 from .exceptions import BrowsingError, TargetingError
 from .protocols import Chainable
 from .questions import *  # noqa: F403
@@ -26,10 +27,11 @@ from .resolutions import *  # noqa: F403
 from .target import Target
 
 __all__ = [
-    "Target",
-    "TargetingError",
     "BrowsingError",
     "Chainable",
+    "settings",
+    "Target",
+    "TargetingError",
 ]
 
 __all__ += abilities.__all__ + actions.__all__ + questions.__all__ + resolutions.__all__

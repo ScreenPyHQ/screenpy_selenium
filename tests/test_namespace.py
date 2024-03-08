@@ -120,6 +120,7 @@ def test_screenpy_selenium() -> None:
         "Visits",
         "Wait",
         "Waits",
+        "settings",
     )
 
     assert sorted(screenpy_selenium.__all__) == sorted(expected)
