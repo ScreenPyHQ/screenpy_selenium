@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/ScreenPyHQ/cookiecutter_screenpy/",
-  "commit": "2eb913f51af5023e2b7349487eced830f2cb17bd",
+  "commit": "0b13be19c9680a328c76323c4d799de8c25be1ff",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -12,7 +12,7 @@
       "author_email": "perry.goy@gmail.com",
       "github_username": "ScreenPyHQ",
       "_template": "https://github.com/ScreenPyHQ/cookiecutter_screenpy/",
-      "_commit": "2eb913f51af5023e2b7349487eced830f2cb17bd"
+      "_commit": "0b13be19c9680a328c76323c4d799de8c25be1ff"
     }
   },
   "directory": null

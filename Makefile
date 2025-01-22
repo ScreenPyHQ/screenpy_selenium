@@ -42,6 +42,11 @@ requirements:
 
 .PHONY: requirements
 
+cruft-update:
+	cruft update --allow-untracked-files
+
+.PHONY: cruft-update
+
 ################################################################################
 # sub-package specific
 
