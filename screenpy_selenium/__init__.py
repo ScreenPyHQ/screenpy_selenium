@@ -12,7 +12,7 @@ INT. SITEPACKAGES DIRECTORY.
 ScreenPy Selenium is an extension for ScreenPy, enabling interaction with
 Selenium.
 
-:copyright: (c) 2022-2024, Perry Goy.
+:copyright: (c) 2022-2025, Perry Goy.
 :license: MIT, see LICENSE for more details.
 """
 
@@ -29,9 +29,9 @@ from .target import Target
 __all__ = [
     "BrowsingError",
     "Chainable",
-    "settings",
     "Target",
     "TargetingError",
+    "settings",
 ]
 
 __all__ += abilities.__all__ + actions.__all__ + questions.__all__ + resolutions.__all__
