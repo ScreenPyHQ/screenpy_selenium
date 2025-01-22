@@ -71,7 +71,7 @@ def not_raises(ExpectedException: type[Exception]) -> Generator:
         msg = f"Incorrectly Raised {error}"
         raise AssertionError(msg) from error
 
-    except Exception as error:  # noqa: BLE001
+    except Exception as error:
         msg = f"Unexpected exception {error}"
         raise AssertionError(msg) from error
 

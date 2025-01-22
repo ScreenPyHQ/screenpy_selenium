@@ -100,7 +100,7 @@ class TestIsClickable:
         ic = IsClickable()
         annotation = ic.resolve.__annotations__["return"]
         assert annotation == "IsClickableElement"
-        assert type(ic.resolve()) == IsClickableElement
+        assert type(ic.resolve()) is IsClickableElement
 
     def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
         caplog.set_level(logging.INFO)
@@ -150,7 +150,7 @@ class TestIsVisible:
         iv = IsVisible()
         annotation = iv.resolve.__annotations__["return"]
         assert annotation == "IsVisibleElement"
-        assert type(iv.resolve()) == IsVisibleElement
+        assert type(iv.resolve()) is IsVisibleElement
 
     def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
         caplog.set_level(logging.INFO)
@@ -216,7 +216,7 @@ class TestIsInvisible:
         ii = IsInvisible()
         annotation = ii.resolve.__annotations__["return"]
         assert annotation == "IsInvisibleElement"
-        assert type(ii.resolve()) == IsInvisibleElement
+        assert type(ii.resolve()) is IsInvisibleElement
 
     def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
         caplog.set_level(logging.INFO)
@@ -268,7 +268,7 @@ class TestIsPresent:
         ip = IsPresent()
         annotation = ip.resolve.__annotations__["return"]
         assert annotation == "IsPresentElement"
-        assert type(ip.resolve()) == IsPresentElement
+        assert type(ip.resolve()) is IsPresentElement
 
     def test_beat_logging(self, caplog: pytest.LogCaptureFixture) -> None:
         caplog.set_level(logging.INFO)

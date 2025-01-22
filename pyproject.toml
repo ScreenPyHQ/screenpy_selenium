@@ -123,6 +123,7 @@ split-on-trailing-comma = false
     "D",  # we don't need public-API-polished docstrings in tests.
     "FBT",  # using a boolean as a test object is useful!
     "PLR",  # likewise using specific numbers and strings in tests.
+    "A",
 ]
 "__version__.py" = ["D"]
 
@@ -130,6 +131,8 @@ split-on-trailing-comma = false
 ################################################################################
 #                 END OF BOILERPLATE ScreenPyHQ CONFIGURATIONS                 #
 ################################################################################
+[tool.ruff.lint.flake8-builtins]
+builtins-allowed-modules = ["select"]
 
 [tool.poetry]
 name = "screenpy_selenium"

@@ -10,7 +10,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from screenpy_selenium import BrowseTheWeb
 
 
-@pytest.fixture()
+@pytest.fixture
 def Tester() -> AnActor:
     """Provide an Actor with mocked web browsing abilities."""
     AuthenticateWith2FA_Mocked = mock.create_autospec(
