@@ -6,6 +6,7 @@ import os
 from typing import TYPE_CHECKING
 
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
+from selenium.webdriver.common.options import ArgOptions
 
 from ..exceptions import BrowsingError
 
@@ -67,18 +68,23 @@ class BrowseTheWeb:
                 capabilities. Default is "iPhone Simulator"
         """
         hub_url = os.getenv("APPIUM_HUB_URL", DEFAULT_APPIUM_HUB_URL)
-        IOS_CAPABILITIES = {
-            "platformName": "iOS",
-            "platformVersion": os.getenv("IOS_DEVICE_VERSION"),
-            "deviceName": os.getenv("IOS_DEVICE_NAME", "iPhone Simulator"),
-            "automationName": "xcuitest",
-            "browserName": "Safari",
-        }
+
+        opts = ArgOptions()
+        opts.set_capability("platformName", "iOS")
+        opts.set_capability("platformVersion", os.getenv("IOS_DEVICE_VERSION"))
+        opts.set_capability(
+            "deviceName", os.getenv("IOS_DEVICE_NAME", "iPhone Simulator")
+        )
+        opts.set_capability("automationName", "xcuitest")
+        opts.set_capability("browserName", "Safari")
+
+        IOS_CAPABILITIES = opts.to_capabilities()
+
         if IOS_CAPABILITIES["platformVersion"] is None:
             msg = "IOS_DEVICE_VERSION Environment variable must be set."
             raise BrowsingError(msg)
 
-        return cls.using(browser=Remote(hub_url, IOS_CAPABILITIES))
+        return cls.using(browser=Remote(hub_url, options=opts))
 
     @classmethod
     def using_android(cls) -> Self:
@@ -100,18 +106,23 @@ class BrowseTheWeb:
                 capabilities. Default is "Android Emulator"
         """
         hub_url = os.getenv("APPIUM_HUB_URL", DEFAULT_APPIUM_HUB_URL)
-        ANDROID_CAPABILITIES = {
-            "platformName": "Android",
-            "platformVersion": os.getenv("ANDROID_DEVICE_VERSION"),
-            "deviceName": os.getenv("ANDROID_DEVICE_NAME", "Android Emulator"),
-            "automationName": "UIAutomator2",
-            "browserName": "Chrome",
-        }
+
+        opts = ArgOptions()
+        opts.set_capability("platformName", "Android")
+        opts.set_capability("platformVersion", os.getenv("ANDROID_DEVICE_VERSION"))
+        opts.set_capability(
+            "deviceName", os.getenv("ANDROID_DEVICE_NAME", "Android Emulator")
+        )
+        opts.set_capability("automationName", "UIAutomator2")
+        opts.set_capability("browserName", "Chrome")
+
+        ANDROID_CAPABILITIES = opts.to_capabilities()
+
         if ANDROID_CAPABILITIES["platformVersion"] is None:
             msg = "ANDROID_DEVICE_VERSION environment variable must be set."
             raise BrowsingError(msg)
 
-        return cls.using(browser=Remote(hub_url, ANDROID_CAPABILITIES))
+        return cls.using(browser=Remote(hub_url, options=opts))
 
     @classmethod
     def using(cls, browser: WebDriver) -> Self:
