@@ -44,11 +44,11 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
             return
 
         if not item.is_displayed() and item.is_enabled():
-            mismatch_description.append_text("was not clickable (not visible)")
+            mismatch_description.append_text("was not even visible")
             return
 
         if item.is_displayed() and not item.is_enabled():
-            mismatch_description.append_text("was not clickable (not enabled)")
+            mismatch_description.append_text("was not even enabled")
             return
 
         mismatch_description.append_text("was not clickable")

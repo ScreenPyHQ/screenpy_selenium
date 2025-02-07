@@ -113,12 +113,12 @@ class TestIsClickable:
 
         element.is_enabled.return_value = False
         element.is_displayed.return_value = True
-        expected.describe_mismatch = "was not clickable (not enabled)"
+        expected.describe_mismatch = "was not even enabled"
         _assert_descriptions(ic.resolve(), element, expected)
 
-        element.is_enabled.return_value = False
-        element.is_displayed.return_value = True
-        expected.describe_mismatch = "was not clickable (not enabled)"
+        element.is_enabled.return_value = True
+        element.is_displayed.return_value = False
+        expected.describe_mismatch = "was not even visible"
         _assert_descriptions(ic.resolve(), element, expected)
 
     def test_type_hint(self) -> None:
