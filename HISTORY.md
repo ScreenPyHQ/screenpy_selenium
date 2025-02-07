@@ -1,14 +1,6 @@
 Release History
 ===============
 
-4.0.5 (2025-01-22)
-------------------
-
-### New Features
-
-- Added `IsEnabled` Resolution
-
-
 4.0.4 (2023-07-20)
 ------------------
 
