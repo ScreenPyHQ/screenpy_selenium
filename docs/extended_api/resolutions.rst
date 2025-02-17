@@ -12,10 +12,22 @@ IsClickable
 -----------
 
 **Aliases:** ``Clickable``,
-``Enabled``,
-``IsEnabled``
 
 .. autoclass:: IsClickable
+
+IsDisabled
+---------
+
+**Aliases:** ``Disabled``
+
+.. autoclass:: IsDisabled
+
+IsEnabled
+---------
+
+**Aliases:** ``Enabled``
+
+.. autoclass:: IsEnabled
 
 IsVisible
 ---------

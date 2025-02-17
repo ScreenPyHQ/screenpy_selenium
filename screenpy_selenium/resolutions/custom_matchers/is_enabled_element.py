@@ -1,9 +1,9 @@
 """
-A matcher that matches a clickable element.
+A matcher that matches an enabled element.
 
 For example:
 
-    assert_that(driver.find_element_by_id("search"), is_clickable_element())
+    assert_that(driver.find_element_by_id("search"), is_enabled_element())
 """
 
 from __future__ import annotations
@@ -17,23 +17,23 @@ if TYPE_CHECKING:
     from hamcrest.core.description import Description
 
 
-class IsClickableElement(BaseMatcher[Optional[WebElement]]):
-    """Matches an element which both ``is_enabled`` and ``is_displayed``."""
+class IsEnabledElement(BaseMatcher[Optional[WebElement]]):
+    """Matches an element which ``is_enabled``."""
 
     def _matches(self, item: WebElement | None) -> bool:
         if item is None:
             return False
-        return item.is_displayed() and item.is_enabled()
+        return item.is_enabled()
 
     def describe_to(self, description: Description) -> None:
         """Describe the passing case."""
-        description.append_text("the element is clickable")
+        description.append_text("the element is enabled")
 
     def describe_match(
         self, _: WebElement | None, match_description: Description
     ) -> None:
         """Describe the matching case."""
-        match_description.append_text("it was clickable")
+        match_description.append_text("it was enabled")
 
     def describe_mismatch(
         self, item: WebElement | None, mismatch_description: Description
@@ -42,18 +42,9 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
         if item is None:
             mismatch_description.append_text("was not even present")
             return
-
-        if not item.is_displayed() and item.is_enabled():
-            mismatch_description.append_text("was not even visible")
-            return
-
-        if item.is_displayed() and not item.is_enabled():
-            mismatch_description.append_text("was not even enabled")
-            return
-
-        mismatch_description.append_text("was not clickable")
+        mismatch_description.append_text("was not enabled")
 
 
-def is_clickable_element() -> IsClickableElement:
+def is_enabled_element() -> IsEnabledElement:
     """This matcher matches any element that is enabled."""
-    return IsClickableElement()
+    return IsEnabledElement()
