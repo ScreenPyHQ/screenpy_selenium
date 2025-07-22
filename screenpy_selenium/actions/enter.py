@@ -10,15 +10,15 @@ from screenpy.pacing import aside, beat
 from screenpy.speech_tools import represent_prop
 from selenium.common.exceptions import WebDriverException
 
-from ..common import pos_args_deprecated
-from ..speech_tools import KEY_NAMES
+from screenpy_selenium.common import pos_args_deprecated
+from screenpy_selenium.speech_tools import KEY_NAMES
 
 if TYPE_CHECKING:
     from screenpy import Actor
     from selenium.webdriver.common.action_chains import ActionChains
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Enter:

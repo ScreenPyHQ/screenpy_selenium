@@ -8,7 +8,7 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator
+from typing import TYPE_CHECKING
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -17,6 +17,8 @@ from .abilities.browse_the_web import BrowseTheWeb
 from .exceptions import TargetingError
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from screenpy.actor import Actor
     from selenium.webdriver.remote.webdriver import WebElement
     from typing_extensions import Self
@@ -48,7 +50,7 @@ class Target:
         return self.locator[1] if self.locator else None
 
     @target_name.setter
-    def target_name(self, value: str) -> None:
+    def target_name(self, value: str | None) -> None:
         self._description = value
 
     @target_name.deleter
@@ -141,7 +143,9 @@ class Target:
         return self.get_locator()[index]
 
     def __init__(
-        self, desc: str | None = None, locator: tuple[str, str] | None = None
+        self,
+        desc: str | None = None,
+        locator: tuple[str, str] | None = None,
     ) -> None:
         self.target_name = desc
         self.locator = locator

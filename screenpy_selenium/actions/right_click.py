@@ -7,14 +7,14 @@ from typing import TYPE_CHECKING
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
-from ..abilities import BrowseTheWeb
-from ..configuration import settings
+from screenpy_selenium.abilities import BrowseTheWeb
+from screenpy_selenium.configuration import settings
 
 if TYPE_CHECKING:
     from screenpy import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class RightClick:

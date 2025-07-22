@@ -30,13 +30,17 @@ class IsInvisibleElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is invisible")
 
     def describe_match(
-        self, _: WebElement | None, match_description: Description
+        self,
+        _: WebElement | None,
+        match_description: Description,
     ) -> None:
         """Describe the matching case."""
         match_description.append_text("it was invisible")
 
     def describe_mismatch(
-        self, _: WebElement | None, mismatch_description: Description
+        self,
+        _: WebElement | None,
+        mismatch_description: Description,
     ) -> None:
         """Describe the failing case."""
         mismatch_description.append_text("was not invisible")

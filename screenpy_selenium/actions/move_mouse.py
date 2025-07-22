@@ -8,14 +8,14 @@ from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
-from ..abilities import BrowseTheWeb
-from ..configuration import settings
+from screenpy_selenium.abilities import BrowseTheWeb
+from screenpy_selenium.configuration import settings
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class MoveMouse:
@@ -98,7 +98,8 @@ class MoveMouse:
         """Private method to add this Action to the chain."""
         if self.target is not None and self.offset is not None:
             the_chain.move_to_element_with_offset(
-                self.target.found_by(the_actor), *self.offset
+                self.target.found_by(the_actor),
+                *self.offset,
             )
         elif self.target is not None:
             the_chain.move_to_element(self.target.found_by(the_actor))

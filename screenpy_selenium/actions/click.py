@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from selenium.webdriver.common.action_chains import ActionChains
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Click:

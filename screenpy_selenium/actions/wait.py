@@ -2,22 +2,24 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Iterable
+from typing import TYPE_CHECKING, Any, Callable
 
 from screenpy import settings
 from screenpy.exceptions import DeliveryError
 from screenpy.pacing import beat
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as selenium_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
-from ..abilities import BrowseTheWeb
+from screenpy_selenium.abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from screenpy import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Wait:
@@ -77,7 +79,9 @@ class Wait:
     second_for = second_for_the = seconds_for = seconds_for_the
 
     def using(
-        self, strategy: Callable[..., Any], log_detail: str | None = None
+        self,
+        strategy: Callable[..., Any],
+        log_detail: str | None = None,
     ) -> Self:
         """Use the given strategy to wait for the Target.
 
@@ -102,22 +106,30 @@ class Wait:
 
     def to_appear(self) -> Self:
         """Use Selenium's "visibility of element located" strategy."""
-        return self.using(EC.visibility_of_element_located, "for the {0} to appear...")
+        return self.using(
+            selenium_conditions.visibility_of_element_located,
+            "for the {0} to appear...",
+        )
 
     def to_be_clickable(self) -> Self:
         """Use Selenium's "to be clickable" strategy."""
-        return self.using(EC.element_to_be_clickable, "for the {0} to be clickable...")
+        return self.using(
+            selenium_conditions.element_to_be_clickable,
+            "for the {0} to be clickable...",
+        )
 
     def to_disappear(self) -> Self:
         """Use Selenium's "invisibility of element located" strategy."""
         return self.using(
-            EC.invisibility_of_element_located, "for the {0} to disappear..."
+            selenium_conditions.invisibility_of_element_located,
+            "for the {0} to disappear...",
         )
 
     def to_contain_text(self, text: str) -> Self:
         """Use Selenium's "text to be present in element" strategy."""
         return self.using(
-            EC.text_to_be_present_in_element, 'for "{1}" to appear in the {0}...'
+            selenium_conditions.text_to_be_present_in_element,
+            'for "{1}" to appear in the {0}...',
         ).with_(*self.args, text)
 
     @property
@@ -139,7 +151,7 @@ class Wait:
 
         try:
             WebDriverWait(browser, self.timeout, settings.POLLING).until(
-                self.condition(*self.args)
+                self.condition(*self.args),
             )
         except WebDriverException as e:
             msg = (
@@ -149,9 +161,11 @@ class Wait:
             raise DeliveryError(msg) from e
 
     def __init__(
-        self, seconds: float | None = None, args: Iterable[Any] | None = None
+        self,
+        seconds: float | None = None,
+        args: Iterable[Any] | None = None,
     ) -> None:
         self.args = args if args is not None else []
         self.timeout = seconds if seconds is not None else settings.TIMEOUT
-        self.condition = EC.visibility_of_element_located
+        self.condition = selenium_conditions.visibility_of_element_located
         self.log_detail = None

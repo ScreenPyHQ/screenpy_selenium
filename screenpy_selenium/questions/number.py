@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from screenpy import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Number:

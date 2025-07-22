@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from selenium.webdriver import Chrome, Firefox, Remote, Safari
 from selenium.webdriver.common.options import ArgOptions
 
-from ..exceptions import BrowsingError
+from screenpy_selenium.exceptions import BrowsingError
 
 if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver
@@ -73,14 +73,15 @@ class BrowseTheWeb:
         opts.set_capability("platformName", "iOS")
         opts.set_capability("platformVersion", os.getenv("IOS_DEVICE_VERSION"))
         opts.set_capability(
-            "deviceName", os.getenv("IOS_DEVICE_NAME", "iPhone Simulator")
+            "deviceName",
+            os.getenv("IOS_DEVICE_NAME", "iPhone Simulator"),
         )
         opts.set_capability("automationName", "xcuitest")
         opts.set_capability("browserName", "Safari")
 
-        IOS_CAPABILITIES = opts.to_capabilities()
+        ios_capabilities = opts.to_capabilities()
 
-        if IOS_CAPABILITIES["platformVersion"] is None:
+        if ios_capabilities["platformVersion"] is None:
             msg = "IOS_DEVICE_VERSION Environment variable must be set."
             raise BrowsingError(msg)
 
@@ -111,14 +112,15 @@ class BrowseTheWeb:
         opts.set_capability("platformName", "Android")
         opts.set_capability("platformVersion", os.getenv("ANDROID_DEVICE_VERSION"))
         opts.set_capability(
-            "deviceName", os.getenv("ANDROID_DEVICE_NAME", "Android Emulator")
+            "deviceName",
+            os.getenv("ANDROID_DEVICE_NAME", "Android Emulator"),
         )
         opts.set_capability("automationName", "UIAutomator2")
         opts.set_capability("browserName", "Chrome")
 
-        ANDROID_CAPABILITIES = opts.to_capabilities()
+        android_capabilities = opts.to_capabilities()
 
-        if ANDROID_CAPABILITIES["platformVersion"] is None:
+        if android_capabilities["platformVersion"] is None:
             msg = "ANDROID_DEVICE_VERSION environment variable must be set."
             raise BrowsingError(msg)
 

@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING
 
 from screenpy.pacing import beat
 
-from ..common import pos_args_deprecated
+from screenpy_selenium.common import pos_args_deprecated
 
 if TYPE_CHECKING:
     from screenpy import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Text:
@@ -73,7 +73,9 @@ class Text:
 
     @pos_args_deprecated("multi")
     def __init__(
-        self, target: Target, multi: bool = False  # noqa: FBT001, FBT002
+        self,
+        target: Target,
+        multi: bool = False,  # noqa: FBT001, FBT002
     ) -> None:
         self.target = target
         self.multi = multi

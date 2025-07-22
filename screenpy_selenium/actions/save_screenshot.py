@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import os
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from screenpy.actions import AttachTheFile
 from screenpy.pacing import beat
 
-from ..abilities import BrowseTheWeb
+from screenpy_selenium.abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
@@ -45,12 +45,16 @@ class SaveScreenshot:
     """
 
     attach_kwargs: dict | None
-    path: str
-    filename: str
+    path: Path
+
+    @property
+    def filename(self) -> str:
+        """The filename only, no path."""
+        return self.path.name
 
     def describe(self) -> str:
         """Describe the Action in present tense."""
-        return f"Save screenshot as {self.filename}"
+        return f"Save screenshot as {self.path.name}"
 
     @classmethod
     def as_(cls, path: str) -> Self:
@@ -78,13 +82,11 @@ class SaveScreenshot:
         browser = the_actor.ability_to(BrowseTheWeb).browser
         screenshot = browser.get_screenshot_as_png()
 
-        with open(self.path, "wb+") as screenshot_file:
-            screenshot_file.write(screenshot)
+        self.path.write_bytes(screenshot)
 
         if self.attach_kwargs is not None:
-            the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
+            the_actor.attempts_to(AttachTheFile(str(self.path), **self.attach_kwargs))
 
-    def __init__(self, path: str) -> None:
-        self.path = path
-        self.filename = path.split(os.path.sep)[-1]
+    def __init__(self, path: Path | str) -> None:
+        self.path = Path(path)
         self.attach_kwargs = None

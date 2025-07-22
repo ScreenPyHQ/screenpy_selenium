@@ -8,7 +8,7 @@ from screenpy_selenium.configuration import ScreenPySeleniumSettings
 class TestSettings:
     def test_pyproject_overwrites_initial(self) -> None:
         mock_open = mock.mock_open(
-            read_data=b"[tool.screenpy.selenium]\nCHAIN_DURATION = 500"
+            read_data=b"[tool.screenpy.selenium]\nCHAIN_DURATION = 500",
         )
 
         with mock.patch("pathlib.Path.open", mock_open):
@@ -18,7 +18,7 @@ class TestSettings:
 
     def test_env_overwrites_pyproject(self) -> None:
         mock_open = mock.mock_open(
-            read_data=b"[tool.screenpy.selenium]\nCHAIN_DURATION = 500"
+            read_data=b"[tool.screenpy.selenium]\nCHAIN_DURATION = 500",
         )
         mock_env = {"SCREENPY_SELENIUM_CHAIN_DURATION": "1337"}
 

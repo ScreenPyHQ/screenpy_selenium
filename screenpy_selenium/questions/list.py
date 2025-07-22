@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebElement
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class List:
