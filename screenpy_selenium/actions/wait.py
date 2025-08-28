@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
     from screenpy import Actor
     from selenium.types import WaitExcTypes
+    from selenium.webdriver.remote.webelement import WebElement
     from typing_extensions import Self
 
     from screenpy_selenium.target import Target
@@ -60,7 +61,7 @@ class Wait:
     ignored_exceptions: WaitExcTypes | None
 
     @classmethod
-    def for_the(cls, target: Target) -> Self:
+    def for_the(cls, target: Target | WebElement) -> Self:
         """Set the Target to wait for.
 
         Aliases:
@@ -69,7 +70,7 @@ class Wait:
         return cls(seconds=settings.TIMEOUT, args=[target])
 
     @classmethod
-    def for_(cls, target: Target) -> Self:
+    def for_(cls, target: Target | WebElement) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
