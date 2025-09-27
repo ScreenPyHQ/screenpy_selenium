@@ -58,7 +58,7 @@ class SaveConsoleLog:
 
     def describe(self) -> str:
         """Describe the Action in present tense."""
-        return f"Save browser console log as {self.path.name}"
+        return f"Save browser console log as {self.filename}"
 
     @classmethod
     def as_(cls, path: str) -> Self:
@@ -92,7 +92,7 @@ class SaveConsoleLog:
         self.path.write_text(js_log, encoding="utf-8")
 
         if self.attach_kwargs is not None:
-            the_actor.attempts_to(AttachTheFile(str(self.path), **self.attach_kwargs))
+            the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)

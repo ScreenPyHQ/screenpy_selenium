@@ -54,7 +54,7 @@ class SaveScreenshot:
 
     def describe(self) -> str:
         """Describe the Action in present tense."""
-        return f"Save screenshot as {self.path.name}"
+        return f"Save screenshot as {self.filename}"
 
     @classmethod
     def as_(cls, path: str) -> Self:
@@ -85,7 +85,7 @@ class SaveScreenshot:
         self.path.write_bytes(screenshot)
 
         if self.attach_kwargs is not None:
-            the_actor.attempts_to(AttachTheFile(str(self.path), **self.attach_kwargs))
+            the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
