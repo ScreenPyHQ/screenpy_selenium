@@ -467,7 +467,7 @@ class TestEnter:
         Tester: Actor,
         caplog: pytest.LogCaptureFixture,
     ) -> None:
-        target, element = get_mocked_target_and_element()
+        target, _ = get_mocked_target_and_element()
         text = 'Speak "Friend" and Enter'
         caplog.set_level(logging.INFO)
         Enter.the_text(text).into_the(target).perform_as(Tester)
@@ -482,7 +482,7 @@ class TestEnter:
         caplog: pytest.LogCaptureFixture,
     ) -> None:
         chain = get_mocked_chain()
-        target, element = get_mocked_target_and_element()
+        target, _ = get_mocked_target_and_element()
         text = "Hello, Champion City."
 
         caplog.set_level(logging.INFO)
