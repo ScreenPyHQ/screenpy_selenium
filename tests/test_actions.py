@@ -513,7 +513,7 @@ class TestEnter2FAToken:
     def test_perform_enter2fatoken(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # The kind of thing an idiot would have on his luggage!
-        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
+        mocked_2fa = cast("mock.Mock", Tester.ability_to(AuthenticateWith2FA))
         mocked_2fa.to_get_token.return_value = mfa_token
 
         Enter2FAToken.into_the(target).perform_as(Tester)
@@ -525,7 +525,7 @@ class TestEnter2FAToken:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
         mfa_token = "12345"  # Hey, I've got the same combination on my luggage!
-        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
+        mocked_2fa = cast("mock.Mock", Tester.ability_to(AuthenticateWith2FA))
         mocked_2fa.to_get_token.return_value = mfa_token
 
         Enter2FAToken.into_the(target).add_to_chain(Tester, chain)
