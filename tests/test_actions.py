@@ -1569,10 +1569,7 @@ class TestWait:
         Wait.for_the(test_target).perform_as(Tester)
 
         mocked_webdriverwait.assert_called_once_with(
-            mocked_browser,
-            settings.TIMEOUT,
-            settings.POLLING,
-            None
+            mocked_browser, settings.TIMEOUT, settings.POLLING, None
         )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(

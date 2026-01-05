@@ -160,8 +160,7 @@ class Wait:
         try:
             WebDriverWait(
                 browser, self.timeout, settings.POLLING, self.ignored_exceptions
-            ).until(self.condition(*self.args),
-            )
+            ).until(self.condition(*self.args))
         except WebDriverException as e:
             msg = (
                 f"Encountered an exception using {self.condition.__name__} with "
