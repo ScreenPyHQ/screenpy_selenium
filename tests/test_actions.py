@@ -480,7 +480,10 @@ class TestEnter:
         ]
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r"Warning: positional arguments `mask` for `Enter.__init__`",
+        ):
             Enter("", True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -677,7 +680,10 @@ class TestHoldDown:
         assert SubHoldDown.left_mouse_button().new_method() is True
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r"Warning: positional arguments `lmb` for `HoldDown.__init__`",
+        ):
             HoldDown(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -955,7 +961,10 @@ class TestRelease:
         assert SubRelease.left_mouse_button().new_method() is True
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r"Warning: positional arguments `lmb` for `Release.__init__`",
+        ):
             Release(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:

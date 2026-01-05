@@ -315,7 +315,10 @@ class TestSelected:
         )
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r"Warning: positional arguments `multi` for `Selected.__init__`",
+        ):
             Selected(TARGET, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -399,7 +402,10 @@ class TestTextOfTheAlert:
         assert TextOfTheAlert().describe() == "The text of the alert."
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r"Warning: positional arguments `multi` for `Text.__init__`",
+        ):
             Text(TARGET, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
