@@ -149,7 +149,7 @@ class TestCookies:
         expected_cookie = {test_name: test_value}
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.get_cookies.return_value = [
-            {"name": test_name, "value": test_value}
+            {"name": test_name, "value": test_value},
         ]
 
         assert Cookies().answered_by(Tester) == expected_cookie
@@ -286,7 +286,9 @@ class TestSelected:
 
     @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
     def test_ask_for_selected_option(
-        self, mocked_selenium_select: mock.Mock, Tester: Actor
+        self,
+        mocked_selenium_select: mock.Mock,
+        Tester: Actor,
     ) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         return_value = "test"
@@ -298,7 +300,9 @@ class TestSelected:
 
     @mock.patch("screenpy_selenium.questions.selected.SeleniumSelect", autospec=True)
     def test_ask_for_selected_options_plural(
-        self, mocked_selenium_select: mock.Mock, Tester: Actor
+        self,
+        mocked_selenium_select: mock.Mock,
+        Tester: Actor,
     ) -> None:
         fake_target = Target.the("fake").located_by("//xpath")
         expected_value = ["test", "the", "options"]
@@ -315,7 +319,10 @@ class TestSelected:
         )
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
             Selected(TARGET, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -350,7 +357,9 @@ class TestText:
         mocked_browser = get_mocked_browser(Tester)
         expected_text = "spam and eggs"
         mocked_element = mock.create_autospec(
-            WebElement, text=expected_text, instance=True
+            WebElement,
+            text=expected_text,
+            instance=True,
         )
         mocked_browser.find_element.return_value = mocked_element
 
@@ -390,7 +399,9 @@ class TestTextOfTheAlert:
         expected_text = "It's got what plants crave."
         mocked_browser = get_mocked_browser(Tester)
         mocked_browser.switch_to.alert = mock.create_autospec(
-            SeleniumAlert, text=expected_text, instance=True
+            SeleniumAlert,
+            text=expected_text,
+            instance=True,
         )
 
         assert TextOfTheAlert().answered_by(Tester) == expected_text
@@ -399,7 +410,10 @@ class TestTextOfTheAlert:
         assert TextOfTheAlert().describe() == "The text of the alert."
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
             Text(TARGET, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:

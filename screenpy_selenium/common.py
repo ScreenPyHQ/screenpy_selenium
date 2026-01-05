@@ -11,19 +11,18 @@ if TYPE_CHECKING:
 
     P = ParamSpec("P")
     T = TypeVar("T")
-    Function = Callable[P, T]
 
 
-def pos_args_deprecated(*keywords: str) -> Function:
+def pos_args_deprecated(*keywords: str) -> Callable:
     """Warn users which positional arguments should be called via keyword."""
 
-    def deprecated(func: Function) -> Function:
+    def deprecated(func: Callable) -> Callable:
         argnames = func.__code__.co_varnames[: func.__code__.co_argcount]
         i = min([argnames.index(kw) for kw in keywords])
         kw_argnames = argnames[i:]
 
         @wraps(func)
-        def wrapper(*args: P.args, **kwargs: P.kwargs) -> Function:
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> Callable[P, T]:
             # call the function first, to make sure the signature matches
             ret_value = func(*args, **kwargs)
 

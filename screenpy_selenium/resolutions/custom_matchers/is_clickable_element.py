@@ -30,13 +30,17 @@ class IsClickableElement(BaseMatcher[Optional[WebElement]]):
         description.append_text("the element is clickable")
 
     def describe_match(
-        self, _: WebElement | None, match_description: Description
+        self,
+        _: WebElement | None,
+        match_description: Description,
     ) -> None:
         """Describe the matching case."""
         match_description.append_text("it was clickable")
 
     def describe_mismatch(
-        self, item: WebElement | None, mismatch_description: Description
+        self,
+        item: WebElement | None,
+        mismatch_description: Description,
     ) -> None:
         """Describe the failing case."""
         if item is None:

@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, cast
 from unittest import mock
 
+from selenium.webdriver.chromium.webdriver import ChromiumDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -23,7 +24,7 @@ def get_mocked_chain() -> mock.Mock:
 
 def get_mock_target_class() -> type:
     class FakeTarget(Target):
-        def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:  # noqa: ARG003
+        def __new__(cls, *args: object, **kwargs: object) -> FakeTarget:  # noqa: ARG004
             return mock.create_autospec(FakeTarget, instance=True)
 
     return FakeTarget
@@ -39,8 +40,12 @@ def get_mocked_target_and_element() -> tuple[mock.Mock, mock.Mock]:
 
 
 def get_mocked_browser(actor: Actor) -> mock.Mock:
-    return cast(mock.Mock, actor.ability_to(BrowseTheWeb).browser)
+    return cast("mock.Mock", actor.ability_to(BrowseTheWeb).browser)
 
 
 def get_mocked_webdriver() -> mock.Mock:
     return mock.create_autospec(WebDriver, instance=True)
+
+
+def get_mocked_chromiumdriver() -> mock.Mock:
+    return mock.create_autospec(ChromiumDriver, instance=True)

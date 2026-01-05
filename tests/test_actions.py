@@ -3,7 +3,8 @@ from __future__ import annotations
 import logging
 import warnings
 from contextlib import contextmanager
-from typing import TYPE_CHECKING, Generator, cast
+from pathlib import Path
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
 import pytest
@@ -13,10 +14,11 @@ from screenpy_pyotp.abilities import AuthenticateWith2FA
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as selenium_conditions
 
 from screenpy_selenium import (
     AcceptAlert,
+    BrowseTheWeb,
     Chain,
     Chainable,
     Clear,
@@ -53,9 +55,12 @@ from .useful_mocks import (
     get_mocked_browser,
     get_mocked_chain,
     get_mocked_target_and_element,
+    get_mocked_webdriver,
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from screenpy import Actor
 
 FakeTarget = get_mock_target_class()
@@ -278,7 +283,9 @@ class TestDoubleClick:
 
     @mock.patch("screenpy_selenium.actions.double_click.ActionChains", autospec=True)
     def test_perform_double_click_without_target(
-        self, mocked_chains: mock.Mock, Tester: Actor
+        self,
+        mocked_chains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         DoubleClick().perform_as(Tester)
 
@@ -287,7 +294,9 @@ class TestDoubleClick:
 
     @mock.patch("screenpy_selenium.actions.double_click.ActionChains", autospec=True)
     def test_perform_double_click_with_target(
-        self, mocked_chains: mock.Mock, Tester: Actor
+        self,
+        mocked_chains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         target, element = get_mocked_target_and_element()
         browser = get_mocked_browser(Tester)
@@ -454,33 +463,40 @@ class TestEnter:
         assert SubEnter.the_text("blah").new_method() is True
 
     def test_beat_logging(
-        self, Tester: Actor, caplog: pytest.LogCaptureFixture
+        self,
+        Tester: Actor,
+        caplog: pytest.LogCaptureFixture,
     ) -> None:
-        target, element = get_mocked_target_and_element()
+        target, _ = get_mocked_target_and_element()
         text = 'Speak "Friend" and Enter'
         caplog.set_level(logging.INFO)
         Enter.the_text(text).into_the(target).perform_as(Tester)
 
         assert [r.msg for r in caplog.records] == [
-            f"Tester enters 'Speak \"Friend\" and Enter' into the {target}."
+            f"Tester enters 'Speak \"Friend\" and Enter' into the {target}.",
         ]
 
     def test_beat_logging_chain(
-        self, Tester: Actor, caplog: pytest.LogCaptureFixture
+        self,
+        Tester: Actor,
+        caplog: pytest.LogCaptureFixture,
     ) -> None:
         chain = get_mocked_chain()
-        target, element = get_mocked_target_and_element()
+        target, _ = get_mocked_target_and_element()
         text = "Hello, Champion City."
 
         caplog.set_level(logging.INFO)
         Enter.the_text(text).into_the(target).add_to_chain(Tester, chain)
 
         assert [r.msg for r in caplog.records] == [
-            f"  Enter 'Hello, Champion City.' into the {target}!"
+            f"  Enter 'Hello, Champion City.' into the {target}!",
         ]
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
             Enter("", True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -509,25 +525,25 @@ class TestEnter2FAToken:
 
     def test_perform_enter2fatoken(self, Tester: Actor) -> None:
         target, element = get_mocked_target_and_element()
-        mfa_token = "12345"  # The kind of thing an idiot would have on his luggage!
-        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
-        mocked_2fa.to_get_token.return_value = mfa_token
+        test_str = "12345"  # The kind of thing an idiot would have on his luggage!
+        mocked_2fa = cast("mock.Mock", Tester.ability_to(AuthenticateWith2FA))
+        mocked_2fa.to_get_token.return_value = test_str
 
         Enter2FAToken.into_the(target).perform_as(Tester)
 
         target.found_by.assert_called_once_with(Tester)
-        element.send_keys.assert_called_once_with(mfa_token)
+        element.send_keys.assert_called_once_with(test_str)
 
     def test_chain_enter2fatoken(self, Tester: Actor) -> None:
         chain = get_mocked_chain()
         target, element = get_mocked_target_and_element()
-        mfa_token = "12345"  # Hey, I've got the same combination on my luggage!
-        mocked_2fa = cast(mock.Mock, Tester.ability_to(AuthenticateWith2FA))
-        mocked_2fa.to_get_token.return_value = mfa_token
+        test_str = "12345"  # Hey, I've got the same combination on my luggage!
+        mocked_2fa = cast("mock.Mock", Tester.ability_to(AuthenticateWith2FA))
+        mocked_2fa.to_get_token.return_value = test_str
 
         Enter2FAToken.into_the(target).add_to_chain(Tester, chain)
 
-        chain.send_keys_to_element.assert_called_once_with(element, mfa_token)
+        chain.send_keys_to_element.assert_called_once_with(element, test_str)
 
     def test_describe(self) -> None:
         assert (
@@ -677,7 +693,10 @@ class TestHoldDown:
         assert SubHoldDown.left_mouse_button().new_method() is True
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
             HoldDown(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -725,7 +744,9 @@ class TestMoveMouse:
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
     def test_perform_move_mouse_with_target(
-        self, MockedActionChains: mock.Mock, Tester: Actor
+        self,
+        MockedActionChains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         target, element = get_mocked_target_and_element()
         browser = get_mocked_browser(Tester)
@@ -736,7 +757,9 @@ class TestMoveMouse:
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
     def test_perform_move_mouse_by_offset(
-        self, MockedActionChains: mock.Mock, Tester: Actor
+        self,
+        MockedActionChains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         offset = (1, 2)
         browser = get_mocked_browser(Tester)
@@ -747,7 +770,9 @@ class TestMoveMouse:
 
     @mock.patch("screenpy_selenium.actions.move_mouse.ActionChains", autospec=True)
     def test_calls_move_to_element_by_offset(
-        self, MockedActionChains: mock.Mock, Tester: Actor
+        self,
+        MockedActionChains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         target, element = get_mocked_target_and_element()
         offset = (1, 2)
@@ -756,7 +781,8 @@ class TestMoveMouse:
         MoveMouse.to_the(target).with_offset(*offset).perform_as(Tester)
 
         MockedActionChains(browser).move_to_element_with_offset.assert_called_once_with(
-            element, *offset
+            element,
+            *offset,
         )
 
     def test_can_be_chained(self, Tester: Actor) -> None:
@@ -955,7 +981,10 @@ class TestRelease:
         assert SubRelease.left_mouse_button().new_method() is True
 
     def test_positional_arg_warns(self) -> None:
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
             Release(Keys.LEFT_ALT, True)
 
     def test_keyword_arg_does_not_warn(self) -> None:
@@ -1021,13 +1050,15 @@ class TestRightClick:
 
     @mock.patch("screenpy_selenium.actions.right_click.ActionChains", autospec=True)
     def test_can_be_performed(
-        self, MockedActionChains: mock.Mock, Tester: Actor
+        self,
+        MockedActionChains: mock.Mock,
+        Tester: Actor,
     ) -> None:
         Tester.attempts_to(RightClick())
         browser = get_mocked_browser(Tester)
 
         MockedActionChains(browser).context_click.assert_called_once_with(
-            on_element=None
+            on_element=None,
         )
 
     def test_add_right_click_to_chain(self, Tester: Actor) -> None:
@@ -1077,18 +1108,11 @@ class TestSaveConsoleLog:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_filepath_vs_filename(self) -> None:
-        test_name = "cmcmanus.png"
-        test_path = f"boondock/saints/{test_name}"
-
-        scl = SaveConsoleLog.as_(test_path)
-
-        assert scl.path == test_path
-        assert scl.filename == test_name
-
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
-    def test_perform_save_console_log_calls_open(
-        self, mocked_open: mock.Mock, Tester: Actor
+    @mock.patch("pathlib.Path.write_text", new_callable=mock.mock_open)
+    def test_perform_save_console_log_calls_write_text(
+        self,
+        mocked_write_text: mock.Mock,
+        Tester: Actor,
     ) -> None:
         test_path = "jhowlett/images/a_wolverine.py"
         browser = get_mocked_browser(Tester)
@@ -1096,11 +1120,13 @@ class TestSaveConsoleLog:
 
         SaveConsoleLog(test_path).perform_as(Tester)
 
-        mocked_open.assert_called_once_with(test_path, "w+", encoding="utf-8")
+        mocked_write_text.assert_called_once_with("logan", encoding="utf-8")
 
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
+    @mock.patch("pathlib.Path.open", new_callable=mock.mock_open)
     def test_perform_save_console_log_writes_log(
-        self, mocked_open: mock.Mock, Tester: Actor
+        self,
+        mocked_open: mock.Mock,
+        Tester: Actor,
     ) -> None:
         test_path = "ssummers/images/a_cyclops.py"
         test_log = ["shot a beam", "shot a second beam", "closed my eyes"]
@@ -1109,14 +1135,14 @@ class TestSaveConsoleLog:
 
         SaveConsoleLog(test_path).perform_as(Tester)
 
-        file_descriptor = mocked_open()
-        file_descriptor.write.assert_called_once_with("\n".join(test_log))
+        mocked_open().write.assert_called_once_with("\n".join(test_log))
 
     @mock.patch(
-        "screenpy_selenium.actions.save_console_log.AttachTheFile", autospec=True
+        "screenpy_selenium.actions.save_console_log.AttachTheFile",
+        autospec=True,
     )
     def test_sends_kwargs_to_attach(self, mocked_atf: mock.Mock, Tester: Actor) -> None:
-        test_path = "doppelganger.png"
+        test_path = Path("doppelganger.png")
         test_kwargs = {"name": "Mystique"}
         browser = get_mocked_browser(Tester)
         browser.get_log.return_value = [1, 2, 3]
@@ -1137,6 +1163,13 @@ class TestSaveConsoleLog:
 
         assert SubSaveConsoleLog.as_("").new_method() is True
 
+    def test_raises_for_non_chromium_browser(self, Tester: Actor) -> None:
+        non_chromium_browser = get_mocked_webdriver()
+        Tester.ability_to(BrowseTheWeb).browser = non_chromium_browser
+
+        with pytest.raises(UnableToAct, match=r"^Only Chromium-based drivers.*"):
+            SaveConsoleLog("blah").perform_as(Tester)
+
 
 class TestSaveScreenshot:
     def test_can_be_instantiated(self) -> None:
@@ -1156,35 +1189,33 @@ class TestSaveScreenshot:
         assert isinstance(r, Performable)
         assert isinstance(r, Describable)
 
-    def test_filepath_vs_filename(self) -> None:
-        test_name = "mmcmanus.png"
-        test_path = f"boondock/saints/{test_name}"
-
-        ss = SaveScreenshot.as_(test_path)
-
-        assert ss.path == test_path
-        assert ss.filename == test_name
-
-    @mock.patch("builtins.open", new_callable=mock.mock_open)
-    def test_perform_calls_open_with_path(
-        self, mocked_open: mock.Mock, Tester: Actor
+    @mock.patch("pathlib.Path.write_bytes", new_callable=mock.mock_open)
+    def test_perform_calls_write_bytes(
+        self,
+        mocked_write_bytes: mock.Mock,
+        Tester: Actor,
     ) -> None:
         test_path = "bwayne/images/a_bat.py"
+        browser = get_mocked_browser(Tester)
+        mocked_screenshot_data = browser.get_screenshot_as_png()
 
         SaveScreenshot(test_path).perform_as(Tester)
 
-        mocked_open.assert_called_once_with(test_path, "wb+")
+        mocked_write_bytes.assert_called_once_with(mocked_screenshot_data)
 
     @mock.patch(
-        "screenpy_selenium.actions.save_screenshot.AttachTheFile", autospec=True
+        "screenpy_selenium.actions.save_screenshot.AttachTheFile",
+        autospec=True,
     )
     def test_perform_sends_kwargs_to_attach(
-        self, mocked_atf: mock.Mock, Tester: Actor
+        self,
+        mocked_atf: mock.Mock,
+        Tester: Actor,
     ) -> None:
-        test_path = "souiiie.png"
+        test_path = Path("souiiie.png")
         test_kwargs = {"color": "Red", "weather": "Tornado"}
 
-        with mock.patch("builtins.open", new_callable=mock.mock_open):
+        with mock.patch("pathlib.Path.write_bytes", new_callable=mock.mock_open):
             SaveScreenshot(test_path).and_attach_it(**test_kwargs).perform_as(Tester)
 
         mocked_atf.assert_called_once_with(test_path, **test_kwargs)
@@ -1239,7 +1270,9 @@ class TestSelectByIndex:
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
     def test_perform_select_by_index(
-        self, mocked_selselect: mock.Mock, Tester: Actor
+        self,
+        mocked_selselect: mock.Mock,
+        Tester: Actor,
     ) -> None:
         index = 1
         fake_target = Target.the("fake").located_by("//xpath")
@@ -1247,7 +1280,7 @@ class TestSelectByIndex:
         SelectByIndex(index).from_the(fake_target).perform_as(Tester)
 
         mocked_selselect(fake_target).select_by_index.assert_called_once_with(
-            int(index)
+            int(index),
         )
 
     def test_perform_complains_for_no_target(self, Tester: Actor) -> None:
@@ -1294,7 +1327,9 @@ class TestSelectByText:
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
     def test_perform_select_by_text(
-        self, mocked_selselect: mock.Mock, Tester: Actor
+        self,
+        mocked_selselect: mock.Mock,
+        Tester: Actor,
     ) -> None:
         text = "test"
         fake_target = Target.the("fake").located_by("//xpath")
@@ -1302,7 +1337,7 @@ class TestSelectByText:
         SelectByText(text).from_the(fake_target).perform_as(Tester)
 
         mocked_selselect(fake_target).select_by_visible_text.assert_called_once_with(
-            text
+            text,
         )
 
     def test_perform_complains_for_no_target(self, Tester: Actor) -> None:
@@ -1351,7 +1386,9 @@ class TestSelectByValue:
 
     @mock.patch("screenpy_selenium.actions.select.SeleniumSelect", autospec=True)
     def test_perform_select_by_value(
-        self, mocked_selselect: mock.Mock, Tester: Actor
+        self,
+        mocked_selselect: mock.Mock,
+        Tester: Actor,
     ) -> None:
         value = 1337
         fake_target = Target.the("fake").located_by("//xpath")
@@ -1513,10 +1550,13 @@ class TestWait:
         assert w1.timeout == test_timeout
         assert w2.timeout == test_timeout
 
-    @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
+    @mock.patch("screenpy_selenium.actions.wait.selenium_conditions", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
     def test_defaults(
-        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+        self,
+        mocked_webdriverwait: mock.Mock,
+        mocked_ec: mock.Mock,
+        Tester: Actor,
     ) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
@@ -1525,19 +1565,25 @@ class TestWait:
         Wait.for_the(test_target).perform_as(Tester)
 
         mocked_webdriverwait.assert_called_once_with(
-            mocked_browser, settings.TIMEOUT, settings.POLLING
+            mocked_browser,
+            settings.TIMEOUT,
+            settings.POLLING,
         )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(
-            mocked_browser, settings.TIMEOUT
+            mocked_browser,
+            settings.TIMEOUT,
         ).until.assert_called_once_with(
-            mocked_ec.visibility_of_element_located(test_target.locator)
+            mocked_ec.visibility_of_element_located(test_target.locator),
         )
 
-    @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
+    @mock.patch("screenpy_selenium.actions.wait.selenium_conditions", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
     def test_override(
-        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+        self,
+        mocked_webdriverwait: mock.Mock,
+        mocked_ec: mock.Mock,
+        Tester: Actor,
     ) -> None:
         test_target = Target.the("foo").located_by("//bar")
         mocked_ec.visibility_of_element_located.__name__ = "foo"
@@ -1547,11 +1593,13 @@ class TestWait:
         Wait(timeout).seconds_for(test_target).perform_as(Tester)
 
         mocked_webdriverwait.assert_called_once_with(
-            mocked_browser, timeout, settings.POLLING
+            mocked_browser,
+            timeout,
+            settings.POLLING,
         )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(mocked_browser, timeout).until.assert_called_once_with(
-            mocked_ec.visibility_of_element_located(test_target.locator)
+            mocked_ec.visibility_of_element_located(test_target.locator),
         )
 
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
@@ -1563,13 +1611,16 @@ class TestWait:
         Wait().using(test_func).perform_as(Tester)
 
         mocked_webdriverwait(browser, settings.TIMEOUT).until.assert_called_once_with(
-            test_func()
+            test_func(),
         )
 
-    @mock.patch("screenpy_selenium.actions.wait.EC", autospec=True)
+    @mock.patch("screenpy_selenium.actions.wait.selenium_conditions", autospec=True)
     @mock.patch("screenpy_selenium.actions.wait.WebDriverWait", autospec=True)
     def test_exception(
-        self, mocked_webdriverwait: mock.Mock, mocked_ec: mock.Mock, Tester: Actor
+        self,
+        mocked_webdriverwait: mock.Mock,
+        mocked_ec: mock.Mock,
+        Tester: Actor,
     ) -> None:
         browser = get_mocked_browser(Tester)
         test_target = Target.the("foo").located_by("//bar")
@@ -1584,10 +1635,22 @@ class TestWait:
         assert str(test_target) in str(excinfo.value)
 
     def test_helpful_methods(self) -> None:
-        assert Wait(1).to_appear().condition == EC.visibility_of_element_located
-        assert Wait(1).to_be_clickable().condition == EC.element_to_be_clickable
-        assert Wait(1).to_disappear().condition == EC.invisibility_of_element_located
-        assert Wait(1).to_contain_text("").condition == EC.text_to_be_present_in_element
+        assert (
+            Wait(1).to_appear().condition
+            == selenium_conditions.visibility_of_element_located
+        )
+        assert (
+            Wait(1).to_be_clickable().condition
+            == selenium_conditions.element_to_be_clickable
+        )
+        assert (
+            Wait(1).to_disappear().condition
+            == selenium_conditions.invisibility_of_element_located
+        )
+        assert (
+            Wait(1).to_contain_text("").condition
+            == selenium_conditions.text_to_be_present_in_element
+        )
 
     def test_describe(self) -> None:
         assert (

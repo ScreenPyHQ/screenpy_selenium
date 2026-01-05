@@ -8,9 +8,9 @@ from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.action_chains import ActionChains
 
-from ..abilities import BrowseTheWeb
-from ..configuration import settings
-from ..protocols import Chainable
+from screenpy_selenium.abilities import BrowseTheWeb
+from screenpy_selenium.configuration import settings
+from screenpy_selenium.protocols import Chainable
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor

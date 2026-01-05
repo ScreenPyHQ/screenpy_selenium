@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import os
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from screenpy.actions import AttachTheFile
-from screenpy.pacing import beat
+from screenpy import AttachTheFile, UnableToAct, beat
+from selenium.webdriver.chromium.webdriver import ChromiumDriver
 
-from ..abilities import BrowseTheWeb
+from screenpy_selenium.abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy import Actor
@@ -49,8 +49,12 @@ class SaveConsoleLog:
     """
 
     attach_kwargs: dict | None
-    path: str
-    filename: str
+    path: Path
+
+    @property
+    def filename(self) -> str:
+        """The filename only, no path."""
+        return self.path.name
 
     def describe(self) -> str:
         """Describe the Action in present tense."""
@@ -80,15 +84,16 @@ class SaveConsoleLog:
     def perform_as(self, the_actor: Actor) -> None:
         """Direct the actor to save their browser's console log."""
         browser = the_actor.ability_to(BrowseTheWeb).browser
-        js_log = "\n".join([str(entry) for entry in browser.get_log("browser")])
+        if not isinstance(browser, ChromiumDriver):
+            msg = "Only Chromium-based drivers can save their console logs."
+            raise UnableToAct(msg)
 
-        with open(self.path, "w+", encoding="utf-8") as js_log_file:
-            js_log_file.write(js_log)
+        js_log = "\n".join([str(entry) for entry in browser.get_log("browser")])
+        self.path.write_text(js_log, encoding="utf-8")
 
         if self.attach_kwargs is not None:
             the_actor.attempts_to(AttachTheFile(self.path, **self.attach_kwargs))
 
-    def __init__(self, path: str) -> None:
-        self.path = path
-        self.filename = path.split(os.path.sep)[-1]
+    def __init__(self, path: Path | str) -> None:
+        self.path = Path(path)
         self.attach_kwargs = None

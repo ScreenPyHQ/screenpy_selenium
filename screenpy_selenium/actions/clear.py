@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from screenpy.actor import Actor
     from typing_extensions import Self
 
-    from ..target import Target
+    from screenpy_selenium.target import Target
 
 
 class Clear:

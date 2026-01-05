@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from screenpy.pacing import aside, beat
 
-from ..abilities import BrowseTheWeb
+from screenpy_selenium.abilities import BrowseTheWeb
 
 if TYPE_CHECKING:
     from screenpy.actor import Actor

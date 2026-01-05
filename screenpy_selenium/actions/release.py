@@ -9,8 +9,8 @@ from screenpy.exceptions import UnableToAct
 from screenpy.pacing import beat
 from selenium.webdriver.common.keys import Keys
 
-from ..common import pos_args_deprecated
-from ..speech_tools import KEY_NAMES
+from screenpy_selenium.common import pos_args_deprecated
+from screenpy_selenium.speech_tools import KEY_NAMES
 
 if TYPE_CHECKING:
     from screenpy import Actor
