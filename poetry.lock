@@ -789,10 +789,10 @@ files = [
 name = "importlib-metadata"
 version = "8.7.1"
 description = "Read metadata from Python packages"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "(extra == \"dev\" or extra == \"docs\") and python_version == \"3.9\""
+markers = "python_version == \"3.9\""
 files = [
     {file = "importlib_metadata-8.7.1-py3-none-any.whl", hash = "sha256:5a1f80bf1daa489495071efbb095d75a634cf28a8bc299581244063b53176151"},
     {file = "importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb"},
@@ -1795,17 +1795,18 @@ files = [
 
 [[package]]
 name = "screenpy"
-version = "4.2.5"
+version = "5.0.0"
 description = "Screenplay pattern base for Python automated test suites."
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "screenpy-4.2.5-py3-none-any.whl", hash = "sha256:fd7f09c51ec4f78a4b8410e882b074d464cf49a42227aa74d9cf864b18541c79"},
-    {file = "screenpy-4.2.5.tar.gz", hash = "sha256:05f0cc6ebf2a4bdcb80783fe57b41736d87a9673cabce5825a6927a990097b79"},
+    {file = "screenpy-5.0.0-py3-none-any.whl", hash = "sha256:0333f7395cdd0fc8fc6700b090510f6a2452f6a1953690b0ec11048c91d3c2cf"},
+    {file = "screenpy-5.0.0.tar.gz", hash = "sha256:c283c0e544ade6e286b70281cac1eec0dde4fa90ee6e058c1d39cd521066d85e"},
 ]
 
 [package.dependencies]
+importlib_metadata = {version = "*", markers = "python_version == \"3.9\""}
 pydantic = "*"
 pydantic-settings = "*"
 PyHamcrest = ">=2.0.0"
@@ -2399,10 +2400,10 @@ h11 = ">=0.9.0,<1"
 name = "zipp"
 version = "3.23.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "(extra == \"dev\" or extra == \"docs\") and python_version == \"3.9\""
+markers = "python_version == \"3.9\""
 files = [
     {file = "zipp-3.23.0-py3-none-any.whl", hash = "sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e"},
     {file = "zipp-3.23.0.tar.gz", hash = "sha256:a07157588a12518c9d4034df3fbbee09c814741a33ff63c05fa29d26a2404166"},
