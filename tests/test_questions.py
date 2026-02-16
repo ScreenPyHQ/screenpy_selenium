@@ -9,6 +9,7 @@ from screenpy import Answerable, Describable, ErrorKeeper, UnableToAnswer
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.alert import Alert as SeleniumAlert
 from selenium.webdriver.remote.webelement import WebElement
+from typing_extensions import assert_type
 
 from screenpy_selenium import (
     Attribute,
@@ -274,6 +275,10 @@ class TestSelected:
         assert isinstance(s2, Selected)
         assert isinstance(s3, Selected)
         assert isinstance(s4, Selected)
+        assert_type(s1, Selected)
+        assert_type(s2, Selected)
+        assert_type(s3, Selected)
+        assert_type(s4, Selected)
 
     def test_implements_protocol(self) -> None:
         s = Selected(TARGET)
@@ -342,6 +347,8 @@ class TestText:
 
         assert isinstance(t1, Text)
         assert isinstance(t2, Text)
+        assert_type(t1, Text)
+        assert_type(t2, Text)
 
     def test_implements_protocol(self) -> None:
         t = Text(TARGET)
@@ -381,6 +388,13 @@ class TestText:
 
     def test_describe(self) -> None:
         assert Text(TARGET).describe() == f"The text from the {TARGET}."
+
+    def test_positional_arg_warns(self) -> None:
+        with pytest.warns(
+            DeprecationWarning,
+            match=r".*?Please use keyword arguments instead.$",
+        ):
+            Text(TARGET, True)
 
 
 class TestTextOfTheAlert:

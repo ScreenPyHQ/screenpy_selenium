@@ -4,7 +4,7 @@ import logging
 import warnings
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, assert_type, cast
 from unittest import mock
 
 import pytest
@@ -354,6 +354,14 @@ class TestEnter:
         assert isinstance(e6, Enter)
         assert isinstance(e7, Enter)
         assert isinstance(e8, Enter)
+        assert_type(e1, Enter)
+        assert_type(e2, Enter)
+        assert_type(e3, Enter)
+        assert_type(e4, Enter)
+        assert_type(e5, Enter)
+        assert_type(e6, Enter)
+        assert_type(e7, Enter)
+        assert_type(e8, Enter)
 
     def test_implements_protocol(self) -> None:
         e = Enter("")
@@ -617,6 +625,10 @@ class TestHoldDown:
         assert isinstance(hd2, HoldDown)
         assert isinstance(hd3, HoldDown)
         assert isinstance(hd4, HoldDown)
+        assert_type(hd1, HoldDown)
+        assert_type(hd2, HoldDown)
+        assert_type(hd3, HoldDown)
+        assert_type(hd4, HoldDown)
 
     def test_implements_protocol(self) -> None:
         h = HoldDown.left_mouse_button()
@@ -916,6 +928,9 @@ class TestRelease:
         assert isinstance(r1, Release)
         assert isinstance(r2, Release)
         assert isinstance(r3, Release)
+        assert_type(r1, Release)
+        assert_type(r2, Release)
+        assert_type(r3, Release)
 
     def test_implements_protocol(self) -> None:
         r = Release.left_mouse_button()
