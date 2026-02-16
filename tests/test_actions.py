@@ -4,7 +4,7 @@ import logging
 import warnings
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, assert_type, cast
+from typing import TYPE_CHECKING, cast
 from unittest import mock
 
 import pytest
@@ -15,6 +15,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as selenium_conditions
+from typing_extensions import assert_type
 
 from screenpy_selenium import (
     AcceptAlert,
