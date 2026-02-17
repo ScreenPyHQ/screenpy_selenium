@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     T = TypeVar("T")
 
 
-def pos_args_deprecated(*keywords: str) -> Callable:
+def pos_args_deprecated(*keywords: str) -> Callable[[Callable], Callable]:
     """Warn users which positional arguments should be called via keyword."""
 
     def deprecated(func: Callable) -> Callable:
