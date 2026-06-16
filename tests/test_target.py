@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target, TargetingError
 
-from .useful_mocks import get_mocked_browser
+from .useful_mocks import get_mocked_browser, get_mocked_target_and_element
 
 if TYPE_CHECKING:
     from screenpy import Actor
@@ -121,6 +121,15 @@ def test_found_by_raises(Tester: Actor) -> None:
     assert test_name in str(excinfo.value)
 
 
+def test_found_by_parent(Tester: Actor) -> None:
+    parent, mocked_element = get_mocked_target_and_element()
+    test_locator = (By.ID, "child")
+
+    Target.the("test").located(test_locator).inside(parent).found_by(Tester)
+    mocked_element.find_element.assert_called_once_with(*test_locator)
+    parent.found_by.assert_called_once_with(Tester)
+
+
 def test_all_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "baked beans")
     Target.the("test").located(test_locator).all_found_by(Tester)
@@ -137,6 +146,15 @@ def test_all_found_by_raises(Tester: Actor) -> None:
     with pytest.raises(TargetingError) as excinfo:
         Target.the(test_name).located_by("*").all_found_by(Tester)
     assert test_name in str(excinfo.value)
+
+
+def test_all_found_by_parent(Tester: Actor) -> None:
+    parent, mocked_element = get_mocked_target_and_element()
+    test_locator = (By.ID, "children")
+
+    Target.the("test").located(test_locator).inside_of(parent).all_found_by(Tester)
+    mocked_element.find_elements.assert_called_once_with(*test_locator)
+    parent.found_by.assert_called_once_with(Tester)
 
 
 def test_iterator() -> None:
