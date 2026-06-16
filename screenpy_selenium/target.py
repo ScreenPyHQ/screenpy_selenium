@@ -8,7 +8,7 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from selenium.webdriver.remote.webdriver import WebDriver, WebElement
     from typing_extensions import Self
 
-    WebDriverOrWebElement = WebDriver | WebElement
+    WebDriverOrWebElement = Union[WebDriver, WebElement]
 
 
 class Target:
