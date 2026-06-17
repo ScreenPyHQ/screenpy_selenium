@@ -20,7 +20,8 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
 
     from screenpy.actor import Actor
-    from selenium.webdriver.remote.webdriver import WebDriver, WebElement
+    from selenium.webdriver.remote.webdriver import WebDriver
+    from selenium.webdriver.remote.webelement import WebElement
     from typing_extensions import Self
 
     WebDriverOrWebElement = Union[WebDriver, WebElement]
