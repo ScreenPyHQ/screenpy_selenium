@@ -42,7 +42,7 @@ by passing them to Actions::
 
     from example_test.ui.login_page import (
         PASSWORD_FIELD,
-        SIGN_IN_BUTTON
+        SIGN_IN_BUTTON,
         USERNAME_FIELD,
     )
 
