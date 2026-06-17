@@ -178,14 +178,26 @@ def test_empty_target_iterator() -> None:
 def test_repr() -> None:
     t1 = Target()
     t2 = Target("foo")
+    t3 = Target("bar").inside(Target("baz"))
+    t4 = Target("abc").inside(Target("def").inside(Target("ghi")))
+    t5 = Target().located((By.ID, "bla")).inside(Target().located((By.XPATH, "//div")))
 
     assert repr(t1) == "None"
     assert repr(t2) == "foo"
+    assert repr(t3) == "bar in baz"
+    assert repr(t4) == "abc in def in ghi"
+    assert repr(t5) == "bla in //div"
 
 
 def test_str() -> None:
     t1 = Target()
     t2 = Target("foo")
+    t3 = Target("bar").inside(Target("baz"))
+    t4 = Target("abc").inside(Target("def").inside(Target("ghi")))
+    t5 = Target().located((By.ID, "bla")).inside(Target().located((By.XPATH, "//div")))
 
     assert str(t1) == "None"
     assert str(t2) == "foo"
+    assert str(t3) == "bar in baz"
+    assert str(t4) == "abc in def in ghi"
+    assert str(t5) == "bla in //div"

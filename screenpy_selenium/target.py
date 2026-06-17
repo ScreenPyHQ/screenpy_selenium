@@ -156,6 +156,8 @@ class Target:
 
     def __repr__(self) -> str:
         """A Target is represented by its name."""
+        if self.parent_target:
+            return f"{self.target_name} in {self.parent_target}"
         return f"{self.target_name}"
 
     __str__ = __repr__
