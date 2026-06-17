@@ -104,17 +104,23 @@ def test_locator_tuple_size() -> None:
 
 
 def test_inside() -> None:
-    target1 = Target.the("one").located((By.ID, "one"))
-    target2 = Target.the("two").located((By.ID, "two"))
-    target3 = target1.inside(target2)
+    t1 = Target.the("one").located((By.ID, "one"))
+    t2 = Target.the("two").located((By.ID, "two"))
+    t3 = t1.inside(t2)
+    t4 = t1.inside_of(t2)
+    t5 = t1.within(t2)
 
-    assert target1 is not target3
-    assert target2 is not target3
-    assert target1.parent_target is None
-    assert target2.parent_target is None
-    assert target3.parent_target is target2
-
-    assert target1 != target3
+    assert t1 is not t3
+    assert t1 is not t4
+    assert t1 is not t5
+    assert t2 is not t3
+    assert t2 is not t4
+    assert t2 is not t5
+    assert t1.parent_target is None
+    assert t2.parent_target is None
+    assert t3.parent_target is t2
+    assert t4.parent_target is t2
+    assert t5.parent_target is t2
 
 
 def test_found_by(Tester: Actor) -> None:
