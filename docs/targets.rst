@@ -3,12 +3,13 @@ Targets
 =======
 
 The blocking of the screenplay!
-The Target tells the Actors
+
+The :ref:`Target` tells the :external+screenpy:ref:`Actor`
 what part of the website
 they are to interact with.
 
 Stripping away the metaphor,
-the :ref:`target` combines a locator
+the :ref:`Target` combines a locator
 with a human-readable string.
 The human-readable part
 is what gets read out
@@ -60,7 +61,7 @@ The resulting log:
     | Webster enters "[CENSORED]" into the password field.
     | Websert clicks on the "Sign In" button.
 
-By default the :ref:`target` will use the locator string as a human-readable
+By default the :ref:`Target` will use the locator string as a human-readable
 ``target_name`` in the absence of providing one. This can be convenient if your
 locators are self-describing::
 
@@ -79,7 +80,31 @@ locators are self-describing::
 
 The resulting log:
 
-    | Webster enters "foo" into the username-field.
-    | Webster enters "[CENSORED]" into the password-field.
-    | Websert clicks on the sign-in-button.
+    | Webster enters "foo" into the username field.
+    | Webster enters "[CENSORED]" into the password field.
+    | Websert clicks on the "Sign In" button.
 
+
+Targets in Targets
+------------------
+
+A :ref:`Target` (as seen above) will typically have selenium doing a search
+for the locator starting at the root of the DOM::
+
+    # These are equivalent
+
+    web_element = USERNAME_FIELD.found_by(Webster)
+
+    web_element = driver.find_element(*USERNAME_FIELD)
+
+Selenium also has the ability to search from a found WebElement; as such
+so can :ref:`Target`::
+
+    # These are equivalent
+
+    elem = USERNAME_FIELD.inside(LOGIN_FORM).found_by(Webster)
+
+    form_elem = driver.find_element(*LOGIN_FORM)
+    elem = form_elem.find_element(*USERNAME_FIELD)
+    
+    elem = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
