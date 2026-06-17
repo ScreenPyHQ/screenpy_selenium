@@ -144,8 +144,9 @@ class Target:
 
     def inside(self, parent_target: Target) -> Self:
         """Set the parent locator of the element where this Target should search."""
-        self.parent_target = parent_target
-        return self
+        new_target = type(self)(desc=self._description, locator=self.locator)
+        new_target.parent_target = parent_target
+        return new_target
 
     def inside_of(self, parent_target: Target) -> Self:
         """Alias for :meth:`~screenpy_selenium.Target.inside`."""

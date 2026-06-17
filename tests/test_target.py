@@ -103,6 +103,20 @@ def test_locator_tuple_size() -> None:
         Target("test").located_by([By.ID, "foo"])  # type: ignore[arg-type]
 
 
+def test_inside() -> None:
+    target1 = Target.the("one").located((By.ID, "one"))
+    target2 = Target.the("two").located((By.ID, "two"))
+    target3 = target1.inside(target2)
+
+    assert target1 is not target3
+    assert target2 is not target3
+    assert target1.parent_target is None
+    assert target2.parent_target is None
+    assert target3.parent_target is target2
+
+    assert target1 != target3
+
+
 def test_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "eggs")
     Target.the("test").located(test_locator).found_by(Tester)
