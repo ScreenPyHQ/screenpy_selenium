@@ -100,7 +100,7 @@ selenium do a search for the locator starting at the root of the DOM::
 
 But, selenium also has the ability to search starting from a found WebElement;
 :class:`~screenpy_selenium.Target` can do the same by utilizing the 
-method ``Target.inside()``::
+method :meth:`~screenpy.target.Target.inside`::
 
     # These are equivalent
 
