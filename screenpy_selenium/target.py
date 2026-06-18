@@ -8,6 +8,7 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
+import copy
 from typing import TYPE_CHECKING, Union
 
 from selenium.common.exceptions import WebDriverException
@@ -143,8 +144,11 @@ class Target:
             raise TargetingError(msg) from e
 
     def inside(self, parent_target: Target) -> Self:
-        """Set the parent locator of the element where this Target should search."""
-        new_target = type(self)(desc=self._description, locator=self.locator)
+        """Create a new Target and set the parent target for where search should start.
+
+        This purposefully avoids mutating the original Target for re-usability.
+        """
+        new_target = copy.copy(self)
         new_target.parent_target = parent_target
         return new_target
 
