@@ -98,7 +98,7 @@ for the locator starting at the root of the DOM::
     web_element = driver.find_element(*USERNAME_FIELD)
 
 But, selenium also has the ability to search starting from a found WebElement;
-:ref:`Target`:: can do the same by utilizing the method `inside`::
+:ref:`Target`:: can do the same by utilizing the method ``Target.inside()``::
 
     # These are equivalent
 
