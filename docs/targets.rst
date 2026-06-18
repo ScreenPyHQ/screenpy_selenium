@@ -85,10 +85,10 @@ The resulting log:
     | Websert clicks on the "Sign In" button.
 
 
-Targets in Targets
-------------------
+Target in Target
+----------------
 
-A :ref:`Target` (as seen above) will typically have selenium doing a search
+A :ref:`Target` (as seen above) will typically have selenium do a search
 for the locator starting at the root of the DOM::
 
     # These are equivalent
@@ -97,8 +97,8 @@ for the locator starting at the root of the DOM::
 
     web_element = driver.find_element(*USERNAME_FIELD)
 
-Selenium also has the ability to search from a found WebElement; as such
-so can :ref:`Target`::
+But, selenium also has the ability to search starting from a found WebElement;
+:ref:`Target`:: can do the same by utilizing the method `inside`::
 
     # These are equivalent
 
