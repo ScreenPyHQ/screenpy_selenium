@@ -4,12 +4,13 @@ Targets
 
 The blocking of the screenplay!
 
-The :ref:`Target` tells the :external+screenpy:ref:`Actor`
+The :class:`~screenpy_selenium.Target` tells the 
+:external+screenpy:class:`~screenpy.Actor`
 what part of the website
 they are to interact with.
 
 Stripping away the metaphor,
-the :ref:`Target` combines a locator
+the :class:`~screenpy_selenium.Target` combines a locator
 with a human-readable string.
 The human-readable part
 is what gets read out
@@ -61,9 +62,9 @@ The resulting log:
     | Webster enters "[CENSORED]" into the password field.
     | Websert clicks on the "Sign In" button.
 
-By default the :ref:`Target` will use the locator string as a human-readable
-``target_name`` in the absence of providing one. This can be convenient if your
-locators are self-describing::
+By default the :class:`~screenpy_selenium.Target` will use the locator string 
+as a human-readable ``target_name`` in the absence of providing one. 
+This can be convenient if your locators are self-describing::
 
     from screenpy_selenium import Target
     from selenium.webdriver.common.by import By
@@ -88,8 +89,8 @@ The resulting log:
 Target in Target
 ----------------
 
-A :ref:`Target` (as seen above) will typically have selenium do a search
-for the locator starting at the root of the DOM::
+A :class:`~screenpy_selenium.Target` (as seen above) will typically have 
+selenium do a search for the locator starting at the root of the DOM::
 
     # These are equivalent
 
@@ -98,7 +99,8 @@ for the locator starting at the root of the DOM::
     web_element = driver.find_element(*USERNAME_FIELD)
 
 But, selenium also has the ability to search starting from a found WebElement;
-:ref:`Target`:: can do the same by utilizing the method ``Target.inside()``::
+:class:`~screenpy_selenium.Target` can do the same by utilizing the 
+method ``Target.inside()``::
 
     # These are equivalent
 
@@ -108,4 +110,5 @@ But, selenium also has the ability to search starting from a found WebElement;
     elem = form_elem.find_element(*USERNAME_FIELD)
     
     elem = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
+
 
