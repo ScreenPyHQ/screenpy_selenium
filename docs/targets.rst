@@ -112,3 +112,8 @@ method :meth:`~screenpy.target.Target.inside`::
     elem = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
 
 
+.. note::
+
+    :meth:`~screenpy.target.Target.inside` does not mutate :class:`~screenpy_selenium.Target`.
+    This is done purposefully so the existing `Target` can be reused.
+
