@@ -89,8 +89,9 @@ The resulting log:
 Target in Target
 ----------------
 
-A :class:`~screenpy_selenium.Target` (as seen above) will typically have 
-selenium do a search for the locator starting at the root of the DOM::
+A :class:`~screenpy_selenium.Target` (as seen above) 
+will typically have Selenium do a search 
+for the locator starting at the root of the DOM::
 
     # These are equivalent
 
@@ -98,9 +99,10 @@ selenium do a search for the locator starting at the root of the DOM::
 
     web_element = driver.find_element(*USERNAME_FIELD)
 
-But, selenium also has the ability to search starting from a found WebElement;
-:class:`~screenpy_selenium.Target` can do the same by utilizing the 
-method :meth:`~screenpy.target.Target.inside`::
+But, Selenium also has the ability 
+to search starting from a found WebElement;
+:class:`~screenpy_selenium.Target` can do the same 
+by utilizing the method :meth:`~screenpy.target.Target.inside`::
 
     # These are equivalent
 
