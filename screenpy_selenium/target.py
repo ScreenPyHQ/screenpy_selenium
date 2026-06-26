@@ -144,9 +144,9 @@ class Target:
             raise TargetingError(msg) from e
 
     def inside(self, parent_target: Target) -> Self:
-        """Create a new Target and set the parent target for where search should start.
+        """Set the containing parent element for this Target.
 
-        This purposefully avoids mutating the original Target for re-usability.
+        Creates a new Target instance.
         """
         new_target = copy.copy(self)
         new_target.parent_target = parent_target
