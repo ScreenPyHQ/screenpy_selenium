@@ -99,19 +99,20 @@ for the locator starting at the root of the DOM::
 
     web_element = driver.find_element(*USERNAME_FIELD)
 
-But, Selenium also has the ability 
-to search starting from a found WebElement;
+Selenium also has the ability 
+to search for a child WebElement 
+starting from an already-found parent WebElement.
 :class:`~screenpy_selenium.Target` can do the same 
 by utilizing the method :meth:`~screenpy.target.Target.inside`::
 
-    # These are equivalent
+    # These three are equivalent
 
-    elem = USERNAME_FIELD.inside(LOGIN_FORM).found_by(Webster)
+    elem1 = USERNAME_FIELD.inside(LOGIN_FORM).found_by(Webster)
 
     form_elem = driver.find_element(*LOGIN_FORM)
-    elem = form_elem.find_element(*USERNAME_FIELD)
+    elem2 = form_elem.find_element(*USERNAME_FIELD)
     
-    elem = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
+    elem3 = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
 
 
 .. note::
