@@ -81,9 +81,9 @@ This can be convenient if your locators are self-describing::
 
 The resulting log:
 
-    | Webster enters "foo" into the username field.
-    | Webster enters "[CENSORED]" into the password field.
-    | Websert clicks on the "Sign In" button.
+    | Webster enters "foo" into the username-field.
+    | Webster enters "[CENSORED]" into the password-field.
+    | Webster clicks on the sign-in-button.
 
 
 Target in Target
