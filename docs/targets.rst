@@ -3,12 +3,14 @@ Targets
 =======
 
 The blocking of the screenplay!
-The Target tells the Actors
+
+The :class:`~screenpy_selenium.Target` tells the 
+:external+screenpy:class:`~screenpy.Actor`
 what part of the website
 they are to interact with.
 
 Stripping away the metaphor,
-the :ref:`target` combines a locator
+the :class:`~screenpy_selenium.Target` combines a locator
 with a human-readable string.
 The human-readable part
 is what gets read out
@@ -41,7 +43,7 @@ by passing them to Actions::
 
     from example_test.ui.login_page import (
         PASSWORD_FIELD,
-        SIGN_IN_BUTTON
+        SIGN_IN_BUTTON,
         USERNAME_FIELD,
     )
 
@@ -60,9 +62,9 @@ The resulting log:
     | Webster enters "[CENSORED]" into the password field.
     | Websert clicks on the "Sign In" button.
 
-By default the :ref:`target` will use the locator string as a human-readable
-``target_name`` in the absence of providing one. This can be convenient if your
-locators are self-describing::
+By default the :class:`~screenpy_selenium.Target` will use the locator string 
+as a human-readable ``target_name`` in the absence of providing one. 
+This can be convenient if your locators are self-describing::
 
     from screenpy_selenium import Target
     from selenium.webdriver.common.by import By
@@ -81,5 +83,40 @@ The resulting log:
 
     | Webster enters "foo" into the username-field.
     | Webster enters "[CENSORED]" into the password-field.
-    | Websert clicks on the sign-in-button.
+    | Webster clicks on the sign-in-button.
+
+
+Target in Target
+----------------
+
+A :class:`~screenpy_selenium.Target` (as seen above) 
+will typically have Selenium do a search 
+for the locator starting at the root of the DOM::
+
+    # These are equivalent
+
+    web_element = USERNAME_FIELD.found_by(Webster)
+
+    web_element = driver.find_element(*USERNAME_FIELD)
+
+Selenium also has the ability 
+to search for a child WebElement 
+starting from an already-found parent WebElement.
+:class:`~screenpy_selenium.Target` can do the same 
+by utilizing the method :meth:`~screenpy.target.Target.inside`::
+
+    # These three are equivalent
+
+    elem1 = USERNAME_FIELD.inside(LOGIN_FORM).found_by(Webster)
+
+    form_elem = driver.find_element(*LOGIN_FORM)
+    elem2 = form_elem.find_element(*USERNAME_FIELD)
+    
+    elem3 = driver.find_element(*LOGIN_FORM).find_element(*USERNAME_FIELD)
+
+
+.. note::
+
+    :meth:`~screenpy.target.Target.inside` does not mutate :class:`~screenpy_selenium.Target`.
+    This is done purposefully so the existing `Target` can be reused.
 

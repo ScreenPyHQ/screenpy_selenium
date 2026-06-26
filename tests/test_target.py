@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 
 from screenpy_selenium import Target, TargetingError
 
-from .useful_mocks import get_mocked_browser
+from .useful_mocks import get_mocked_browser, get_mocked_target_and_element
 
 if TYPE_CHECKING:
     from screenpy import Actor
@@ -103,6 +103,26 @@ def test_locator_tuple_size() -> None:
         Target("test").located_by([By.ID, "foo"])  # type: ignore[arg-type]
 
 
+def test_inside() -> None:
+    t1 = Target.the("one").located((By.ID, "one"))
+    t2 = Target.the("two").located((By.ID, "two"))
+    t3 = t1.inside(t2)
+    t4 = t1.inside_of(t2)
+    t5 = t1.within(t2)
+
+    assert t1 is not t3
+    assert t1 is not t4
+    assert t1 is not t5
+    assert t2 is not t3
+    assert t2 is not t4
+    assert t2 is not t5
+    assert t1.parent_target is None
+    assert t2.parent_target is None
+    assert t3.parent_target is t2
+    assert t4.parent_target is t2
+    assert t5.parent_target is t2
+
+
 def test_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "eggs")
     Target.the("test").located(test_locator).found_by(Tester)
@@ -121,6 +141,15 @@ def test_found_by_raises(Tester: Actor) -> None:
     assert test_name in str(excinfo.value)
 
 
+def test_found_by_parent(Tester: Actor) -> None:
+    parent, mocked_element = get_mocked_target_and_element()
+    test_locator = (By.ID, "child")
+
+    Target.the("test").located(test_locator).inside(parent).found_by(Tester)
+    mocked_element.find_element.assert_called_once_with(*test_locator)
+    parent.found_by.assert_called_once_with(Tester)
+
+
 def test_all_found_by(Tester: Actor) -> None:
     test_locator = (By.ID, "baked beans")
     Target.the("test").located(test_locator).all_found_by(Tester)
@@ -137,6 +166,15 @@ def test_all_found_by_raises(Tester: Actor) -> None:
     with pytest.raises(TargetingError) as excinfo:
         Target.the(test_name).located_by("*").all_found_by(Tester)
     assert test_name in str(excinfo.value)
+
+
+def test_all_found_by_parent(Tester: Actor) -> None:
+    parent, mocked_element = get_mocked_target_and_element()
+    test_locator = (By.ID, "children")
+
+    Target.the("test").located(test_locator).inside_of(parent).all_found_by(Tester)
+    mocked_element.find_elements.assert_called_once_with(*test_locator)
+    parent.found_by.assert_called_once_with(Tester)
 
 
 def test_iterator() -> None:
@@ -160,14 +198,26 @@ def test_empty_target_iterator() -> None:
 def test_repr() -> None:
     t1 = Target()
     t2 = Target("foo")
+    t3 = Target("bar").inside(Target("baz"))
+    t4 = Target("abc").inside(Target("def").inside(Target("ghi")))
+    t5 = Target().located((By.ID, "bla")).inside(Target().located((By.XPATH, "//div")))
 
     assert repr(t1) == "None"
     assert repr(t2) == "foo"
+    assert repr(t3) == "bar in baz"
+    assert repr(t4) == "abc in def in ghi"
+    assert repr(t5) == "bla in //div"
 
 
 def test_str() -> None:
     t1 = Target()
     t2 = Target("foo")
+    t3 = Target("bar").inside(Target("baz"))
+    t4 = Target("abc").inside(Target("def").inside(Target("ghi")))
+    t5 = Target().located((By.ID, "bla")).inside(Target().located((By.XPATH, "//div")))
 
     assert str(t1) == "None"
     assert str(t2) == "foo"
+    assert str(t3) == "bar in baz"
+    assert str(t4) == "abc in def in ghi"
+    assert str(t5) == "bla in //div"

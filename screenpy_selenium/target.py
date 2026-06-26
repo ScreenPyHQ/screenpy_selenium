@@ -8,7 +8,8 @@ will be used by Actors to find elements.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import copy
+from typing import TYPE_CHECKING, Union
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -20,8 +21,11 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
 
     from screenpy.actor import Actor
-    from selenium.webdriver.remote.webdriver import WebElement
+    from selenium.webdriver.remote.webdriver import WebDriver
+    from selenium.webdriver.remote.webelement import WebElement
     from typing_extensions import Self
+
+    WebDriverOrWebElement = Union[WebDriver, WebElement]
 
 
 class Target:
@@ -41,6 +45,7 @@ class Target:
 
     _description: str | None = None
     locator: tuple[str, str] | None = None
+    parent_target: Target | None = None
 
     @property
     def target_name(self) -> str | None:
@@ -112,24 +117,53 @@ class Target:
 
     def found_by(self, the_actor: Actor) -> WebElement:
         """Retrieve the |WebElement| as viewed by the Actor."""
-        browser = the_actor.ability_to(BrowseTheWeb).browser
+        driver_or_element: WebDriverOrWebElement
+        if self.parent_target:
+            driver_or_element = self.parent_target.found_by(the_actor)
+        else:
+            driver_or_element = the_actor.ability_to(BrowseTheWeb).browser
+
         try:
-            return browser.find_element(*self)
+            return driver_or_element.find_element(*self)
         except WebDriverException as e:
             msg = f"{e} raised while trying to find {self}."
             raise TargetingError(msg) from e
 
     def all_found_by(self, the_actor: Actor) -> list[WebElement]:
         """Retrieve a list of |WebElement| objects as viewed by the Actor."""
-        browser = the_actor.ability_to(BrowseTheWeb).browser
+        driver_or_element: WebDriverOrWebElement
+        if self.parent_target:
+            driver_or_element = self.parent_target.found_by(the_actor)
+        else:
+            driver_or_element = the_actor.ability_to(BrowseTheWeb).browser
+
         try:
-            return browser.find_elements(*self)
+            return driver_or_element.find_elements(*self)
         except WebDriverException as e:
             msg = f"{e} raised while trying to find {self}."
             raise TargetingError(msg) from e
 
+    def inside(self, parent_target: Target) -> Self:
+        """Set the containing parent element for this Target.
+
+        Creates a new Target instance.
+        """
+        new_target = copy.copy(self)
+        new_target.parent_target = parent_target
+        return new_target
+
+    def inside_of(self, parent_target: Target) -> Self:
+        """Alias for :meth:`~screenpy_selenium.Target.inside`."""
+        return self.inside(parent_target)
+
+    def within(self, parent_target: Target) -> Self:
+        """Alias for :meth:`~screenpy_selenium.Target.inside`."""
+        return self.inside(parent_target)
+
     def __repr__(self) -> str:
         """A Target is represented by its name."""
+        if self.parent_target:
+            return f"{self.target_name} in {self.parent_target}"
         return f"{self.target_name}"
 
     __str__ = __repr__
