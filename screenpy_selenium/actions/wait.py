@@ -17,6 +17,8 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from screenpy import Actor
+    from selenium.types import WaitExcTypes
+    from selenium.webdriver.remote.webelement import WebElement
     from typing_extensions import Self
 
     from screenpy_selenium.target import Target
@@ -56,9 +58,10 @@ class Wait:
     args: Iterable[Any]
     timeout: float
     log_detail: str | None
+    ignored_exceptions: WaitExcTypes | None
 
     @classmethod
-    def for_the(cls, target: Target) -> Self:
+    def for_the(cls, target: Target | WebElement) -> Self:
         """Set the Target to wait for.
 
         Aliases:
@@ -67,7 +70,7 @@ class Wait:
         return cls(seconds=settings.TIMEOUT, args=[target])
 
     @classmethod
-    def for_(cls, target: Target) -> Self:
+    def for_(cls, target: Target | WebElement) -> Self:
         """Alias for :meth:`~screenpy_selenium.actions.Wait.for_the`."""
         return cls.for_the(target=target)
 
@@ -140,6 +143,11 @@ class Wait:
 
         return self.log_detail.format(*self.args)
 
+    def ignoring(self, *ignored_exceptions: type[Exception]) -> Self:
+        """Set the expception classes to ignore."""
+        self.ignored_exceptions = ignored_exceptions
+        return self
+
     def describe(self) -> str:
         """Describe the Action in present tense."""
         return f"Wait {self.timeout} seconds {self.log_message}."
@@ -150,9 +158,9 @@ class Wait:
         browser = the_actor.ability_to(BrowseTheWeb).browser
 
         try:
-            WebDriverWait(browser, self.timeout, settings.POLLING).until(
-                self.condition(*self.args),
-            )
+            WebDriverWait(
+                browser, self.timeout, settings.POLLING, self.ignored_exceptions
+            ).until(self.condition(*self.args))
         except WebDriverException as e:
             msg = (
                 f"Encountered an exception using {self.condition.__name__} with "
@@ -169,3 +177,4 @@ class Wait:
         self.timeout = seconds if seconds is not None else settings.TIMEOUT
         self.condition = selenium_conditions.visibility_of_element_located
         self.log_detail = None
+        self.ignored_exceptions = None

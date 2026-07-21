@@ -11,7 +11,11 @@ import pytest
 from screenpy import DeliveryError, Describable, Performable, UnableToAct, settings
 from screenpy.configuration import ScreenPySettings
 from screenpy_pyotp.abilities import AuthenticateWith2FA
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import (
+    NoSuchFrameException,
+    StaleElementReferenceException,
+    WebDriverException,
+)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as selenium_conditions
@@ -1581,9 +1585,7 @@ class TestWait:
         Wait.for_the(test_target).perform_as(Tester)
 
         mocked_webdriverwait.assert_called_once_with(
-            mocked_browser,
-            settings.TIMEOUT,
-            settings.POLLING,
+            mocked_browser, settings.TIMEOUT, settings.POLLING, None
         )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(
@@ -1606,12 +1608,15 @@ class TestWait:
         mocked_browser = get_mocked_browser(Tester)
         timeout = 4
 
-        Wait(timeout).seconds_for(test_target).perform_as(Tester)
+        Wait(timeout).seconds_for(test_target).ignoring(
+            StaleElementReferenceException, NoSuchFrameException
+        ).perform_as(Tester)
 
         mocked_webdriverwait.assert_called_once_with(
             mocked_browser,
             timeout,
             settings.POLLING,
+            (StaleElementReferenceException, NoSuchFrameException),
         )
         mocked_ec.visibility_of_element_located.assert_called_once_with(test_target)
         mocked_webdriverwait(mocked_browser, timeout).until.assert_called_once_with(
